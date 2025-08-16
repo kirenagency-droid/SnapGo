@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Déblocage réussi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --card: #18191c;
+      --primary: #FFD700;
+      --primary-glow: #fffbe6;
+      --purple: #a259ff;
+      --green: #4be37b;
+      --pink: #ff69b4;
+      --text: #fff;
+      --text-secondary: #bdbdbd;
+      --shadow: 0 4px 32px #000a;
+      --radius: 18px;
+      --blue: #4bcaff;
+      --premium: #6c47c7;
+      --premium-light: #a78bfa;
+      --danger: #ff3b3b;
+      --gray: #23242a;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding-bottom: 16px;
+    }
+    .main-container {
+      max-width: 400px;
+      width: 100%;
+      padding: 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+      margin: 0 auto;
+    }
+    .recap-block,
+    .offer-block,
+    .card,
+    .downloads-block {
+      width: 92%;
+      max-width: 340px;
+      background: var(--gray);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 12px #a259ff22;
+      padding: 18px 18px 14px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 1.1s;
+      align-self: center;
+      font-size: 1rem;
+      transition: box-shadow 0.2s;
+    }
+    .recap-block:hover,
+    .offer-block:hover,
+    .card:hover,
+    .downloads-block:hover {
+      box-shadow: 0 6px 24px #FFD70033, 0 2px 12px #a259ff33;
+    }
+    .card {
+      box-shadow: var(--shadow), 0 0 24px #FFD70022;
+      gap: 12px;
+      animation: fadeIn 1s;
+      margin-bottom: 0;
+    }
+    .downloads-block {
+      box-shadow: 0 2px 12px #0006;
+      gap: 12px;
+      animation: fadeIn 1.3s;
+      padding-bottom: 10px;
+    }
+    .offer-block {
+      box-shadow: 0 2px 12px #FFD70022;
+      gap: 10px;
+      animation: fadeIn 1.1s;
+      position: relative;
+    }
+    .recap-block {
+      box-shadow: 0 2px 12px #a259ff22;
+      gap: 10px;
+      animation: fadeIn 1.1s;
+    }
+    @media (max-width: 500px) {
+      .main-container {
+        max-width: 98vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+      }
+      .recap-block,
+      .offer-block,
+      .card,
+      .downloads-block {
+        width: 98vw;
+        max-width: 340px;
+        min-width: 0;
+        padding-left: 4vw;
+        padding-right: 4vw;
+      }
+    }
+    @media (max-width: 350px) {
+      .main-container {
+        max-width: 100vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+      }
+      .recap-block,
+      .offer-block,
+      .card,
+      .downloads-block {
+        width: 99vw;
+        max-width: 99vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        font-size: 0.85rem;
+      }
+      .success-icon {
+        width: 38px;
+        height: 38px;
+      }
+      .main-title {
+        font-size: 1rem;
+      }
+      .downloads-title,
+      .offer-title,
+      .recap-title {
+        font-size: 0.95rem;
+      }
+      .offer-btn {
+        font-size: 0.95em;
+        padding: 8px 0;
+      }
+    }
+    .success-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 60%, var(--primary-glow) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      box-shadow: 0 0 18px #FFD70055, 0 0 32px #fffbe633;
+      animation: pop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .success-icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: #18191c;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      display: block;
+    }
+    .main-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 6px;
+      text-shadow: 0 0 10px #FFD70055, 0 0 18px #fff7;
+      letter-spacing: -1px;
+    }
+    .desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    .card-list {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      color: #fff;
+      font-weight: 500;
+      background: #23242a;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px #FFD70011;
+      transition: background 0.2s;
+    }
+    .card-list li:hover {
+      background: #292a2f;
+    }
+    .card-list .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .dot-yellow { background: var(--primary); box-shadow: 0 0 10px #FFD70088; }
+    .dot-purple { background: var(--purple); box-shadow: 0 0 10px #a259ff88; }
+    .dot-green { background: var(--green); box-shadow: 0 0 10px #4be37b88; }
+    .dot-pink { background: var(--pink); box-shadow: 0 0 10px #ff69b488; }
+    .downloads-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .download-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #191a1e;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 6px #0003;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .download-item:hover {
+      background: #23242a;
+    }
+    .download-icon {
+      font-size: 1.4em;
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .download-desc {
+      color: #bdbdbd;
+      font-size: 0.98em;
+      font-weight: 400;
+      margin-left: 2px;
+    }
+    .offer-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #ff69b4;
+      color: #fff;
+      font-size: 1.05em;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 4px 14px;
+      box-shadow: 0 2px 8px #ff69b455;
+      letter-spacing: 0.01em;
+    }
+    .offer-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .offer-price-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 8px;
+    }
+    .offer-old {
+      color: #bdbdbd;
+      font-size: 1.1em;
+      text-decoration: line-through;
+      margin-right: 6px;
+    }
+    .offer-price {
+      color: var(--primary);
+      font-size: 2.1em;
+      font-weight: 700;
+      background: #18191c;
+      border-radius: 10px;
+      padding: 2px 18px;
+      box-shadow: 0 0 12px #FFD70044;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 8px #FFD70077;
+      margin-right: 8px;
+    }
+    .offer-timer {
+      color: var(--primary);
+      font-size: 1.15em;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .offer-timer .emoji {
+      font-size: 1.2em;
+    }
+    .offer-btn {
+      background: var(--primary);
+      color: var(--yellow-btn-text, #18191c);
+      font-size: 1.18em;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 0;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #ffd70033;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 2px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      outline: none;
+      width: 100%;
+      letter-spacing: 0.01em;
+    }
+    .offer-btn svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 4px;
+    }
+    .offer-note {
+      color: #bdbdbd;
+      font-size: 0.98em;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .recap-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .recap-premium {
+      background: var(--premium);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 8px 0;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1.08em;
+      letter-spacing: 0.01em;
+      box-shadow: 0 2px 8px #a259ff55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .recap-list {
+      margin: 0 0 10px 0;
+      padding: 0;
+      list-style: none;
+      color: #fff;
+      font-size: 1.05em;
+    }
+    .recap-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+    .recap-list .icon {
+      font-size: 1.2em;
+      width: 22px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .recap-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 0 0;
+      font-size: 1.18em;
+      font-weight: 700;
+    }
+    .recap-total-old {
+      color: #bdbdbd;
+      text-decoration: line-through;
+      margin-right: 8px;
+    }
+    .recap-total-price {
+      color: var(--primary);
+      background: #18191c;
+      border-radius: 10px;
+      padding: 2px 18px;
+      box-shadow: 0 0 12px #FFD70044;
+      font-size: 1.3em;
+      font-weight: 700;
+      text-shadow: 0 0 8px #FFD70077;
+    }
+    .recap-checks {
+      margin: 10px 0 0 0;
+      padding: 0;
+      list-style: none;
+      color: #bdbdbd;
+      font-size: 0.98em;
+    }
+    .recap-checks li {
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .recap-checks .check {
+      color: #4be37b;
+      font-size: 1.1em;
+    }
+    .footer-note {
+      margin: 32px 0 0 0;
+      text-align: center;
+      font-size: 13px;
+      color: #ccc;
+      letter-spacing: 0.5px;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0.8;
+      text-shadow: 0 1px 8px #fff2;
+    }
+
+    /* ======= Amélioration visuelle "contours brillants" pour Fichiers téléchargeables ======= */
+    .downloads-block{
+      background: linear-gradient(135deg,#1a1c20 0%, #17181c 100%);
+      border: 1.5px solid rgba(255,215,0,.14);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.45),
+        0 0 24px rgba(255,215,0,.10) inset;
+      padding: 18px 16px 12px 16px;
+      border-radius: 18px;
+    }
+    .downloads-title{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      letter-spacing: .2px;
+      text-shadow: 0 0 8px rgba(255,215,0,.25);
+    }
+    .downloads-title::after{
+      content:"";
+      flex: 1 1 auto;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, rgba(255,215,0,.45), rgba(255,215,0,0));
+      opacity: .7;
+    }
+    .download-item{
+      position: relative;
+      background:
+        radial-gradient(120% 140% at 0% 0%, rgba(255,215,0,.06), transparent 45%),
+        #191a1e;
+      border: 1px solid rgba(255,215,0,.08);
+      border-radius: 14px;
+      padding: 14px 44px 14px 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+      transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+    }
+    .download-item + .download-item{ margin-top: 10px; }
+    .download-item:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,215,0,.35);
+      box-shadow:
+        0 10px 26px rgba(255,215,0,.18),
+        0 8px 24px rgba(0,0,0,.45);
+      background:
+        radial-gradient(130% 140% at 0% 0%, rgba(255,215,0,.09), transparent 48%),
+        #1d1e23;
+    }
+    .download-icon{
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.15rem;
+      background: #23252b;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 4px 12px rgba(0,0,0,.35);
+    }
+    .download-item b{
+      font-size: 1.06em;
+      letter-spacing: .2px;
+      text-shadow: 0 1px 0 #000;
+    }
+    .download-item::after{
+      content: "›";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4em;
+      color: #fff;
+      opacity: .28;
+      transition: opacity .2s ease, transform .18s ease;
+      pointer-events: none;
+    }
+    .download-item:hover::after{
+      opacity: .5;
+      transform: translateY(-50%) translateX(2px);
+    }
+    .download-desc{
+      color: #c7c7c7;
+      opacity: .9;
+    }
+    @media (max-width: 360px){
+      .download-item{ padding: 12px 40px 12px 12px; }
+      .download-icon{ width: 34px; height: 34px; line-height: 34px; font-size: 1.05rem; }
+      .downloads-title{ font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="success-icon">
+      <svg viewBox="0 0 48 48">
+        <polyline points="12 26 22 36 36 14" />
+      </svg>
+    </div>
+    <div class="main-title">Déblocage réussi</div>
+    <div class="desc">
+      Toutes les données extraites sont maintenant accessibles.<br>
+      Merci pour votre confiance.
+    </div>
+
+    <!-- Bloc récapitulatif placé ici -->
+    <div class="recap-block">
+      <div class="recap-title">Récapitulatif</div>
+      <div class="recap-premium">★ Accès Premium</div>
+      <ul class="recap-list">
+        <li><span class="icon" style="color:#FFD700;">🔓</span> <b>Données débloquées :</b></li>
+        <li><span class="icon" style="color:#4bcaff;">👤</span> Tous les amis</li>
+        <li><span class="icon" style="color:#ff69b4;">🔒</span> Tout le contenu My Eyes Only</li>
+        <li><span class="icon" style="color:#a259ff;">🟢</span> Localisation en temps réel</li>
+        <li><span class="icon" style="color:#a259ff;">💬</span> Toutes les discussions récupérables</li>
+        <li><span class="icon" style="color:#ff69b4;">🔒</span> Fichiers téléchargeables</li>
+      </ul>
+      <div class="recap-total-row">
+        <span>Total</span>
+        <span>
+          <span class="recap-total-old">4,99&nbsp;€</span>
+          <span class="recap-total-price">2,00&nbsp;€</span>
+        </span>
+      </div>
+      <ul class="recap-checks">
+        <li><span class="check">✔️</span> Paiement sécurisé</li>
+        <li><span class="check">✔️</span> Accès instantané</li>
+        <li><span class="check">✔️</span> Garantie 48h</li>
+      </ul>
+    </div>
+
+    <!-- Bloc offre -->
+    <div class="offer-block">
+      <div class="offer-badge">-60%</div>
+      <div class="offer-title">Offre actuelle</div>
+      <div class="offer-price-row">
+        <span class="offer-old">4,99&nbsp;€</span>
+        <span class="offer-price">2,00&nbsp;€</span>
+      </div>
+      <div class="offer-timer"><span class="emoji">⏳</span> Temps restant&nbsp;: <span id="timer">09:22</span></div>
+      <button class="offer-btn" disabled>
+        <svg fill="none" stroke="#18191c" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="8" rx="2"/><path d="M12 15v2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+        Payer 2,00&nbsp;€ maintenant
+      </button>
+      <div class="offer-note">
+        Accès immédiat après validation. Aucun abonnement.
+      </div>
+    </div>
+
+    <!-- Bloc infos extraites -->
+    <div class="card">
+      <ul class="card-list">
+        <li><span class="dot dot-yellow"></span>32 nouveaux amis retrouvés</li>
+        <li><span class="dot dot-pink"></span>35 photos privées débloquées</li>
+        <li><span class="dot dot-green"></span>120 snaps accessibles</li>
+        <li><span class="dot dot-purple"></span>Localisation et discussions récupérées</li>
+      </ul>
+    </div>
+
+    <!-- Bloc fichiers téléchargeables placé tout en bas -->
+    <div class="downloads-block">
+      <div class="downloads-title">
+        <span style="font-size:1.2em;">📁</span> Fichiers téléchargeables
+      </div>
+      <a class="download-item" href="#">
+        <span class="download-icon" style="color:#a259ff;">💬</span>
+        <div>
+          <div><b>discussions.txt</b></div>
+          <div class="download-desc">– Toutes les conversations privées</div>
+        </div>
+      </a>
+      <a class="download-item" href="#">
+        <span class="download-icon" style="color:#4bcaff;">👤</span>
+        <div>
+          <div><b>contacts_amis.csv</b></div>
+          <div class="download-desc">– Liste complète des amis</div>
+        </div>
+      </a>
+      <a class="download-item" href="#">
+        <span class="download-icon" style="color:#ff69b4;">🔒</span>
+        <div>
+          <div><b>my_eyes_only.zip</b></div>
+          <div class="download-desc">– Tous les contenus privés</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-note">
+      Support 24/24 • Paiement sécurisé • Accès instantané
+    </div>
+  </div>
+  <script>
+    // Timer pour l'offre (09:22)
+    let timer = 9 * 60 + 22;
+    const timerEl = document.getElementById('timer');
+    setInterval(() => {
+      if (timer > 0) {
+        timer--;
+        const min = String(Math.floor(timer / 60)).padStart(2, '0');
+        const sec = String(timer % 60).padStart(2, '0');
+        timerEl.textContent = `${min}:${sec}`;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

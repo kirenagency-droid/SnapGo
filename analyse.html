@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Analyse SnapView</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  :root {
+    --gold: #ffe066;
+    --gold-light: #fffbe6;
+    --gold-shadow: #ffe06655;
+    --gold-bg: #ffe06618;
+    --gold-border: #ffe06622;
+    --gold-gradient: linear-gradient(90deg, #ffe066 0%, #fffbe6 100%);
+    --offwhite: #f5f5f2;
+    --offwhite-shadow: #f5f5f2cc;
+    --bg-dark: #0b0b0d;
+    --card-bg: rgba(24,25,28,0.8);
+    --text-main: #ffe066;
+    --text-secondary: #fffbe6;
+    --text-muted: #b7b7a4;
+  }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(900px at 90% 10%, rgba(255,224,102,0.05), transparent 60%),
+      radial-gradient(800px at 20% 80%, rgba(255,224,102,0.06), transparent 70%),
+      linear-gradient(135deg, #0b0b0d, #18191c);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* --- PARTICLES --- */
+  .particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.12;
+    z-index: 0;
+    background: radial-gradient(circle, var(--gold) 0%, var(--gold-light) 60%, transparent 100%);
+    box-shadow: 0 0 18px 6px var(--gold-shadow);
+    filter: blur(1px);
+    animation: float 14s ease-in-out infinite alternate;
+  }
+  .particle.p1 { width: 70px; height: 70px; left: 12vw; top: 12vh; animation-delay: 0s; }
+  .particle.p2 { width: 45px; height: 45px; left: 75vw; top: 18vh; animation-delay: 2s; }
+  .particle.p3 { width: 35px; height: 35px; left: 52vw; top: 82vh; animation-delay: 4s; }
+  .particle.p4 { width: 90px; height: 90px; left: 68vw; top: 68vh; animation-delay: 1s; }
+  .particle.p5 { width: 28px; height: 28px; left: 22vw; top: 62vh; animation-delay: 3s; }
+  @keyframes float {
+    0% { transform: translateY(0) scale(1);}
+    50% { transform: translateY(-40px) scale(1.08);}
+    100% { transform: translateY(0) scale(1);}
+  }
+
+  /* --- HEADER --- */
+  header {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    user-select: none;
+    z-index: 2;
+    animation: fadeInDown 1.2s ease both;
+  }
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-60px);}
+    100% { opacity: 1; transform: translateY(0);}
+  }
+
+  h1 {
+    color: var(--gold);
+    font-size: 32px;
+    margin: 0;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-shadow: 0 0 15px var(--gold-shadow);
+  }
+
+  #execution-text {
+    font-size: 18px;
+    margin-top: 10px;
+    color: var(--text-muted);
+    text-shadow: 0 0 4px #b7b7a488;
+    animation: fadeIn 1.5s both;
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(40px);}
+    100% { opacity: 1; transform: translateY(0);}
+  }
+
+  /* --- DECRYPT BAR --- */
+  .decrypt-bar {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 28px auto;
+    background: rgba(24,25,28,0.8);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    box-shadow: 0 0 20px var(--gold-bg);
+    border: 1.5px solid var(--gold-border);
+    height: 42px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+  }
+  .decrypt-bar-glow {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: var(--gold-gradient);
+    opacity: 0.12;
+    filter: blur(12px);
+    transition: width 0.6s ease;
+    z-index: 1;
+  }
+  .decrypt-bar-text {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 18px;
+    font-size: 18px;
+    color: var(--gold);
+    text-shadow: 0 0 8px var(--gold-shadow);
+    font-family: 'Poppins', monospace, sans-serif;
+    display: flex;
+    align-items: center;
+  }
+  .decrypt-bar-cursor {
+    width: 12px;
+    height: 22px;
+    background: var(--gold);
+    margin-left: 6px;
+    border-radius: 2px;
+    opacity: 0.6;
+    animation: blink 0.8s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* --- PROGRESS --- */
+  #progress-bar-wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  #progress-bar-container {
+    flex: 1;
+    height: 14px;
+    background: rgba(35,35,35,0.85);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid var(--gold-border);
+    box-shadow: 0 0 12px var(--gold-bg);
+  }
+  #progress {
+    height: 100%;
+    width: 0%;
+    background: var(--gold-gradient);
+    border-radius: 12px;
+    transition: width 0.6s ease;
+    box-shadow: 0 0 12px var(--gold);
+    animation: progressPulse 2s infinite alternate;
+  }
+  @keyframes progressPulse {
+    from { box-shadow: 0 0 10px var(--gold);}
+    to { box-shadow: 0 0 20px var(--gold);}
+  }
+  #progress-percent {
+    min-width: 50px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--gold);
+    text-shadow: 0 0 6px var(--gold-shadow);
+  }
+
+  /* --- CARDS --- */
+  .cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    width: 100%;
+    max-width: 600px;
+    z-index: 2;
+  }
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px 28px;
+    border: 1.5px solid var(--gold-border);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35), 0 0 12px var(--gold-bg);
+    transform: translateY(40px);
+    opacity: 0;
+    transition: all 0.6s ease;
+  }
+  .card.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 18px var(--gold);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .card-icon {
+    width: 34px;
+    height: 34px;
+    filter: drop-shadow(0 0 6px var(--gold-shadow));
+  }
+  .card-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 6px var(--gold-shadow);
+  }
+  .card-desc {
+    font-size: 15px;
+    color: var(--gold-light);
+    margin-left: 48px;
+    opacity: 0.85;
+    text-shadow: 0 0 3px var(--gold-shadow);
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 700px) {
+    h1 { font-size: 24px; }
+    #execution-text { font-size: 14px; }
+    .decrypt-bar-text { font-size: 14px; }
+    .card-title { font-size: 16px; }
+    .card-desc { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+  <!-- Particles -->
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+
+  <!-- Decrypt animation bar -->
+  <div class="decrypt-bar">
+    <div class="decrypt-bar-glow" id="decrypt-bar-glow"></div>
+    <div class="decrypt-bar-text">
+      <span id="decrypt-bar-content"></span><span class="decrypt-bar-cursor"></span>
+    </div>
+  </div>
+
+  <header>
+    <h1>ANALYSE EN COURS</h1>
+    <div id="execution-text">Décryptage et analyse des données confidentielles...</div>
+  </header>
+
+  <!-- Progress -->
+  <div id="progress-bar-wrapper">
+    <div id="progress-bar-container"><div id="progress"></div></div>
+    <div id="progress-percent">0%</div>
+  </div>
+
+  <!-- Cards -->
+  <div class="cards-list" id="cards-list">
+    <div class="card" id="card-connexion">
+      <div class="card-header">
+        <span class="card-icon">📡</span>
+        <span class="card-title">Connexion aux serveurs Snapchat</span>
+      </div>
+      <div class="card-desc">Connexion sécurisée établie</div>
+    </div>
+    <div class="card" id="card-protection">
+      <div class="card-header">
+        <span class="card-icon">🛡️</span>
+        <span class="card-title">Contournement des protections</span>
+      </div>
+      <div class="card-desc">Protocoles de sécurité neutralisés</div>
+    </div>
+    <div class="card" id="card-recherche">
+      <div class="card-header">
+        <span class="card-icon">🔍</span>
+        <span class="card-title">Recherche du profil utilisateur</span>
+      </div>
+      <div class="card-desc">ID localisé dans l’index public</div>
+    </div>
+    <div class="card" id="card-extraction">
+      <div class="card-header">
+        <span class="card-icon">⬇️</span>
+        <span class="card-title">Extraction des données privées</span>
+      </div>
+      <div class="card-desc">Téléchargement des paquets JSON</div>
+    </div>
+    <div class="card" id="card-decrypt">
+      <div class="card-header">
+        <span class="card-icon">🔓</span>
+        <span class="card-title">Décryptage des informations</span>
+      </div>
+      <div class="card-desc">Données décodées avec succès</div>
+    </div>
+  </div>
+
+<script>
+  // Texte défilement typewriter
+  const decryptTexts = [
+    "Connexion sécurisée au serveur...",
+    "Clé AES 256 bits détectée.",
+    "Déchiffrement des métadonnées...",
+    "Analyse des paquets réseau...",
+    "Extraction des identifiants...",
+    "Vérification de l'intégrité...",
+    "Décodage des données privées...",
+    "Synchronisation des modules...",
+    "Déchiffrement terminé."
+  ];
+  let decryptIndex = 0, decryptChar = 0;
+  const decryptContent = document.getElementById('decrypt-bar-content');
+  const decryptGlow = document.getElementById('decrypt-bar-glow');
+
+  function typeLine(line, cb) {
+    decryptContent.textContent = "";
+    decryptChar = 0;
+    (function loop() {
+      if (decryptChar <= line.length) {
+        decryptContent.textContent = line.slice(0, decryptChar);
+        decryptChar++;
+        setTimeout(loop, 20);
+      } else setTimeout(cb, 400);
+    })();
+  }
+  function nextLine() {
+    if (decryptIndex >= decryptTexts.length) { decryptGlow.style.width = "100%"; return; }
+    decryptGlow.style.width = ((decryptIndex+1)/decryptTexts.length*100) + "%";
+    typeLine(decryptTexts[decryptIndex], () => { decryptIndex++; nextLine(); });
+  }
+
+  // Progress + cards
+  const cards = document.querySelectorAll('.card');
+  const progressBar = document.getElementById('progress');
+  const progressPercent = document.getElementById('progress-percent');
+  let progressValue = 0;
+  function advance(target, duration) {
+    return new Promise(res=>{
+      const steps=40, start=progressValue, diff=target-start;
+      let cur=0;
+      (function step(){
+        cur++;
+        progressValue = start + diff*cur/steps;
+        progressBar.style.width=progressValue+'%';
+        progressPercent.textContent=Math.floor(progressValue)+'%';
+        if(cur<steps) setTimeout(step,duration/steps); else res();
+      })();
+    });
+  }
+  function showCards(i=0) {
+    if(i>=cards.length){ setTimeout(()=>window.location.href="score.html",600); return; }
+    const c=cards[i]; c.classList.add('visible');
+    advance(((i+1)/cards.length)*100,2000).then(()=>showCards(i+1));
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    nextLine();
+    showCards();
+  });
+</script>
+</body>
+</html>

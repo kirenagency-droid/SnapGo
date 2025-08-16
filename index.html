@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SnapView</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    /* ================= Base ================= */
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0a0a0a;
+      --panel:#232946;
+      --gold:#FFD700;
+      --gold-soft:#fff159;
+      --ink:#18191c;
+      --text:#eaeaea;
+      --muted:#bfc5d1;
+      --ring:2px solid rgba(255,215,0,.8);
+    }
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Poppins',sans-serif;
+      min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+    }
+
+    /* ================= Décor (particules) ================= */
+    .particle{
+      position:fixed;border-radius:50%;pointer-events:none;opacity:.7;z-index:0;
+      animation:float 8s linear infinite;
+      background:radial-gradient(circle,var(--gold) 0%,#fff8dc 60%,var(--gold) 100%,transparent 100%);
+      box-shadow:0 0 32px 8px #FFD70099,0 0 8px 2px #fff8dc99;
+    }
+    .particle.p1{width:60px;height:60px;left:10vw;top:10vh}
+    .particle.p2{width:40px;height:40px;left:80vw;top:20vh;animation-delay:2s}
+    .particle.p3{width:30px;height:30px;left:50vw;top:80vh;animation-delay:4s}
+    .particle.p4{width:80px;height:80px;left:70vw;top:70vh;animation-delay:1s}
+    .particle.p5{width:25px;height:25px;left:20vw;top:60vh;animation-delay:3s}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-30px)}100%{transform:translateY(0)}}
+
+    /* ================= Header ================= */
+    header{display:flex;align-items:center;gap:14px;margin-bottom:22px;user-select:none;z-index:2}
+    .logo-svg{width:54px;height:54px;filter:drop-shadow(0 0 10px #FFD700cc);background:#fff;border-radius:50%;padding:4px}
+    h1{
+      font-size:clamp(28px,8vw,46px); /* scaling doux mobile/desktop */
+      font-weight:700;color:transparent;-webkit-text-stroke:2px var(--gold);
+      text-shadow:0 0 18px #FFD70055;
+    }
+    /* Glow un peu plus présent sur mobile */
+    @media (max-width: 480px){
+      h1{text-shadow:0 0 10px #FFD70066,0 0 24px #FFD70033}
+    }
+
+    /* ================= Info ================= */
+    .info-box{
+      max-width:600px;background:linear-gradient(120deg,#232946 80%,#FFD70022 100%);
+      border-radius:18px;padding:20px 28px;margin-bottom:24px;color:#f0e68c;font-size:17px;
+      text-align:center;border:1.5px solid #FFD70033;position:relative;z-index:1
+    }
+
+    /* ================= Formulaire ================= */
+    .input-wrapper{position:relative;width:420px;max-width:90vw;margin-bottom:20px} /* + marge */
+    /* label masqué pour accessibilité */
+    .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    input#username{
+      width:100%;height:52px;border-radius:16px;border:2px solid #FFD70055;background:#18191c;
+      font-size:18px;padding:0 20px 0 50px;color:#ededed;outline:none
+    }
+    input#username::placeholder{color:#FFD70099}
+    input#username:focus-visible{outline:var(--ring);outline-offset:3px}
+
+    button#search-btn{
+      width:420px;max-width:90vw;height:auto;border-radius:18px;border:none;
+      background:linear-gradient(135deg,var(--gold) 0%,#fcbf49 100%);color:#232946;
+      font-size:20px;font-weight:800;cursor:pointer;letter-spacing:2px;
+      box-shadow:0 6px 22px #FFD70055;margin-bottom:14px;
+      padding:16px 18px; /* + confort tactile */
+    }
+    button#search-btn:hover{background:linear-gradient(135deg,var(--gold-soft) 0%,var(--gold) 100%)}
+    button#search-btn:focus-visible{outline:var(--ring);outline-offset:3px}
+
+    #result{margin-top:8px;font-size:18px;font-weight:600;color:var(--gold);text-align:center}
+
+    /* ================= Features (2 colonnes) ================= */
+    .features{
+      margin-top:8px;width:100%;max-width:880px;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px
+    }
+    .feature-card{
+      position:relative;overflow:hidden;border-radius:20px;
+      background:rgba(22,24,29,.85);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+      padding:18px 16px;min-height:130px;
+      box-shadow:0 8px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);
+      transition:transform .25s ease,box-shadow .35s ease;
+    }
+    .feature-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(255,215,0,.18),0 8px 20px rgba(0,0,0,.4)}
+    .feature-card:focus-within{outline:var(--ring)}
+    .feature-body{display:flex;align-items:center;gap:12px}
+    .feature-icon{
+      width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+      background:radial-gradient(circle at 30% 30%,#fff 0%,#FFEFA8 35%,var(--gold) 70%);
+      box-shadow:0 4px 12px rgba(255,215,0,.35)
+    }
+    .feature-icon img,.feature-icon svg{width:22px;height:22px}
+    .feature-title{font-size:16px;font-weight:700;color:#f5f5f5}
+    .feature-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .feature-badge{
+      position:absolute;right:10px;bottom:10px;font-size:10px;color:#111;
+      background:#FFE475;border-radius:999px;padding:6px 10px;font-weight:700 /* + padding tactile */
+    }
+
+    /* ================= Mobile ================= */
+    @media (max-width:650px){
+      .features{max-width:96vw;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .feature-card{padding:14px 12px;min-height:110px;border-radius:16px}
+      .feature-body{gap:10px}
+      .feature-icon{width:40px;height:40px}
+      .feature-icon img,.feature-icon svg{width:18px;height:18px}
+      .feature-title{font-size:14px}
+      .feature-sub{font-size:11px}
+      .feature-badge{font-size:9px;padding:5px 9px}
+      .input-wrapper{margin-bottom:22px}
+    }
+    @media (max-width:360px){
+      .features{gap:8px}
+      .feature-card{min-height:100px;padding:12px 10px}
+      .feature-title{font-size:13px}
+      .feature-sub{font-size:10px}
+      .feature-icon{width:36px;height:36px}
+      .feature-icon img,.feature-icon svg{width:16px;height:16px}
+      .feature-badge{font-size:8.5px;padding:4px 8px}
+    }
+
+    /* ================= Contenu du bas ================= */
+    .interesting-content{
+      margin-top:22px;width:100%;max-width:880px;
+      background:linear-gradient(120deg,#232946 80%,#FFD70022 100%);
+      border:1.5px solid #FFD70033;border-radius:18px;
+      padding:18px 20px;box-shadow:0 0 18px rgba(255,215,0,.2)
+    }
+    .interesting-content h2{
+      text-align:center;font-size:20px;margin-bottom:8px;color:#ff69b4;
+      text-shadow:0 0 6px rgba(255,105,180,.6)
+    }
+    .interesting-content ul{list-style:none;color:#ccc;font-size:14px;line-height:1.6}
+    .interesting-content li{margin-bottom:8px;padding-left:30px;position:relative}
+    .interesting-content .step-number{
+      position:absolute;left:0;top:50%;transform:translateY(-50%);
+      width:20px;height:20px;border-radius:50%;
+      background:linear-gradient(135deg,#ff69b4 60%,var(--gold) 100%);
+      color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center
+    }
+
+    /* ================= Accessibilité & préférences ================= */
+    /* Désactive le hover “collant” sur écrans tactiles */
+    @media (hover:none){
+      .feature-card:hover{transform:none;box-shadow:0 8px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+      button#search-btn:hover{background:linear-gradient(135deg,var(--gold) 0%,#fcbf49 100%)}
+    }
+    /* Motion réduite */
+    @media (prefers-reduced-motion:reduce){
+      .particle{animation:none}
+      *{scroll-behavior:auto;transition:none!important}
+    }
+    /* Particules plus légères sur très petits écrans */
+    @media (max-width:400px){
+      .particle{opacity:.55;box-shadow:0 0 18px 4px #FFD70066,0 0 6px 2px #fff8dc66;filter:blur(.2px)}
+    }
+  </style>
+</head>
+<body>
+  <!-- Particules -->
+  <div class="particle p1"></div><div class="particle p2"></div><div class="particle p3"></div><div class="particle p4"></div><div class="particle p5"></div>
+
+  <header>
+    <svg class="logo-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#FFFC00"/></svg>
+    <h1>SNAPVIEW</h1>
+  </header>
+
+  <div class="info-box">
+    Pour commencer, rentre le nom d’utilisateur que tu souhaites surveiller.
+  </div>
+
+  <div class="input-wrapper">
+    <label class="sr-only" for="username">Nom d’utilisateur Snapchat</label>
+    <input id="username" type="text" placeholder="Entre un pseudo…" autocomplete="off" inputmode="text" />
+  </div>
+
+  <button id="search-btn" onclick="startSearch()" aria-label="Lancer la recherche sur le pseudo saisi">
+    LANCER LA RECHERCHE
+  </button>
+
+  <div id="result" role="status" aria-live="polite"></div>
+
+  <!-- Features (2 colonnes desktop + mobile) -->
+  <section class="features" aria-label="Fonctionnalités">
+    <div class="feature-card" tabindex="0">
+      <div class="feature-body">
+        <div class="feature-icon">
+          <img loading="lazy" decoding="async" src="https://twemoji.maxcdn.com/v/latest/svg/1f465.svg" alt="">
+        </div>
+        <div>
+          <div class="feature-title">Liste d’amis</div>
+          <div class="feature-sub">Aperçu des relations</div>
+        </div>
+      </div>
+      <span class="feature-badge">Nouveau</span>
+    </div>
+
+    <div class="feature-card" tabindex="0">
+      <div class="feature-body">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+            <circle cx="12" cy="12" r="10" fill="#FFD700"/>
+            <circle cx="12" cy="12" r="4" fill="#232946"/>
+          </svg>
+        </div>
+        <div>
+          <div class="feature-title">My Eyes Only</div>
+          <div class="feature-sub">Accès total</div>
+        </div>
+      </div>
+      <span class="feature-badge">Privé</span>
+    </div>
+
+    <div class="feature-card" tabindex="0">
+      <div class="feature-body">
+        <div class="feature-icon">
+          <img loading="lazy" decoding="async" src="https://twemoji.maxcdn.com/v/latest/svg/1f4cd.svg" alt="">
+        </div>
+        <div>
+          <div class="feature-title">Localisation</div>
+          <div class="feature-sub">En temps réel</div>
+        </div>
+      </div>
+      <span class="feature-badge">Map</span>
+    </div>
+
+    <div class="feature-card" tabindex="0">
+      <div class="feature-body">
+        <div class="feature-icon">
+          <img loading="lazy" decoding="async" src="https://twemoji.maxcdn.com/v/latest/svg/1f4ac.svg" alt="">
+        </div>
+        <div>
+          <div class="feature-title">Discussions privées</div>
+          <div class="feature-sub">Téléchargeable</div>
+        </div>
+      </div>
+      <span class="feature-badge">Chat</span>
+    </div>
+  </section>
+
+  <!-- Conteneur du bas -->
+  <section class="interesting-content" aria-label="Comment ça marche ?">
+    <h2>Comment ça marche ?</h2>
+    <ul>
+      <li><span class="step-number">1</span> Tu entres un pseudo Snapchat.</li>
+      <li><span class="step-number">2</span> Recherche des données.</li>
+      <li><span class="step-number">3</span> Présentation d’aperçus visuels.</li>
+      <li><span class="step-number">4</span> Accès aux données instantanément.</li>
+    </ul>
+  </section>
+
+  <script>
+    function startSearch(){
+      const user=document.getElementById('username').value.trim();
+      const result=document.getElementById('result');
+      if(!user){
+        result.style.color='red';
+        result.textContent='Veuillez entrer un pseudonyme valide.';
+        return;
+      }
+      result.style.color='var(--gold)';
+      result.textContent='';
+      window.location.href=`analyse.html?user=${encodeURIComponent(user)}`;
+    }
+  </script>
+</body>
+</html>
