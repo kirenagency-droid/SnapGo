@@ -652,7 +652,32 @@
     <div class="footer-note">
       Support 24/24 • Paiement sécurisé • Accès instantané
     </div>
+
+    <div class="footer-legal" style="margin:18px 0 0 0; text-align:center; font-size:13px; color:#aaa;">
+      <a href="#" id="show-privacy" style="color:#aaa; text-decoration:underline; cursor:pointer;">Politique de confidentialité</a>
+    </div>
+
+    <!-- Modal Politique de confidentialité -->
+    <div id="privacy-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(10,10,10,0.92); color:#fff; overflow:auto; padding:0;">
+      <div style="max-width:650px; margin:40px auto; background:#18191c; border-radius:16px; box-shadow:0 8px 32px #000a; padding:32px 18px 28px 18px; position:relative;">
+        <button id="close-privacy" style="position:absolute; top:18px; right:18px; background:none; border:none; color:#FFD700; font-size:1.7em; cursor:pointer;">&times;</button>
+        <div style="white-space:pre-line; color:#eee; font-size:1.01em; text-align:left;">
+<b>Politique de confidentialité – SnapView</b>\n\nDernière mise à jour : 20 aout 2025\n\nChez SnapView, nous accordons une grande importance à la protection de vos données personnelles.\nLa présente politique de confidentialité explique comment vos informations sont collectées, utilisées et protégées lorsque vous utilisez notre site.\n\n<b>1. Responsable du traitement</b>\nLe site SnapView est édité par Snapview, responsable du traitement des données au sens du RGPD.\n\n<b>2. Données collectées</b>\nNous collectons uniquement les données nécessaires au bon fonctionnement du service :\nAdresse email (si fournie volontairement)\nInformations de navigation (cookies, adresse IP anonymisée)\nDonnées de paiement traitées par notre partenaire de paiement sécurisé (nous n’avons jamais accès directement à vos informations bancaires).\n\n<b>3. Finalité de la collecte</b>\nVos données sont utilisées pour :\nVous fournir l’accès au service proposé,\nAssurer la gestion de votre abonnement et de votre facturation,\nAméliorer l’expérience utilisateur et réaliser des statistiques anonymes,\nRespecter nos obligations légales (facturation, lutte contre la fraude).\n\n<b>4. Partage des données</b>\nVos données peuvent être transmises à :\nNotre prestataire de paiement (Flow Network et ses partenaires bancaires) pour sécuriser vos transactions,\nNos sous-traitants techniques (hébergement, analytics).\nEn aucun cas vos données ne sont revendues à des tiers à des fins commerciales.\n\n<b>5. Durée de conservation</b>\nLes données liées à la facturation sont conservées 10 ans (obligation légale).\nLes autres données sont conservées uniquement le temps nécessaire à la fourniture du service.\n\n<b>6. Cookies</b>\nLe site utilise des cookies pour améliorer l’expérience utilisateur et mesurer l’audience. Vous pouvez les refuser dans les paramètres de votre navigateur.\n\n<b>7. Vos droits</b>\nConformément au RGPD, vous disposez des droits suivants :\nAccès, rectification, suppression, limitation, opposition.\n\n<b>8. Sécurité</b>\nNous mettons en place toutes les mesures techniques nécessaires pour protéger vos données personnelles. Toutefois, aucune transmission sur Internet n’est totalement sécurisée à 100 %.\n\n<b>📌 Conditions Générales de Vente et d’Abonnement (CGV)</b>\n\nDernière mise à jour : 20 aout 2025\n\nLes présentes conditions définissent les modalités d’abonnement au service SnapView.\n\n<b>1. Offre d’essai</b>\nEn vous inscrivant sur SnapView, vous bénéficiez d’un accès d’essai facturé 2 € TTC.\nCet accès permet de découvrir le service pendant une durée de 3 jours.\n\n<b>2. Renouvellement automatique</b>\nSauf résiliation de votre part avant la fin de la période d’essai, l’abonnement sera automatiquement transformé en un abonnement payant de 37 € TTC / mois.\nLe premier prélèvement de 37 € aura lieu 3 jours après l’inscription.\nL’abonnement est ensuite renouvelé automatiquement chaque mois jusqu’à résiliation.\n\n<b>3. Résiliation</b>\nVous pouvez annuler votre abonnement à tout moment :\nToute période entamée est due et ne pourra pas faire l’objet d’un remboursement.\n\n<b>4. Paiement</b>\nLes paiements sont traités de manière sécurisée par Flow Network et ses partenaires bancaires.\nSnapView ne stocke aucune donnée bancaire.\n\n<b>5. Responsabilité</b>\nSnapView fournit un service en ligne accessible 24h/24 et 7j/7 (hors maintenance).\nNous ne pouvons être tenus responsables en cas d’interruption liée à l’hébergeur ou aux prestataires techniques.
+        </div>
+      </div>
+    </div>
   </div>
+  <script>
+    // Modal politique de confidentialité
+    const showPrivacy = document.getElementById('show-privacy');
+    const privacyModal = document.getElementById('privacy-modal');
+    const closePrivacy = document.getElementById('close-privacy');
+    if(showPrivacy && privacyModal && closePrivacy) {
+      showPrivacy.onclick = () => { privacyModal.style.display = 'block'; document.body.style.overflow = 'hidden'; };
+      closePrivacy.onclick = () => { privacyModal.style.display = 'none'; document.body.style.overflow = ''; };
+      privacyModal.onclick = (e) => { if(e.target === privacyModal) { privacyModal.style.display = 'none'; document.body.style.overflow = ''; } };
+    }
+  </script>
   <script>
   // Timer pour l'offre (05:00)
   let timer = 5 * 60 + 0;
