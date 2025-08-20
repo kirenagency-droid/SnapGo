@@ -348,6 +348,24 @@
       height: 22px;
       margin-right: 4px;
     }
+    /* Effet glow responsive pour mobile */
+    @media (max-width: 600px) {
+      .offer-btn {
+        box-shadow: 0 0 16px 4px #FFD70099, 0 0 32px 8px #fffbe655;
+        filter: drop-shadow(0 0 8px #FFD70088);
+        animation: glowPulse 1.6s infinite alternate;
+      }
+      @keyframes glowPulse {
+        0% {
+          box-shadow: 0 0 16px 4px #FFD70099, 0 0 32px 8px #fffbe655;
+          filter: drop-shadow(0 0 8px #FFD70088);
+        }
+        100% {
+          box-shadow: 0 0 32px 12px #FFD700cc, 0 0 48px 16px #fffbe6cc;
+          filter: drop-shadow(0 0 16px #FFD700cc);
+        }
+      }
+    }
     .offer-note {
       color: #bdbdbd;
       font-size: 0.98em;
@@ -583,11 +601,11 @@
         <span class="offer-old">4,99&nbsp;€</span>
         <span class="offer-price">2,00&nbsp;€</span>
       </div>
-      <div class="offer-timer"><span class="emoji">⏳</span> Temps restant&nbsp;: <span id="timer">09:22</span></div>
-      <button class="offer-btn" disabled>
-        <svg fill="none" stroke="#18191c" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="8" rx="2"/><path d="M12 15v2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
-        Payer 2,00&nbsp;€ maintenant
-      </button>
+  <div class="offer-timer"><span class="emoji">⏳</span> Temps restant&nbsp;: <span id="timer">05:00</span></div>
+        <a class="offer-btn" href="https://mylovelydeals.space/mld124waf/?clr=&sub1=cdc1681145c3482c8ed7707976e0ce21&sub2=478444&email=&fname=&lname=&phone=&address=&postcode=&city=&offer_id=5134&source=44&sub_source=4784&ip=82.127.134.172&browser=Chrome&browser_version=139&device=Macintosh&dev_version=10.15&fb=___&country=FR&price=&prod=&img=&locale=&lang=&p=" target="_blank" rel="noopener noreferrer">
+          <svg fill="none" stroke="#18191c" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="8" rx="2"/><path d="M12 15v2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+          Payer 2,00&nbsp;€ maintenant
+        </a>
       <div class="offer-note">
         Accès immédiat après validation. Aucun abonnement.
       </div>
@@ -636,8 +654,8 @@
     </div>
   </div>
   <script>
-    // Timer pour l'offre (09:22)
-    let timer = 9 * 60 + 22;
+  // Timer pour l'offre (05:00)
+  let timer = 5 * 60 + 0;
     const timerEl = document.getElementById('timer');
     setInterval(() => {
       if (timer > 0) {
