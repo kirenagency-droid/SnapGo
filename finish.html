@@ -6,26 +6,24 @@
   <title>Déblocage réussi</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0a0a0a;
-      --card: #18191c;
-      --primary: #FFD700;
-      --primary-glow: #fffbe6;
-      --purple: #a259ff;
-      --green: #4be37b;
-      --pink: #ff69b4;
-      --text: #fff;
-      --text-secondary: #bdbdbd;
-      --shadow: 0 4px 32px #000a;
-      --radius: 18px;
-      --blue: #4bcaff;
-      --premium: #6c47c7;
-      --premium-light: #a78bfa;
-      --danger: #ff3b3b;
-      --gray: #23242a;
+    :root{
+  --bg:#181a20;
+      --glow1:#6ee7ff;
+      --glow2:#a78bfa;
+      --glow3:#ffd166;
+      --text:#eef2ff;
+      --sub:#b9c2da;
+      --card:#0b1020;
+      --ring:#6ee7ff88;
+      --border:#1a2340;
+      --ok:#34d399;
+      --radius:22px;
+      --primary:#6aa3ff;
+      --primary-hover:#4ea1ff;
+      --transition-speed:.3s;
     }
     html, body {
-      background: var(--bg);
+  background: var(--bg);
       color: var(--text);
       font-family: 'Poppins', Arial, sans-serif;
       margin: 0;
@@ -52,13 +50,15 @@
     }
     .recap-block,
     .offer-block,
+    .recap-block,
     .card,
     .downloads-block {
       width: 92%;
       max-width: 340px;
-      background: var(--gray);
+      background: rgba(30,34,60,0.22);
       border-radius: var(--radius);
-      box-shadow: 0 2px 12px #a259ff22;
+      border: 1.5px solid #6ee7ff33;
+      box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22;
       padding: 18px 18px 14px 18px;
       margin-bottom: 14px;
       display: flex;
@@ -299,16 +299,16 @@
       margin-right: 6px;
     }
     .offer-price {
-      color: var(--primary);
-      font-size: 2.1em;
-      font-weight: 700;
-      background: #18191c;
-      border-radius: 10px;
-      padding: 2px 18px;
-      box-shadow: 0 0 12px #FFD70044;
-      letter-spacing: 0.01em;
-      text-shadow: 0 0 8px #FFD70077;
-      margin-right: 8px;
+  color: #6aa3ff;
+  font-size: 2.1em;
+  font-weight: 700;
+  background: #18191c;
+  border-radius: 10px;
+  padding: 2px 18px;
+  box-shadow: 0 0 12px #a78bfa66;
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 8px #a78bfa77;
+  margin-right: 8px;
     }
     .offer-timer {
       color: var(--primary);
@@ -323,25 +323,25 @@
       font-size: 1.2em;
     }
     .offer-btn {
-      background: var(--primary);
-      color: var(--yellow-btn-text, #18191c);
-      font-size: 1.18em;
-      font-weight: 700;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 0;
-      cursor: pointer;
-      box-shadow: 0 2px 12px #ffd70033;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 8px;
-      margin-bottom: 2px;
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-      outline: none;
-      width: 100%;
-      letter-spacing: 0.01em;
+  background: linear-gradient(90deg,#6ee7ff 0%, #a78bfa 100%);
+  color: #18191c;
+  font-size: 1.18em;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 0;
+  cursor: pointer;
+  box-shadow: 0 2px 12px #a78bfa55, 0 0 18px #6ee7ff33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+  letter-spacing: 0.01em;
     }
     .offer-btn svg {
       width: 22px;
@@ -351,19 +351,10 @@
     /* Effet glow responsive pour mobile */
     @media (max-width: 600px) {
       .offer-btn {
-        box-shadow: 0 0 6px 2px #FFD70066, 0 0 12px 3px #fffbe633;
-        filter: drop-shadow(0 0 3px #FFD70044);
-        animation: glowPulse 1.6s infinite alternate;
-      }
-      @keyframes glowPulse {
-        0% {
-          box-shadow: 0 0 6px 2px #FFD70066, 0 0 12px 3px #fffbe633;
-          filter: drop-shadow(0 0 3px #FFD70044);
-        }
-        100% {
-          box-shadow: 0 0 14px 5px #FFD70099, 0 0 20px 8px #fffbe655;
-          filter: drop-shadow(0 0 7px #FFD70077);
-        }
+        /* Plus d'animation ni de glow jaune */
+        box-shadow: 0 0 12px 3px #a78bfa55, 0 0 18px 6px #6ee7ff33;
+        filter: none;
+        animation: none;
       }
     }
     .offer-note {
@@ -427,14 +418,14 @@
       margin-right: 8px;
     }
     .recap-total-price {
-      color: var(--primary);
-      background: #18191c;
-      border-radius: 10px;
-      padding: 2px 18px;
-      box-shadow: 0 0 12px #FFD70044;
-      font-size: 1.3em;
-      font-weight: 700;
-      text-shadow: 0 0 8px #FFD70077;
+  color: #6aa3ff;
+  background: #18191c;
+  border-radius: 10px;
+  padding: 2px 18px;
+  box-shadow: 0 0 12px #a78bfa66;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-shadow: 0 0 8px #a78bfa77;
     }
     .recap-checks {
       margin: 10px 0 0 0;
@@ -467,10 +458,10 @@
     /* ======= Amélioration visuelle "contours brillants" pour Fichiers téléchargeables ======= */
     .downloads-block{
       background: linear-gradient(135deg,#1a1c20 0%, #17181c 100%);
-      border: 1.5px solid rgba(255,215,0,.14);
+      border: 1.5px solid #a78bfa55;
       box-shadow:
         0 10px 26px rgba(0,0,0,.45),
-        0 0 24px rgba(255,215,0,.10) inset;
+        0 0 24px #a78bfa22 inset;
       padding: 18px 16px 12px 16px;
       border-radius: 18px;
     }
@@ -556,28 +547,21 @@
 </head>
 <body>
   <div class="main-container">
-    <div class="success-icon">
-      <svg viewBox="0 0 48 48">
-        <polyline points="12 26 22 36 36 14" />
-      </svg>
-    </div>
+  <!-- Logo supprimé -->
     <div class="main-title">Déblocage réussi</div>
-    <div class="desc">
-      Toutes les données extraites sont maintenant accessibles.<br>
-      Merci pour votre confiance.
-    </div>
+  <!-- Texte de confirmation supprimé -->
 
     <!-- Bloc récapitulatif placé ici -->
     <div class="recap-block">
       <div class="recap-title">Récapitulatif</div>
       <div class="recap-premium">★ Accès Premium</div>
       <ul class="recap-list">
-        <li><span class="icon" style="color:#FFD700;">🔓</span> <b>Données débloquées :</b></li>
-        <li><span class="icon" style="color:#4bcaff;">👤</span> Tous les amis</li>
-        <li><span class="icon" style="color:#ff69b4;">🔒</span> Tout le contenu My Eyes Only</li>
-        <li><span class="icon" style="color:#a259ff;">🟢</span> Localisation en temps réel</li>
-        <li><span class="icon" style="color:#a259ff;">💬</span> Toutes les discussions récupérables</li>
-        <li><span class="icon" style="color:#ff69b4;">🔒</span> Fichiers téléchargeables</li>
+        <li><span class="icon" style="color:#6ee7ff;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> <b>Données débloquées :</b></li>
+        <li><span class="icon" style="color:#6ee7ff;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg></span> Tous les amis</li>
+        <li><span class="icon" style="color:#a78bfa;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Tout le contenu My Eyes Only</li>
+        <li><span class="icon" style="color:#34d399;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Localisation en temps réel</li>
+        <li><span class="icon" style="color:#6ee7ff;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Toutes les discussions récupérables</li>
+        <li><span class="icon" style="color:#a78bfa;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Fichiers téléchargeables</li>
       </ul>
       <div class="recap-total-row">
         <span>Total</span>
@@ -587,9 +571,9 @@
         </span>
       </div>
       <ul class="recap-checks">
-        <li><span class="check">✔️</span> Paiement sécurisé</li>
-        <li><span class="check">✔️</span> Accès instantané</li>
-        <li><span class="check">✔️</span> Garantie 48h</li>
+  <li><span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 10 19 20 6"/></svg></span> Paiement sécurisé</li>
+  <li><span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 10 19 20 6"/></svg></span> Accès instantané</li>
+  <li><span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 10 19 20 6"/></svg></span> Garantie 48h</li>
       </ul>
     </div>
 
@@ -601,7 +585,7 @@
         <span class="offer-old">4,99&nbsp;€</span>
         <span class="offer-price">2,00&nbsp;€</span>
       </div>
-  <div class="offer-timer"><span class="emoji">⏳</span> Temps restant&nbsp;: <span id="timer">05:00</span></div>
+  <div class="offer-timer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Temps restant&nbsp;: <span id="timer">05:00</span></div>
   <a class="offer-btn" href="https://trk.aff-flow.com/sl?id=68a5d55426084b42936523f3&pid=4784" target="_blank" rel="noopener noreferrer">
           <svg fill="none" stroke="#18191c" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="8" rx="2"/><path d="M12 15v2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
           Payer 2,00&nbsp;€ maintenant
@@ -624,24 +608,24 @@
     <!-- Bloc fichiers téléchargeables placé tout en bas -->
     <div class="downloads-block">
       <div class="downloads-title">
-        <span style="font-size:1.2em;">📁</span> Fichiers téléchargeables
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Fichiers téléchargeables
       </div>
       <a class="download-item" href="#">
-        <span class="download-icon" style="color:#a259ff;">💬</span>
+  <span class="download-icon" style="color:#a78bfa;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
         <div>
           <div><b>discussions.txt</b></div>
           <div class="download-desc">– Toutes les conversations privées</div>
         </div>
       </a>
       <a class="download-item" href="#">
-        <span class="download-icon" style="color:#4bcaff;">👤</span>
+  <span class="download-icon" style="color:#6ee7ff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg></span>
         <div>
           <div><b>contacts_amis.csv</b></div>
           <div class="download-desc">– Liste complète des amis</div>
         </div>
       </a>
       <a class="download-item" href="#">
-        <span class="download-icon" style="color:#ff69b4;">🔒</span>
+  <span class="download-icon" style="color:#a78bfa;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
         <div>
           <div><b>my_eyes_only.zip</b></div>
           <div class="download-desc">– Tous les contenus privés</div>
