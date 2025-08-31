@@ -1,1 +1,679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Déblocage réussi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+  --bg:#181a20;
+      --glow1:#6ee7ff;
+      --glow2:#a78bfa;
+      --glow3:#ffd166;
+      --text:#eef2ff;
+      --sub:#b9c2da;
+      --card:#0b1020;
+      --ring:#6ee7ff88;
+      --border:#1a2340;
+      --ok:#34d399;
+      --radius:22px;
+      --primary:#6aa3ff;
+      --primary-hover:#4ea1ff;
+      --transition-speed:.3s;
+    }
+    html, body {
+  background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding-bottom: 16px;
+    }
+    .main-container {
+      max-width: 400px;
+      width: 100%;
+      padding: 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+      margin: 0 auto;
+    }
+    .recap-block,
+    .offer-block,
+    .recap-block,
+    .card,
+    .downloads-block {
+      width: 92%;
+      max-width: 340px;
+      background: rgba(30,34,60,0.22);
+      border-radius: var(--radius);
+      border: 1.5px solid #6ee7ff33;
+      box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22;
+      padding: 18px 18px 14px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 1.1s;
+      align-self: center;
+      font-size: 1rem;
+      transition: box-shadow 0.2s;
+    }
+    .recap-block:hover,
+    .offer-block:hover,
+    .card:hover,
+    .downloads-block:hover {
+      box-shadow: 0 6px 24px #FFD70033, 0 2px 12px #a259ff33;
+    }
+    .card {
+      box-shadow: var(--shadow), 0 0 24px #FFD70022;
+      gap: 12px;
+      animation: fadeIn 1s;
+      margin-bottom: 0;
+    }
+    .downloads-block {
+      box-shadow: 0 2px 12px #0006;
+      gap: 12px;
+      animation: fadeIn 1.3s;
+      padding-bottom: 10px;
+    }
+    .offer-block {
+      box-shadow: 0 2px 12px #FFD70022;
+      gap: 10px;
+      animation: fadeIn 1.1s;
+      position: relative;
+    }
+    .recap-block {
+      box-shadow: 0 2px 12px #a259ff22;
+      gap: 10px;
+      animation: fadeIn 1.1s;
+    }
+    @media (max-width: 500px) {
+      .main-container {
+        max-width: 98vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+      }
+      .recap-block,
+      .offer-block,
+      .card,
+      .downloads-block {
+        width: 98vw;
+        max-width: 340px;
+        min-width: 0;
+        padding-left: 4vw;
+        padding-right: 4vw;
+      }
+    }
+    @media (max-width: 350px) {
+      .main-container {
+        max-width: 100vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+      }
+      .recap-block,
+      .offer-block,
+      .card,
+      .downloads-block {
+        width: 99vw;
+        max-width: 99vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        font-size: 0.85rem;
+      }
+      .success-icon {
+        width: 38px;
+        height: 38px;
+      }
+      .main-title {
+        font-size: 1rem;
+      }
+      .downloads-title,
+      .offer-title,
+      .recap-title {
+        font-size: 0.95rem;
+      }
+      .offer-btn {
+        font-size: 0.95em;
+        padding: 8px 0;
+      }
+    }
+    .success-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 60%, var(--primary-glow) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      box-shadow: 0 0 18px #FFD70055, 0 0 32px #fffbe633;
+      animation: pop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .success-icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: #18191c;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      display: block;
+    }
+    .main-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 6px;
+      text-shadow: 0 0 10px #FFD70055, 0 0 18px #fff7;
+      letter-spacing: -1px;
+    }
+    .desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    .card-list {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      color: #fff;
+      font-weight: 500;
+      background: #23242a;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px #FFD70011;
+      transition: background 0.2s;
+    }
+    .card-list li:hover {
+      background: #292a2f;
+    }
+    .card-list .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .dot-yellow { background: var(--primary); box-shadow: 0 0 10px #FFD70088; }
+    .dot-purple { background: var(--purple); box-shadow: 0 0 10px #a259ff88; }
+    .dot-green { background: var(--green); box-shadow: 0 0 10px #4be37b88; }
+    .dot-pink { background: var(--pink); box-shadow: 0 0 10px #ff69b488; }
+    .downloads-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .download-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #191a1e;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 6px #0003;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .download-item:hover {
+      background: #23242a;
+    }
+    .download-icon {
+      font-size: 1.4em;
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .download-desc {
+      color: #bdbdbd;
+      font-size: 0.98em;
+      font-weight: 400;
+      margin-left: 2px;
+    }
+    .offer-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #ff69b4;
+      color: #fff;
+      font-size: 1.05em;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 4px 14px;
+      box-shadow: 0 2px 8px #ff69b455;
+      letter-spacing: 0.01em;
+    }
+    .offer-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .offer-price-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 8px;
+    }
+    .offer-old {
+      color: #bdbdbd;
+      font-size: 1.1em;
+      text-decoration: line-through;
+      margin-right: 6px;
+    }
+    .offer-price {
+  color: #6aa3ff;
+  font-size: 2.1em;
+  font-weight: 700;
+  background: #18191c;
+  border-radius: 10px;
+  padding: 2px 18px;
+  box-shadow: 0 0 12px #a78bfa66;
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 8px #a78bfa77;
+  margin-right: 8px;
+    }
+    .offer-timer {
+      color: var(--primary);
+      font-size: 1.15em;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .offer-timer .emoji {
+      font-size: 1.2em;
+    }
+    .offer-btn {
+  background: linear-gradient(90deg,#6ee7ff 0%, #a78bfa 100%);
+  color: #18191c;
+  font-size: 1.18em;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 0;
+  cursor: pointer;
+  box-shadow: 0 2px 12px #a78bfa55, 0 0 18px #6ee7ff33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+  letter-spacing: 0.01em;
+    }
+    .offer-btn svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 4px;
+    }
+    /* Effet glow responsive pour mobile */
+    @media (max-width: 600px) {
+      .offer-btn {
+        /* Plus d'animation ni de glow jaune */
+        box-shadow: 0 0 12px 3px #a78bfa55, 0 0 18px 6px #6ee7ff33;
+        filter: none;
+        animation: none;
+      }
+    }
+    .offer-note {
+      color: #bdbdbd;
+      font-size: 0.98em;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .recap-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .recap-premium {
+      background: var(--premium);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 8px 0;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1.08em;
+      letter-spacing: 0.01em;
+      box-shadow: 0 2px 8px #a259ff55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .recap-list {
+      margin: 0 0 10px 0;
+      padding: 0;
+      list-style: none;
+      color: #fff;
+      font-size: 1.05em;
+    }
+    .recap-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+    .recap-list .icon {
+      font-size: 1.2em;
+      width: 22px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .recap-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 0 0;
+      font-size: 1.18em;
+      font-weight: 700;
+    }
+    .recap-total-old {
+      color: #bdbdbd;
+      text-decoration: line-through;
+      margin-right: 8px;
+    }
+    .recap-total-price {
+  color: #6aa3ff;
+  background: #18191c;
+  border-radius: 10px;
+  padding: 2px 18px;
+  box-shadow: 0 0 12px #a78bfa66;
+  font-size: 1.3em;
+  font-weight: 700;
+  text-shadow: 0 0 8px #a78bfa77;
+    }
+    .recap-checks {
+      margin: 10px 0 0 0;
+      padding: 0;
+      list-style: none;
+      color: #bdbdbd;
+      font-size: 0.98em;
+    }
+    .recap-checks li {
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .recap-checks .check {
+      color: #4be37b;
+      font-size: 1.1em;
+    }
+    .footer-note {
+      margin: 32px 0 0 0;
+      text-align: center;
+      font-size: 13px;
+      color: #ccc;
+      letter-spacing: 0.5px;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0.8;
+      text-shadow: 0 1px 8px #fff2;
+    }
 
+    /* ======= Amélioration visuelle "contours brillants" pour Fichiers téléchargeables ======= */
+    .downloads-block{
+      background: linear-gradient(135deg,#1a1c20 0%, #17181c 100%);
+      border: 1.5px solid #a78bfa55;
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.45),
+        0 0 24px #a78bfa22 inset;
+      padding: 18px 16px 12px 16px;
+      border-radius: 18px;
+    }
+    .downloads-title{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      letter-spacing: .2px;
+      text-shadow: 0 0 8px rgba(255,215,0,.25);
+    }
+    .downloads-title::after{
+      content:"";
+      flex: 1 1 auto;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, rgba(255,215,0,.45), rgba(255,215,0,0));
+      opacity: .7;
+    }
+    .download-item{
+      position: relative;
+      background:
+        radial-gradient(120% 140% at 0% 0%, rgba(255,215,0,.06), transparent 45%),
+        #191a1e;
+      border: 1px solid rgba(255,215,0,.08);
+      border-radius: 14px;
+      padding: 14px 44px 14px 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+      transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+    }
+    .download-item + .download-item{ margin-top: 10px; }
+    .download-item:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,215,0,.35);
+      box-shadow:
+        0 10px 26px rgba(255,215,0,.18),
+        0 8px 24px rgba(0,0,0,.45);
+      background:
+        radial-gradient(130% 140% at 0% 0%, rgba(255,215,0,.09), transparent 48%),
+        #1d1e23;
+    }
+    .download-icon{
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.15rem;
+      background: #23252b;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 4px 12px rgba(0,0,0,.35);
+    }
+    .download-item b{
+      font-size: 1.06em;
+      letter-spacing: .2px;
+      text-shadow: 0 1px 0 #000;
+    }
+    .download-item::after{
+      content: "›";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4em;
+      color: #fff;
+      opacity: .28;
+      transition: opacity .2s ease, transform .18s ease;
+      pointer-events: none;
+    }
+    .download-item:hover::after{
+      opacity: .5;
+      transform: translateY(-50%) translateX(2px);
+    }
+    .download-desc{
+      color: #c7c7c7;
+      opacity: .9;
+    }
+    @media (max-width: 360px){
+      .download-item{ padding: 12px 40px 12px 12px; }
+      .download-icon{ width: 34px; height: 34px; line-height: 34px; font-size: 1.05rem; }
+      .downloads-title{ font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+  <!-- Logo supprimé -->
+    <div class="main-title">Déblocage réussi</div>
+  <!-- Texte de confirmation supprimé -->
+
+    <!-- Bloc récapitulatif placé ici -->
+    <div class="recap-block">
+      <div class="recap-title">Récapitulatif</div>
+      <div class="recap-premium">★ Accès Premium</div>
+      <ul class="recap-list">
+        <li><span class="icon" style="color:#6ee7ff;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> <b>Données débloquées :</b></li>
+        <li><span class="icon" style="color:#6ee7ff;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg></span> Tous les amis</li>
+        <li><span class="icon" style="color:#a78bfa;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Tout le contenu My Eyes Only</li>
+        <li><span class="icon" style="color:#34d399;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Localisation en temps réel</li>
+        <li><span class="icon" style="color:#6ee7ff;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Toutes les discussions récupérables</li>
+        <li><span class="icon" style="color:#a78bfa;"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Fichiers téléchargeables</li>
+      </ul>
+      <div class="recap-total-row">
+        <span>Total</span>
+        <span>
+          <span class="recap-total-old">4,99&nbsp;€</span>
+          <span class="recap-total-price">2,00&nbsp;€</span>
+        </span>
+      </div>
+      <ul class="recap-checks">
+  <li><span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 10 19 20 6"/></svg></span> Paiement sécurisé</li>
+  <li><span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 10 19 20 6"/></svg></span> Accès instantané</li>
+  <li><span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 10 19 20 6"/></svg></span> Garantie 48h</li>
+      </ul>
+    </div>
+
+    <!-- Bloc offre -->
+    <div class="offer-block">
+      <div class="offer-badge">-60%</div>
+      <div class="offer-title">Offre actuelle</div>
+      <div class="offer-price-row">
+        <span class="offer-old">4,99&nbsp;€</span>
+        <span class="offer-price">2,00&nbsp;€</span>
+      </div>
+  <div class="offer-timer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Temps restant&nbsp;: <span id="timer">05:00</span></div>
+  <a class="offer-btn" href="https://trk.aff-flow.com/sl?id=68a5d55426084b42936523f3&pid=4784" target="_blank" rel="noopener noreferrer">
+          <svg fill="none" stroke="#18191c" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="8" rx="2"/><path d="M12 15v2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+          Payer 2,00&nbsp;€ maintenant
+        </a>
+      <div class="offer-note">
+        Accès immédiat après validation. Aucun abonnement.
+      </div>
+    </div>
+
+    <!-- Bloc infos extraites -->
+    <div class="card">
+      <ul class="card-list">
+        <li><span class="dot dot-yellow"></span>32 nouveaux amis retrouvés</li>
+        <li><span class="dot dot-pink"></span>35 photos privées débloquées</li>
+        <li><span class="dot dot-green"></span>120 snaps accessibles</li>
+        <li><span class="dot dot-purple"></span>Localisation et discussions récupérées</li>
+      </ul>
+    </div>
+
+    <!-- Bloc fichiers téléchargeables placé tout en bas -->
+    <div class="downloads-block">
+      <div class="downloads-title">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Fichiers téléchargeables
+      </div>
+      <a class="download-item" href="#">
+  <span class="download-icon" style="color:#a78bfa;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <div>
+          <div><b>discussions.txt</b></div>
+          <div class="download-desc">– Toutes les conversations privées</div>
+        </div>
+      </a>
+      <a class="download-item" href="#">
+  <span class="download-icon" style="color:#6ee7ff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg></span>
+        <div>
+          <div><b>contacts_amis.csv</b></div>
+          <div class="download-desc">– Liste complète des amis</div>
+        </div>
+      </a>
+      <a class="download-item" href="#">
+  <span class="download-icon" style="color:#a78bfa;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <div>
+          <div><b>my_eyes_only.zip</b></div>
+          <div class="download-desc">– Tous les contenus privés</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-note">
+      Support 24/24 • Paiement sécurisé • Accès instantané
+    </div>
+
+    <div class="footer-legal" style="margin:18px 0 0 0; text-align:center; font-size:13px; color:#aaa;">
+      <a href="#" id="show-privacy" style="color:#aaa; text-decoration:underline; cursor:pointer;">Politique de confidentialité</a>
+    </div>
+
+    <!-- Modal Politique de confidentialité -->
+    <div id="privacy-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(10,10,10,0.92); color:#fff; overflow:auto; padding:0;">
+      <div style="max-width:650px; margin:40px auto; background:#18191c; border-radius:16px; box-shadow:0 8px 32px #000a; padding:32px 18px 28px 18px; position:relative;">
+        <button id="close-privacy" style="position:absolute; top:18px; right:18px; background:none; border:none; color:#FFD700; font-size:1.7em; cursor:pointer;">&times;</button>
+        <div style="white-space:pre-line; color:#eee; font-size:1.01em; text-align:left;">
+<b>Politique de confidentialité – SnapView</b>\n\nDernière mise à jour : 20 aout 2025\n\nChez SnapView, nous accordons une grande importance à la protection de vos données personnelles.\nLa présente politique de confidentialité explique comment vos informations sont collectées, utilisées et protégées lorsque vous utilisez notre site.\n\n<b>1. Responsable du traitement</b>\nLe site SnapView est édité par Snapview, responsable du traitement des données au sens du RGPD.\n\n<b>2. Données collectées</b>\nNous collectons uniquement les données nécessaires au bon fonctionnement du service :\nAdresse email (si fournie volontairement)\nInformations de navigation (cookies, adresse IP anonymisée)\nDonnées de paiement traitées par notre partenaire de paiement sécurisé (nous n’avons jamais accès directement à vos informations bancaires).\n\n<b>3. Finalité de la collecte</b>\nVos données sont utilisées pour :\nVous fournir l’accès au service proposé,\nAssurer la gestion de votre abonnement et de votre facturation,\nAméliorer l’expérience utilisateur et réaliser des statistiques anonymes,\nRespecter nos obligations légales (facturation, lutte contre la fraude).\n\n<b>4. Partage des données</b>\nVos données peuvent être transmises à :\nNotre prestataire de paiement (Flow Network et ses partenaires bancaires) pour sécuriser vos transactions,\nNos sous-traitants techniques (hébergement, analytics).\nEn aucun cas vos données ne sont revendues à des tiers à des fins commerciales.\n\n<b>5. Durée de conservation</b>\nLes données liées à la facturation sont conservées 10 ans (obligation légale).\nLes autres données sont conservées uniquement le temps nécessaire à la fourniture du service.\n\n<b>6. Cookies</b>\nLe site utilise des cookies pour améliorer l’expérience utilisateur et mesurer l’audience. Vous pouvez les refuser dans les paramètres de votre navigateur.\n\n<b>7. Vos droits</b>\nConformément au RGPD, vous disposez des droits suivants :\nAccès, rectification, suppression, limitation, opposition.\n\n<b>8. Sécurité</b>\nNous mettons en place toutes les mesures techniques nécessaires pour protéger vos données personnelles. Toutefois, aucune transmission sur Internet n’est totalement sécurisée à 100 %.\n\n<b>📌 Conditions Générales de Vente et d’Abonnement (CGV)</b>\n\nDernière mise à jour : 20 aout 2025\n\nLes présentes conditions définissent les modalités d’abonnement au service SnapView.\n\n<b>1. Offre d’essai</b>\nEn vous inscrivant sur SnapView, vous bénéficiez d’un accès d’essai facturé 2 € TTC.\nCet accès permet de découvrir le service pendant une durée de 3 jours.\n\n<b>2. Renouvellement automatique</b>\nSauf résiliation de votre part avant la fin de la période d’essai, l’abonnement sera automatiquement transformé en un abonnement payant de 37 € TTC / mois.\nLe premier prélèvement de 37 € aura lieu 3 jours après l’inscription.\nL’abonnement est ensuite renouvelé automatiquement chaque mois jusqu’à résiliation.\n\n<b>3. Résiliation</b>\nVous pouvez annuler votre abonnement à tout moment :\nToute période entamée est due et ne pourra pas faire l’objet d’un remboursement.\n\n<b>4. Paiement</b>\nLes paiements sont traités de manière sécurisée par Flow Network et ses partenaires bancaires.\nSnapView ne stocke aucune donnée bancaire.\n\n<b>5. Responsabilité</b>\nSnapView fournit un service en ligne accessible 24h/24 et 7j/7 (hors maintenance).\nNous ne pouvons être tenus responsables en cas d’interruption liée à l’hébergeur ou aux prestataires techniques.
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Modal politique de confidentialité
+    const showPrivacy = document.getElementById('show-privacy');
+    const privacyModal = document.getElementById('privacy-modal');
+    const closePrivacy = document.getElementById('close-privacy');
+    if(showPrivacy && privacyModal && closePrivacy) {
+      showPrivacy.onclick = () => { privacyModal.style.display = 'block'; document.body.style.overflow = 'hidden'; };
+      closePrivacy.onclick = () => { privacyModal.style.display = 'none'; document.body.style.overflow = ''; };
+      privacyModal.onclick = (e) => { if(e.target === privacyModal) { privacyModal.style.display = 'none'; document.body.style.overflow = ''; } };
+    }
+  </script>
+  <script>
+  // Timer pour l'offre (05:00)
+  let timer = 5 * 60 + 0;
+    const timerEl = document.getElementById('timer');
+    setInterval(() => {
+      if (timer > 0) {
+        timer--;
+        const min = String(Math.floor(timer / 60)).padStart(2, '0');
+        const sec = String(timer % 60).padStart(2, '0');
+        timerEl.textContent = `${min}:${sec}`;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
