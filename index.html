@@ -208,10 +208,18 @@
     .reviews{width:min(980px,100%); margin-top:18px}
     .section{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl); padding:18px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
     .section h3{margin:0 0 12px; font-size:18px; color:#e8ddff}
-    .rev-grid{display:grid; grid-template-columns:1fr; gap:12px}
-    @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
+  .rev-grid{display:grid; grid-template-columns:1fr; gap:12px; position:relative; min-height:140px; overflow:hidden;}
+  @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
     .rev{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:start; padding:14px; border-radius:18px;
-      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); border:1px solid rgba(255,255,255,.14)}
+      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); border:1px solid rgba(255,255,255,.14);
+      opacity:1; position:absolute; left:0; right:0; top:0;
+      transition:transform .45s cubic-bezier(.4,0,.2,1), opacity .45s cubic-bezier(.4,0,.2,1);}
+    .rev-grid { position:relative; min-height:140px; }
+    .rev.rev-leave-left { transform:translateX(-100%); opacity:0; pointer-events:none; z-index:0; }
+    .rev.rev-leave-right { transform:translateX(100%); opacity:0; pointer-events:none; z-index:0; }
+    .rev.rev-enter-left { transform:translateX(100%); opacity:0; z-index:1; }
+    .rev.rev-enter-right { transform:translateX(-100%); opacity:0; z-index:1; }
+    .rev.rev-active { transform:translateX(0); opacity:1; z-index:2; }
     .avatar{width:36px; height:36px; border-radius:50%; background:linear-gradient(120deg,#93c5fd,#c4b5fd); display:grid; place-items:center; color:#0b1020; font-weight:900}
     .name{font-weight:900}
     .stars{color:var(--gold)}
@@ -312,7 +320,7 @@ box-shadow: 0 0 0 2px #f8717144 !important;
     <div class="field">
       <input id="username" class="input" type="text" placeholder="@username" autocomplete="off" aria-label="Pseudo à analyser" />
       <span class="search-icon" id="search-btn" role="button" aria-label="Rechercher">
-        🔍
+  <img src="file:///Users/younng/Desktop/hd-purple-snapchat-neon-logo-png-701751694779626au3fkrrpjm-removebg-preview.png" alt="Snapchat Logo" style="width:22px;height:22px;display:block;opacity:.9;" />
       </span>
     </div>
 
@@ -380,10 +388,7 @@ box-shadow: 0 0 0 2px #f8717144 !important;
           <div class="stars">★★★☆☆</div>
         </div>
       </div>
-      <div style="display:flex; justify-content:center; gap:18px; margin-top:10px;">
-        <button id="revPrev" aria-label="Avis précédent" style="background:rgba(255,255,255,0.10); border:none; border-radius:50%; width:38px; height:38px; color:#a78bfa; font-size:1.5em; cursor:pointer;">‹</button>
-        <button id="revNext" aria-label="Avis suivant" style="background:rgba(255,255,255,0.10); border:none; border-radius:50%; width:38px; height:38px; color:#a78bfa; font-size:1.5em; cursor:pointer;">›</button>
-      </div>
+      <!-- Navigation manuelle supprimée, le carrousel est automatique -->
     </div>
   </section>
 
@@ -409,24 +414,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Carrousel avis
   const avis = Array.from(document.querySelectorAll('#revCarousel .rev'));
-  const prev = document.getElementById('revPrev');
-  const next = document.getElementById('revNext');
+  // Suppression des boutons de navigation manuelle
   let idx = 0;
-  function showAvis(i) {
-    avis.forEach((el, j) => el.style.display = (j === i ? '' : 'none'));
+  function showAvis(i, direction = 1) {
+    avis.forEach((el, j) => {
+      el.classList.remove('rev-leave-left','rev-leave-right','rev-enter-left','rev-enter-right','rev-active');
+      if(j === i) {
+        el.style.display = '';
+        el.classList.add('rev-active');
+        setTimeout(()=>{
+          el.classList.remove('rev-enter-left','rev-enter-right');
+        }, 500);
+      } else {
+        el.style.display = '';
+        if(direction === 1) {
+          el.classList.add('rev-leave-left');
+        } else {
+          el.classList.add('rev-leave-right');
+        }
+        setTimeout(()=>{
+          el.style.display = 'none';
+          el.classList.remove('rev-leave-left','rev-leave-right','rev-active');
+        }, 500);
+      }
+    });
+    // Ajoute la classe d'entrée au nouvel avis
+    if(avis[i]) {
+      if(direction === 1) {
+        avis[i].classList.add('rev-enter-right');
+      } else {
+        avis[i].classList.add('rev-enter-left');
+      }
+      setTimeout(()=>{
+        avis[i].classList.remove('rev-enter-left','rev-enter-right');
+      },10);
+    }
   }
   function nextAvis() {
     idx = (idx + 1) % avis.length;
-    showAvis(idx);
-  }
-  function prevAvis() {
-    idx = (idx - 1 + avis.length) % avis.length;
-    showAvis(idx);
+    showAvis(idx, 1);
   }
   if(avis.length > 0) {
-    showAvis(idx);
-    if(next) next.addEventListener('click', nextAvis);
-    if(prev) prev.addEventListener('click', prevAvis);
+    showAvis(idx, 1);
     setInterval(nextAvis, 5000);
   }
 
@@ -493,6 +522,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 <!-- Modal À propos -->
+</body>
 <div id="modalAboutBg" style="display:none; position:fixed; inset:0; background:rgba(18,22,34,0.62); z-index:3200; align-items:center; justify-content:center;">
   <div id="modalAbout" style="background:#181c2a; border-radius:22px; box-shadow:0 8px 40px #0008; padding:32px 24px 24px; min-width:320px; max-width:94vw; width:370px; display:flex; flex-direction:column; align-items:stretch; position:relative; z-index:3210;">
     <button id="modalAboutClose" aria-label="Fermer" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#a78bfa; font-size:1.7em; cursor:pointer;">×</button>
