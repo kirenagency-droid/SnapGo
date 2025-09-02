@@ -8,30 +8,37 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
   :root{
-    --bg:#070910;
-    --glow1:#6ee7ff;
-    --glow2:#a78bfa;
-    --glow3:#ffd166;
-    --text:#eef2ff;
-    --sub:#b9c2da;
-    --card:#0b1020;
-    --ring:#6ee7ff88;
-    --border:#1a2340;
-    --ok:#34d399;
-    --radius:22px;
-    --primary:#6aa3ff;
-    --primary-hover:#4ea1ff;
-    --transition-speed:.3s;
+  --bg: #070910;
+  --glow1: #6ee7ff;
+  --glow2: #a78bfa;
+  --glow3: #ffd166;
+  --text: #eef2ff;
+  --sub: #b9c2da;
+  --card: rgba(255, 255, 255, 0.13);
+  --card-blur: blur(24px) saturate(180%);
+  --card-border: rgba(255,255,255,0.32);
+  --ring: #6ee7ff88;
+  --border: #1a2340;
+  --ok: #34d399;
+  --radius: 22px;
+  --primary: #6aa3ff;
+  --primary-hover: #4ea1ff;
+  --transition-speed: .3s;
   }
 
-  body{
-    margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    color:var(--text);
-    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-    padding:40px 16px 80px; overflow-x:hidden;
-    min-height:100vh;
-    background-color:#181a20;
-  }
+body{
+  margin: 0;
+  font-family: 'SF Pro Display','SF Pro Text','San Francisco','-apple-system',BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 16px 80px;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #181a20 60%, #23243a 100%);
+}
 
   .particle {
     position: fixed;
@@ -91,20 +98,20 @@
   }
 
   .decrypt-bar {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto 28px auto;
-    background: linear-gradient(180deg,#0c1224 0%,#0a1020 100%);
-    backdrop-filter: blur(8px);
-    border-radius: 18px;
-    box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22;
-    border: 1.5px solid var(--border);
-    height: 48px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 28px auto;
+  background: var(--card);
+  backdrop-filter: var(--card-blur);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
+  border: 1.5px solid var(--card-border);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
   }
   .decrypt-bar-glow {
     position: absolute;
@@ -148,13 +155,14 @@
     gap: 12px;
   }
   #progress-bar-container {
-    flex: 1;
-    height: 14px;
-    background: #0b1020;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1.5px solid #6ee7ff55;
-    box-shadow: 0 0 12px #6ee7ff22;
+  flex: 1;
+  height: 14px;
+  background: var(--card);
+  backdrop-filter: var(--card-blur);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--card-border);
+  box-shadow: 0 0 12px #6ee7ff22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
   }
   #progress {
     height: 100%;
@@ -187,15 +195,15 @@
     z-index: 2;
   }
   .card {
-    background: linear-gradient(180deg,#0c1224 0%,#0a1020 100%);
-    backdrop-filter: blur(10px);
-    border-radius: 22px;
-    padding: 22px 28px;
-    border: 1.5px solid #6ee7ff55;
-    box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22;
-    transform: translateY(40px);
-    opacity: 0;
-    transition: all 0.6s cubic-bezier(.4,0,.2,1);
+  background: var(--card);
+  backdrop-filter: var(--card-blur);
+  border-radius: 22px;
+  padding: 22px 28px;
+  border: 1.5px solid var(--card-border);
+  box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(.4,0,.2,1);
   }
   .card.visible {
     transform: translateY(0);
@@ -256,7 +264,10 @@
   </div>
 
   <header>
-  <h1><span style="background:conic-gradient(from 180deg, #e9f2ff, #6ee7ff, #a78bfa, #e9f2ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(110,231,255,.25);font-weight:900;">ANALYSE</span> <span style="color:var(--primary);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #6ee7ff55;font-weight:900;">EN COURS</span></h1>
+  <h1>
+    <span style="color:var(--primary);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #6ee7ff55;font-weight:900;">ANALYSE EN </span>
+    <span style="color:var(--glow2);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #a78bfa55;font-weight:900;">COURS</span>
+  </h1>
     <div id="execution-text">Décryptage et analyse des données confidentielles...</div>
   </header>
 
@@ -270,35 +281,45 @@
   <div class="cards-list" id="cards-list">
     <div class="card" id="card-connexion">
       <div class="card-header">
-        <span class="card-icon">📡</span>
+        <span class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h2m16 0h2M12 2v2m0 16v2M7.5 7.5l1.5 1.5m6 6l1.5 1.5M7.5 16.5l1.5-1.5m6-6l1.5-1.5"/></svg>
+        </span>
         <span class="card-title">Connexion aux serveurs Snapchat</span>
       </div>
       <div class="card-desc">Connexion sécurisée établie</div>
     </div>
     <div class="card" id="card-protection">
       <div class="card-header">
-        <span class="card-icon">🛡️</span>
+        <span class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
         <span class="card-title">Contournement des protections</span>
       </div>
       <div class="card-desc">Protocoles de sécurité neutralisés</div>
     </div>
     <div class="card" id="card-recherche">
       <div class="card-header">
-        <span class="card-icon">🔍</span>
+        <span class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd166" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
         <span class="card-title">Recherche du profil utilisateur</span>
       </div>
       <div class="card-desc">ID localisé dans l’index public</div>
     </div>
     <div class="card" id="card-extraction">
       <div class="card-header">
-        <span class="card-icon">⬇️</span>
+        <span class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </span>
         <span class="card-title">Extraction des données privées</span>
       </div>
       <div class="card-desc">Téléchargement des paquets JSON</div>
     </div>
     <div class="card" id="card-decrypt">
       <div class="card-header">
-        <span class="card-icon">🔓</span>
+        <span class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
         <span class="card-title">Décryptage des informations</span>
       </div>
       <div class="card-desc">Données décodées avec succès</div>
@@ -358,7 +379,7 @@
     });
   }
   function showCards(i=0) {
-    if(i>=cards.length){ setTimeout(()=>window.location.href="score.html",600); return; }
+  if(i>=cards.length){ setTimeout(()=>window.location.href="<!DOCTYPE html>.html",600); return; }
     const c=cards[i]; c.classList.add('visible');
     advance(((i+1)/cards.length)*100,2000).then(()=>showCards(i+1));
   }
@@ -368,5 +389,7 @@
     showCards();
   });
 </script>
+</script>
+<script src="analyse-user.js"></script>
 </body>
 </html>
