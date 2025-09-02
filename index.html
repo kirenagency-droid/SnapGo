@@ -707,6 +707,126 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<!-- ===== Widget notification (compact, bas-droite) ===== -->
+<style>
+  .snap-widget {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 4000;
+    display: grid;
+    gap: 10px;
+    max-width: 280px;
+    font-family: inherit;
+  }
+  .snap-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: #0f1a12;
+    border: 1px solid #1c3f2a;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+    transform: translateY(14px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease;
+    color: #d1fae5;
+  }
+  .snap-card.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .snap-badge {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: grid; place-items: center;
+    background: #16a34a;
+    border: 1px solid #34d399;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    color: #052e16; font-weight: 900;
+  }
+  .snap-text { line-height: 1.25 }
+  .snap-title { font-weight: 900; font-size: 13px; color: #bbf7d0; }
+  .snap-sub { font-size: 12px; color: #a7f3d0; }
+  @media (max-width: 480px){
+    .snap-widget{ right: 10px; bottom: 10px; max-width: 86vw; }
+    .snap-title{ font-size: 12px; }
+    .snap-sub{ font-size: 11.5px; }
+  }
+</style>
+
+<div id="snapWidget" class="snap-widget" aria-live="polite" aria-atomic="true">
+  <div id="snapCard" class="snap-card" role="status">
+    <div class="snap-badge" aria-hidden="true">✓</div>
+    <div class="snap-text">
+      <div id="snapTitle" class="snap-title">Rapport envoyé</div>
+      <div id="snapSub" class="snap-sub">@user**** vient de recevoir son rapport par mail</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const card  = document.getElementById('snapCard');
+  const title = document.getElementById('snapTitle');
+  const sub   = document.getElementById('snapSub');
+
+  // Générateur de pseudo masqué
+  const syll = ["li","na","ma","no","so","ki","zo","ra","ta","mi","le","ya","lou","em","an","jo","ca","el","sa","ri","ti","mo","pa","lu","ni","ka"];
+  const sep  = ["","_",".","-"];
+  function genPseudo(){
+    const s1 = syll[Math.floor(Math.random()*syll.length)];
+    const s2 = syll[Math.floor(Math.random()*syll.length)];
+    const s3 = Math.random()<0.35 ? syll[Math.floor(Math.random()*syll.length)] : "";
+    const base = (s1 + s2 + s3).slice(0, Math.random()<0.5 ? 5 : 6).toLowerCase();
+    const tail = Math.random()<0.6 ? (sep[Math.floor(Math.random()*sep.length)] + String(Math.floor(10+Math.random()*89))) : "";
+    if (Math.random()<0.35) {
+      const pos = 1 + Math.floor(Math.random()*Math.min(3, base.length-1));
+      return base.slice(0,pos) + "****" + tail;
+    }
+    return base + tail;
+  }
+
+  // Message d’aide clair pour l’utilisateur
+  function showHint(){
+    title.textContent = "Astuce";
+    sub.textContent = "Entrez le nom d’utilisateur Snap de la personne de votre choix (ex. @prenom.nom)";
+  }
+
+  // Message “rapport envoyé”
+  function showReport(){
+    const pseudo = genPseudo();
+    title.textContent = "Rapport envoyé";
+    sub.textContent = `@${pseudo} vient de recevoir son rapport par mail ✅`;
+  }
+
+  function showCard(fn){
+    fn();
+    card.classList.add('show');
+    setTimeout(()=>card.classList.remove('show'), 3800);
+  }
+
+  // Séquençage : on alterne, rappel régulier de l’astuce
+  let count = 0;
+  function loop(){
+    count++;
+    const showHelpNow = (count % 4 === 0) || Math.random() < 0.25;
+    showCard(showHelpNow ? showHint : showReport);
+    const delay = 9000 + Math.random()*9000; // 9–18s
+    setTimeout(loop, delay);
+  }
+
+  // Première apparition rapide
+  setTimeout(()=>showCard(showHint), 2000 + Math.random()*1500);
+  setTimeout(loop, 6000);
+})();
+</script>
+<!-- ===== /Widget notification ===== -->
+
   <!-- ...autres sections du site... -->
 </body>
 </html>
@@ -749,4 +869,5 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- End of Statcounter Code -->
   </body>
   </html>
+
 
