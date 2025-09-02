@@ -67,7 +67,7 @@
   .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
     border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); font-weight:800}
   .badge i{width:10px; height:10px; border-radius:50%}
-  .b-sec i{background:#34d399} .b-users i{background+#93c5fd} .b-star i{background:#fbbf24}
+  .b-sec i{background:#34d399} .b-users i{background:#93c5fd} .b-star i{background:#fbbf24}
 
   .block{max-width:980px; margin:14px auto; padding:18px; border-radius:var(--radius-xl);
          background:var(--panel); border:1px solid var(--stroke); box-shadow:var(--shadow);
@@ -109,12 +109,12 @@
   .f-card{display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px;
           border-radius:16px; border:1px solid rgba(255,255,255,.14);
           background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.05))}
-  .f-ava{width:66px; height:66px; border-radius:50%; overflow:hidden; border:1px solid #27314b; background:#fff;} /* <-- changé ici */
+  .f-ava{width:66px; height:66px; border-radius:50%; overflow:hidden; border:1px solid #27314b; background:#fff;}
   .f-ava img{width:100%; height:100%; object-fit:cover; filter:blur(3px);}
   .f-name{height:10px; width:70%; border-radius:6px; background:#132036; filter:blur(3px)}
 
   /* Transitions */
-  @keyframes swapOut{to{opacity:0; transform:translateY{-8px} scale(.98)}}
+  @keyframes swapOut{to{opacity:0; transform:translateY(-8px) scale(.98)}}
   @keyframes swapIn{from{opacity:0; transform:translateY(8px) scale(.98)} to{opacity:1; transform:none}}
   .swap-out{animation:swapOut .35s ease forwards}
   .swap-in{animation:swapIn .35s ease forwards}
@@ -129,24 +129,36 @@
   a{color:#bcd6ff}
   .anchor{scroll-margin-top:72px}
   @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important}}
+
+  /* ===== Anti-copie sur les images ===== */
+  img{
+    -webkit-user-drag:none;
+    user-select:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;
+    -webkit-touch-callout:none;
+  }
+
+  /* ===== Toast + highlight paiement ===== */
+  .pay-toast{
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:86px; z-index:30;
+    background:var(--panel-2); border:1px solid var(--stroke);
+    backdrop-filter:var(--glass);
+    color:var(--text); padding:10px 12px; border-radius:14px;
+    font-weight:800; box-shadow:var(--shadow); max-width:92vw; text-align:center;
+  }
+  @keyframes payPulse{0%{box-shadow:0 0 0 0 rgba(125,211,252,.6)}70%{box-shadow:0 0 0 16px rgba(125,211,252,0)}100%{box-shadow:0 0 0 0 rgba(125,211,252,0)}}
+  .pay-highlight{animation:payPulse 1.4s ease-out 2; outline:2px solid #7dd3fc88;}
 </style>
 
-<!-- Default Statcounter code for snapview
-https://www.snapview.fr/ -->
+<!-- Default Statcounter code for snapview -->
 <script type="text/javascript">
 var sc_project=13164279; 
 var sc_invisible=1; 
 var sc_security="b995bb3c"; 
 </script>
-<script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js"
-async></script>
-<noscript><div class="statcounter"><a title="Web Analytics"
-href="https://statcounter.com/" target="_blank"><img
-class="statcounter"
-src="https://c.statcounter.com/13164279/0/b995bb3c/1/"
-alt="Web Analytics"
-referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+<noscript><div class="statcounter"><a title="Web Analytics" href="https://statcounter.com/" target="_blank"><img
+class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="Web Analytics" referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
 
 </head>
@@ -270,14 +282,14 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
         'https://i.ibb.co/bjqb00N4/IMG-8007.jpg',
         'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
         'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
-  'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
-  'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
-  'https://i.ibb.co/JwgYDf0y/IMG-8008.jpg',
-  'https://i.ibb.co/gKggrHm/IMG-8006.jpg',
-  'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
-  'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
-  'https://i.ibb.co/RpFd7mwr/IMG-8005.jpg',
-  'https://i.ibb.co/bjqb00N4/IMG-8007.jpg'
+        'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
+        'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
+        'https://i.ibb.co/JwgYDf0y/IMG-8008.jpg',
+        'https://i.ibb.co/gKggrHm/IMG-8006.jpg',
+        'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
+        'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
+        'https://i.ibb.co/RpFd7mwr/IMG-8005.jpg',
+        'https://i.ibb.co/bjqb00N4/IMG-8007.jpg'
       ];
       if(i < userImages.length){
         img.src = userImages[i];
@@ -309,7 +321,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
   function initSections(){
     const gridEyes=document.getElementById('grid-eyes');
-  for(let k=0;k<3;k++) gridEyes.appendChild(createEyesThumb(k));
+    for(let k=0;k<3;k++) gridEyes.appendChild(createEyesThumb(k));
 
     const chatList=document.getElementById('chatList');
     for(let k=0;k<LOT_CHAT;k++) chatList.appendChild(createChatRow((chatIndex+k)%CHAT_TOTAL));
@@ -319,7 +331,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     for(let k=0;k<LOT_FRIENDS;k++) friendsGrid.appendChild(createFriendCard((friendsIndex+k)%FRIENDS_TOTAL));
     friendsIndex=(friendsIndex+LOT_FRIENDS)%FRIENDS_TOTAL;
 
-  // Transition désactivée pour 'My Eyes Only'
+    // Rotation périodique (My Eyes Only non rotatif)
     setInterval(()=>rotate(chatList,createChatRow,LOT_CHAT,CHAT_TOTAL,{get index(){return chatIndex},set index(v){chatIndex=v}}),2600);
     setInterval(()=>rotate(friendsGrid,createFriendCard,LOT_FRIENDS,FRIENDS_TOTAL,{get index(){return friendsIndex},set index(v){friendsIndex=v}}),2600);
   }
@@ -331,6 +343,58 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
   document.getElementById('unlockBtn2').addEventListener('click', redirectUnlock);
 
   initSections();
+
+  /* ===== Anti-copie / redirection paiement sur photos floutées ===== */
+
+  // Bloque le clic droit et le drag sur les images
+  document.addEventListener('contextmenu', (e)=>{
+    if(e.target.closest('img, .thumb, .a-ava, .f-ava')) e.preventDefault();
+  });
+  document.addEventListener('dragstart', (e)=>{
+    if(e.target.tagName === 'IMG' || e.target.closest('.thumb')) e.preventDefault();
+  });
+
+  // Message + scroll vers bouton paiement
+  function goToPay(){
+    const mini = document.querySelector('.mini');
+    const btn = document.getElementById('unlockBtn2') || document.getElementById('unlockBtn');
+
+    if(mini) mini.scrollIntoView({behavior:'smooth', block:'end'});
+    if(btn){
+      btn.classList.add('pay-highlight');
+      try{ btn.focus({preventScroll:true}); }catch(_){}
+      setTimeout(()=>btn.classList.remove('pay-highlight'), 3000);
+    }
+
+    let toast = document.getElementById('payToast');
+    const text = "Pour voir les résultats, débloquez l’accès pour 2 € — vous les recevez instantanément par mail.";
+    if(!toast){
+      toast = document.createElement('div');
+      toast.id = 'payToast';
+      toast.className = 'pay-toast';
+      toast.role = 'status';
+      toast.setAttribute('aria-live','polite');
+      toast.textContent = text;
+      document.body.appendChild(toast);
+    }else{
+      toast.style.display = 'block';
+      toast.textContent = text;
+    }
+    clearTimeout(window.__payToastTimer);
+    window.__payToastTimer = setTimeout(()=>{ if(toast) toast.style.display='none'; }, 4200);
+  }
+
+  // Délégation de clics : My Eyes Only + avatars Discussions/Amis
+  document.getElementById('grid-eyes').addEventListener('click', (e)=>{
+    if(e.target.closest('.thumb')){ e.preventDefault(); goToPay(); }
+  });
+  document.getElementById('chatList').addEventListener('click', (e)=>{
+    if(e.target.closest('.a-ava')){ e.preventDefault(); goToPay(); }
+  });
+  document.getElementById('friendsGrid').addEventListener('click', (e)=>{
+    if(e.target.closest('.f-ava')){ e.preventDefault(); goToPay(); }
+  });
+
 </script>
 </script>
 <script src="doctype-user.js"></script>
