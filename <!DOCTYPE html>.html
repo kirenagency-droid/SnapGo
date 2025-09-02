@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SnapView — Contenu trouvé (démo)</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0f16;
+    --panel:#0d1422cc;
+    --panel-2:#0f1a30cc;
+    --glass:blur(18px) saturate(160%);
+    --stroke:#1c2740;
+    --text:#eef2ff;
+    --sub:#a9b4cb;
+    --accent:#7dd3fc;
+    --accent2:#a78bfa;
+    --gold:#ffd166;
+    --radius-xl:28px; --radius:18px;
+    --shadow:0 16px 54px rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;background:
+    radial-gradient(1200px 600px at 15% -10%, #17253d 0%, transparent 55%) no-repeat,
+    radial-gradient(1000px 500px at 90% 0%, #211a3e 0%, transparent 60%) no-repeat,
+    var(--bg);}
+  body{margin:0; font-family:'SF Pro Display','SF Pro Text','San Francisco','-apple-system',BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; color:var(--text);
+       padding:18px 14px 100px; overflow-x:hidden}
+
+  header{max-width:980px; margin:0 auto 10px; text-align:center;}
+  h1{margin:0; font-size:clamp(26px,6vw,42px); font-weight:900;
+     background:linear-gradient(90deg,#9be7ff 0%, #a78bfa 100%);
+     -webkit-background-clip:text; background-clip:text; color:transparent}
+  .subtitle{margin:4px 0 8px; color:#c7d2fe; font-weight:800}
+  .steps{color:#9fb3d8; font-weight:800}
+
+  .sticky-nav{position:sticky; top:0; z-index:20; padding:10px 0 12px; backdrop-filter:blur(10px) saturate(1.2)}
+  .pill-nav{display:flex; gap:10px; overflow:auto hidden; scrollbar-width:none}
+  .pill-nav::-webkit-scrollbar{display:none}
+  .pill{flex:0 0 auto; display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px;
+        color:#e9f4ff; font-weight:800; font-size:14px; text-decoration:none;
+        background:linear-gradient(160deg, rgba(255,255,255,.11), rgba(255,255,255,.06));
+        border:1px solid rgba(255,255,255,.14); box-shadow:0 6px 24px rgba(0,0,0,.35)}
+  .pill i{width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .pill.active{outline:2px solid #7dd3fc66}
+
+  .cta-card{max-width:980px; margin:12px auto 18px; padding:22px 18px; border-radius:var(--radius-xl);
+    background:linear-gradient(135deg, rgba(125,211,252,.20), rgba(167,139,250,.20));
+    border:1px solid #84caff55; box-shadow:var(--shadow)}
+  .cta-title{margin:0 0 2px; font-size:clamp(18px,3.8vw,28px); font-weight:900}
+  .cta-sub{margin:0 0 14px; color:#e3ecff; opacity:.9}
+  .timer{display:inline-flex; align-items:center; gap:8px; font-weight:900; color:#ffe08a; margin:2px 0 10px}
+  .unlock{display:inline-flex; align-items:center; gap:10px; border:none; cursor:pointer;
+    padding:14px 22px; border-radius:16px; font-weight:900; font-size:16px; color:#0a1020;
+    background:linear-gradient(90deg,var(--accent) 0%, var(--accent2) 100%);
+    box-shadow:0 12px 34px rgba(125,211,252,.30), 0 6px 18px rgba(167,139,250,.20);
+    position:relative; overflow:hidden; transition:transform .12s}
+  .unlock:hover{transform:translateY(-2px)}
+  .unlock::after{content:""; position:absolute; inset:0;
+    background:radial-gradient(420px 140px at -20% 50%, #ffffff55, transparent 60%);
+    opacity:.35; animation:pulse 2.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.25} 50%{opacity:.5}}
+
+  .trust{max-width:980px; margin:8px auto 0; color:#c9d4ea; display:flex; gap:10px; flex-wrap:wrap}
+  .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); font-weight:800}
+  .badge i{width:10px; height:10px; border-radius:50%}
+  .b-sec i{background:#34d399} .b-users i{background:#93c5fd} .b-star i{background:#fbbf24}
+
+  .block{max-width:980px; margin:14px auto; padding:18px; border-radius:var(--radius-xl);
+         background:var(--panel); border:1px solid var(--stroke); box-shadow:var(--shadow);
+         backdrop-filter:var(--glass); position:relative}
+  .block h2{margin:0 0 10px; font-size:18px}
+  .meta{display:flex; gap:10px; align-items:center; color:var(--sub); font-weight:700; flex-wrap:wrap}
+  .count{padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14);
+         background:rgba(255,255,255,.06); color:#e7f0ff; font-weight:800; font-size:12px}
+
+  /* ===== MY EYES ONLY ===== */
+  .grid-eyes{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(88px, 1fr));
+    gap:8px;
+    min-height:110px;
+  }
+  .thumb{position:relative; aspect-ratio:1/1; border-radius:14px; overflow:hidden;
+         border:1px solid #1b2442; background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.04))}
+  .thumb img{width:100%; height:100%; object-fit:cover; transform:scale(1.08)}
+  .thumb.heavy img{filter:none;}
+  .banner{position:absolute; left:6px; top:6px; padding:5px 7px; border-radius:10px;
+    background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.14); font-weight:800; font-size:10px}
+
+  /* DISCUSSIONS */
+  .chatlist{display:flex; flex-direction:column; gap:10px; min-height:148px}
+  .row{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center;
+       padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.14);
+       background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.05))}
+  .a-ava{width:42px; height:42px; border-radius:50%; overflow:hidden; border:1px solid #27314b}
+  .a-ava img{width:100%; height:100%; object-fit:cover; filter:blur(3px) saturate(1.1);}
+  .a-name{height:14px; width:160px; border-radius:6px; background:#132036; filter:blur(3px)}
+  .a-snippet{height:12px; width:70%; margin-top:6px; border-radius:6px; background:#0f1a2f; filter:blur(3px)}
+  .a-time{height:10px; width:36px; border-radius:6px; background:#132036; filter:blur(3px)}
+
+  /* AMIS : fond blanc sous l’avatar (modif demandée) */
+  .friends{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; min-height:130px}
+  @media(max-width:900px){.friends{grid-template-columns:repeat(5,1fr)}}
+  @media(max-width:640px){.friends{grid-template-columns:repeat(4,1fr)}}
+  .f-card{display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px;
+          border-radius:16px; border:1px solid rgba(255,255,255,.14);
+          background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.05))}
+  .f-ava{width:66px; height:66px; border-radius:50%; overflow:hidden; border:1px solid #27314b; background:#fff;} /* <-- changé ici */
+  .f-ava img{width:100%; height:100%; object-fit:cover; filter:blur(3px);}
+  .f-name{height:10px; width:70%; border-radius:6px; background:#132036; filter:blur(3px)}
+
+  /* Transitions */
+  @keyframes swapOut{to{opacity:0; transform:translateY(-8px) scale(.98)}}
+  @keyframes swapIn{from{opacity:0; transform:translateY(8px) scale(.98)} to{opacity:1; transform:none}}
+  .swap-out{animation:swapOut .35s ease forwards}
+  .swap-in{animation:swapIn .35s ease forwards}
+
+  .mini{position:fixed; left:12px; right:12px; bottom:14px; z-index:25; display:flex; justify-content:center}
+  .mini-inner{display:flex; gap:10px; align-items:center; padding:10px 12px; border-radius:16px;
+    background:var(--panel-2); border:1px solid var(--stroke); backdrop-filter:var(--glass); box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  .mini .price{font-weight:900; color:#ffe08a}
+  .mini .unlock{padding:10px 16px; border-radius:12px; font-size:14px}
+
+  .helper{max-width:980px; margin:16px auto 0; color:#98a4c1; font-size:13px}
+  a{color:#bcd6ff}
+  .anchor{scroll-margin-top:72px}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Contenu trouvé</h1>
+  <div class="subtitle">Informations extraites avec succès</div>
+  <div class="steps">étapes <strong>3/4</strong></div>
+</header>
+
+<section id="all" class="cta-card anchor" aria-labelledby="cta-title">
+  <h2 id="cta-title" class="cta-title">Voir toutes les données</h2>
+  <p class="cta-sub">Accédez à l’ensemble des informations extraites (photos, discussions, amis).</p>
+  <div class="timer" aria-live="polite">⏳ Offre réservée encore <span id="countdown">15:00</span></div>
+  <button class="unlock" id="unlockBtn">🔓 Débloquer pour 2 €</button>
+</section>
+
+<div class="trust" aria-hidden="true">
+  <div class="badge b-sec"><i></i> Paiement sécurisé</div>
+  <div class="badge b-users"><i></i> +1 200 déblocages cette semaine</div>
+  <div class="badge b-star"><i></i> Note moyenne 4,9/5</div>
+</div>
+
+<section id="myeyes" class="block anchor">
+  <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10" stroke="#7dd3fc" stroke-width="2" fill="#0d1422"/><path d="M8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0z" fill="#a78bfa"/><circle cx="12" cy="12" r="2" fill="#fff"/></svg>My Eyes Only</h2>
+  <div class="meta"></div>
+  <div class="grid-eyes" id="grid-eyes"></div>
+</section>
+
+<section id="chat" class="block anchor">
+  <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px;"><rect x="3" y="5" width="18" height="14" rx="4" fill="#7dd3fc"/><rect x="7" y="9" width="10" height="2" rx="1" fill="#fff"/><rect x="7" y="13" width="6" height="2" rx="1" fill="#fff"/></svg>Discussions</h2>
+  <div class="meta"></div>
+  <div class="chatlist" id="chatList" aria-label="Aperçu des discussions floutées"></div>
+</section>
+
+<section id="friends" class="block anchor">
+  <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px;"><circle cx="8" cy="10" r="4" fill="#a78bfa"/><circle cx="16" cy="10" r="4" fill="#7dd3fc"/><rect x="2" y="16" width="20" height="4" rx="2" fill="#7dd3fc"/></svg>Liste d'amis</h2>
+  <div class="meta"></div>
+  <div class="friends" id="friendsGrid" aria-label="Aperçu amis (avatars floutés)"></div>
+</section>
+
+<div class="mini" role="region" aria-label="Déblocage rapide">
+  <div class="mini-inner">
+    <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="5" y="11" width="14" height="8" rx="2" fill="#7dd3fc"/><rect x="9" y="15" width="6" height="2" rx="1" fill="#fff"/><rect x="7" y="7" width="10" height="6" rx="5" fill="#a78bfa"/></svg>Accès complet</span>
+    <span class="price">2 €</span>
+    <button class="unlock" id="unlockBtn2">Débloquer</button>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const el=document.getElementById('countdown'); let secs=15*60;
+    const tick=()=>{ const m=String(Math.floor(secs/60)).padStart(2,'0'); const s=String(secs%60).padStart(2,'0');
+      el.textContent=`${m}:${s}`; secs=Math.max(secs-1,0); };
+    tick(); setInterval(tick,1000);
+  })();
+
+  const dice = (seed, style='adventurer') =>
+    `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(seed)}&mood=happy&backgroundColor=b6e3f4,c0aede,d1d4f9&randomizeIds=true`;
+
+  function createEyesThumb(i){
+    const wrap=document.createElement('div'); wrap.className='thumb heavy';
+    const b=document.createElement('div'); b.className='banner'; b.textContent='Flouté';
+    const img=new Image(); img.loading='lazy'; img.alt='';
+    if(i === 0){
+      img.src = 'https://i.ibb.co/zVDSgFWY/Capture-d-e-cran-2025-09-01-a-14-32-14.png';
+      img.style.filter = 'blur(4px)';
+    } else if(i === 1){
+      img.src = 'https://i.ibb.co/4g9gkJX8/2553865cde28762adcec9bbc843212d7.jpg';
+      img.style.filter = 'blur(5px)';
+    } else if(i === 2){
+      img.src = 'https://i.ibb.co/G4DNKPHW/6c7119077dfcf116a428a0681d3fc7cd.jpg';
+      img.style.filter = 'blur(5px)';
+    } else {
+      img.src = `https://picsum.photos/seed/outfit-${i}/420/420`;
+    }
+    wrap.appendChild(img); wrap.appendChild(b);
+    return wrap;
+  }
+  function createChatRow(i){
+    const row=document.createElement('div'); row.className='row';
+    const ava=document.createElement('div'); ava.className='a-ava';
+    const img=new Image(); img.loading='lazy'; img.alt='Avatar flouté';
+    const userImages = [
+      'https://i.ibb.co/kTDtvTP/Capture-d-e-cran-2025-09-01-a-13-31-52.png',
+      'https://i.ibb.co/JwgYDf0y/IMG-8008.jpg',
+      'https://i.ibb.co/RpFd7mwr/IMG-8005.jpg',
+      'https://i.ibb.co/gKggrHm/IMG-8006.jpg',
+      'https://i.ibb.co/bjqb00N4/IMG-8007.jpg',
+      'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
+      'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
+      'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
+      'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
+      'https://i.ibb.co/JwgYDf0y/IMG-8008.jpg',
+      'https://i.ibb.co/gKggrHm/IMG-8006.jpg',
+      'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
+      'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
+      'https://i.ibb.co/RpFd7mwr/IMG-8005.jpg',
+      'https://i.ibb.co/bjqb00N4/IMG-8007.jpg'
+    ];
+    img.src = userImages[i % userImages.length];
+    ava.appendChild(img);
+    const mid=document.createElement('div');
+    const name=document.createElement('div'); name.className='a-name';
+    const snip=document.createElement('div'); snip.className='a-snippet';
+    mid.appendChild(name); mid.appendChild(snip);
+    const time=document.createElement('div'); time.className='a-time';
+    row.appendChild(ava); row.appendChild(mid); row.appendChild(time);
+    return row;
+  }
+  function createFriendCard(i){
+      const card=document.createElement('div'); card.className='f-card';
+      const ava=document.createElement('div'); ava.className='f-ava';
+      const img=new Image(); img.loading='lazy'; img.alt='Avatar ami flouté';
+      const userImages = [
+        'https://i.ibb.co/kTDtvTP/Capture-d-e-cran-2025-09-01-a-13-31-52.png',
+        'https://i.ibb.co/JwgYDf0y/IMG-8008.jpg',
+        'https://i.ibb.co/RpFd7mwr/IMG-8005.jpg',
+        'https://i.ibb.co/gKggrHm/IMG-8006.jpg',
+        'https://i.ibb.co/bjqb00N4/IMG-8007.jpg',
+        'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
+        'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
+  'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
+  'https://i.ibb.co/whBXFDQ9/IMG-8011.jpg',
+  'https://i.ibb.co/JwgYDf0y/IMG-8008.jpg',
+  'https://i.ibb.co/gKggrHm/IMG-8006.jpg',
+  'https://i.ibb.co/Q3H6TtxX/IMG-8009.jpg',
+  'https://i.ibb.co/3ytSHS6q/IMG-8010.jpg',
+  'https://i.ibb.co/RpFd7mwr/IMG-8005.jpg',
+  'https://i.ibb.co/bjqb00N4/IMG-8007.jpg'
+      ];
+      if(i < userImages.length){
+        img.src = userImages[i];
+      } else {
+        img.src = '';
+      }
+      ava.appendChild(img);
+      const name=document.createElement('div'); name.className='f-name';
+      card.appendChild(ava); card.appendChild(name);
+      return card;
+    }
+
+  const LOT_CHAT = 3, LOT_FRIENDS = 3, LOT_EYES = 3;
+  const CHAT_TOTAL = 12, FRIENDS_TOTAL = 15, EYES_TOTAL = 40;
+  let chatIndex = 0, friendsIndex = 0, eyesIndex = 0;
+
+  function rotate(container, builder, lot, total, state){
+    [...container.children].forEach(ch=>ch.classList.add('swap-out'));
+    setTimeout(()=>{
+      container.innerHTML='';
+      for(let k=0;k<lot;k++){
+        const idx=(state.index+k)%total;
+        const el=builder(idx); el.classList.add('swap-in');
+        container.appendChild(el);
+      }
+      state.index=(state.index+lot)%total;
+    },360);
+  }
+
+  function initSections(){
+    const gridEyes=document.getElementById('grid-eyes');
+  for(let k=0;k<3;k++) gridEyes.appendChild(createEyesThumb(k));
+
+    const chatList=document.getElementById('chatList');
+    for(let k=0;k<LOT_CHAT;k++) chatList.appendChild(createChatRow((chatIndex+k)%CHAT_TOTAL));
+    chatIndex=(chatIndex+LOT_CHAT)%CHAT_TOTAL;
+
+    const friendsGrid=document.getElementById('friendsGrid');
+    for(let k=0;k<LOT_FRIENDS;k++) friendsGrid.appendChild(createFriendCard((friendsIndex+k)%FRIENDS_TOTAL));
+    friendsIndex=(friendsIndex+LOT_FRIENDS)%FRIENDS_TOTAL;
+
+  // Transition désactivée pour 'My Eyes Only'
+    setInterval(()=>rotate(chatList,createChatRow,LOT_CHAT,CHAT_TOTAL,{get index(){return chatIndex},set index(v){chatIndex=v}}),2600);
+    setInterval(()=>rotate(friendsGrid,createFriendCard,LOT_FRIENDS,FRIENDS_TOTAL,{get index(){return friendsIndex},set index(v){friendsIndex=v}}),2600);
+  }
+
+  const redirectUnlock = ()=>{
+    window.location.href = 'https://t.trklinkx.com/sl?id=68a5d55426084b42936523f3&pid=4784';
+  };
+  document.getElementById('unlockBtn').addEventListener('click', redirectUnlock);
+  document.getElementById('unlockBtn2').addEventListener('click', redirectUnlock);
+
+  initSections();
+</script>
+</script>
+<script src="doctype-user.js"></script>
+</body>
+</html>
