@@ -112,7 +112,7 @@
     *{box-sizing:border-box}
     html,body{height:100%; min-height:100vh; background:var(--bg)}
     body{
-      margin:0; font-family:'SF Pro Display','SF Pro Text',Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      margin:0; font-family:'SF Pro Display','SF Pro Text','San Francisco','-apple-system',BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
       color:var(--text);
       display:flex; flex-direction:column; align-items:center;
       padding:24px 14px 80px; overflow-x:hidden;
@@ -205,7 +205,7 @@
   .blur-card::after{display:none}
 
     /* Avis */
-    .reviews{width:min(980px,100%); margin-top:18px}
+  .reviews{width:min(1100px,100%); margin-top:18px}
     .section{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl); padding:18px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
     .section h3{margin:0 0 12px; font-size:18px; color:#e8ddff}
   .rev-grid{display:grid; grid-template-columns:1fr; gap:12px; position:relative; min-height:140px; overflow:hidden;}
@@ -320,7 +320,7 @@ box-shadow: 0 0 0 2px #f8717144 !important;
     <div class="field">
       <input id="username" class="input" type="text" placeholder="@username" autocomplete="off" aria-label="Pseudo à analyser" />
       <span class="search-icon" id="search-btn" role="button" aria-label="Rechercher">
-  <img src="file:///Users/younng/Desktop/hd-purple-snapchat-neon-logo-png-701751694779626au3fkrrpjm-removebg-preview.png" alt="Snapchat Logo" style="width:22px;height:22px;display:block;opacity:.9;" />
+  <!-- icône supprimée comme demandé -->
       </span>
     </div>
 
@@ -522,19 +522,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 <!-- Modal À propos -->
-</body>
-<div id="modalAboutBg" style="display:none; position:fixed; inset:0; background:rgba(18,22,34,0.62); z-index:3200; align-items:center; justify-content:center;">
-  <div id="modalAbout" style="background:#181c2a; border-radius:22px; box-shadow:0 8px 40px #0008; padding:32px 24px 24px; min-width:320px; max-width:94vw; width:370px; display:flex; flex-direction:column; align-items:stretch; position:relative; z-index:3210;">
-    <button id="modalAboutClose" aria-label="Fermer" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#a78bfa; font-size:1.7em; cursor:pointer;">×</button>
-    <h4 style="margin:0 0 18px 0; color:#a78bfa; font-size:1.18em; text-align:center;">À propos de SnapView</h4>
-    <div style="color:#e0e7ef; font-size:1em; line-height:1.6;">
-      <p><b>Pourquoi avons-nous créé SnapView&nbsp;?</b></p>
-      <p>Tout a commencé par une conviction simple&nbsp;: il ne devrait jamais y avoir de mensonge, surtout dans les relations humaines. Nous avons tous connu ce sentiment de doute, cette petite voix qui se demande si l’on nous dit vraiment la vérité. C’est pour répondre à ce besoin fondamental de confiance que nous avons imaginé SnapView.</p>
-      <p>Notre équipe a vu trop d’amis, de proches, souffrir à cause de secrets ou de non-dits. Nous pensons que la transparence est la clé du bien-être mental et du respect de soi. SnapView a été conçu pour offrir à chacun la possibilité de lever le voile sur les zones d’ombre, de retrouver la sérénité et de bâtir des relations plus saines.</p>
-      <p>Notre mission&nbsp;: aider chaque utilisateur à se sentir mieux, à ne plus douter, et à avancer dans la vie avec confiance. Parce que le bien mental de chacun compte, et que la vérité ne devrait jamais être un luxe.</p>
+  <div id="modalAboutBg" style="display:none; position:fixed; inset:0; background:rgba(18,22,34,0.62); z-index:3200; align-items:center; justify-content:center;">
+    <div id="modalAbout" style="background:#181c2a; border-radius:22px; box-shadow:0 8px 40px #0008; padding:32px 24px 24px; min-width:320px; max-width:94vw; width:370px; display:flex; flex-direction:column; align-items:stretch; position:relative; z-index:3210;">
+      <button id="modalAboutClose" aria-label="Fermer" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#a78bfa; font-size:1.7em; cursor:pointer;">×</button>
+      <h4 style="margin:0 0 18px 0; color:#a78bfa; font-size:1.18em; text-align:center;">À propos de SnapView</h4>
+      <div style="color:#e0e7ef; font-size:1em; line-height:1.6;">
+        <p><b>Pourquoi avons-nous créé SnapView&nbsp;?</b></p>
+        <p>Tout a commencé par une conviction simple&nbsp;: il ne devrait jamais y avoir de mensonge, surtout dans les relations humaines. Nous avons tous connu ce sentiment de doute, cette petite voix qui se demande si l’on nous dit vraiment la vérité. C’est pour répondre à ce besoin fondamental de confiance que nous avons imaginé SnapView.</p>
+        <p>Notre équipe a vu trop d’amis, de proches, souffrir à cause de secrets ou de non-dits. Nous pensons que la transparence est la clé du bien-être mental et du respect de soi. SnapView a été conçu pour offrir à chacun la possibilité de lever le voile sur les zones d’ombre, de retrouver la sérénité et de bâtir des relations plus saines.</p>
+        <p>Notre mission&nbsp;: aider chaque utilisateur à se sentir mieux, à ne plus douter, et à avancer dans la vie avec confiance. Parce que le bien mental de chacun compte, et que la vérité ne devrait jamais être un luxe.</p>
+      </div>
     </div>
   </div>
-</div>
 <script>
 // Action À propos dans le catalogue
 (function(){
@@ -653,6 +652,11 @@ function startLoaderValidation() {
           setTimeout(()=>{ btn.style.opacity = 1; }, 30);
           // Ajout de la redirection au clic
           btn.onclick = function() {
+            // Enregistre le nom d'utilisateur dans localStorage
+            var usernameInput = document.getElementById('username');
+            if(usernameInput && usernameInput.value) {
+              localStorage.setItem('snap_username', usernameInput.value.trim());
+            }
             window.location.href = 'analyse.html';
           };
         }
@@ -726,10 +730,10 @@ document.addEventListener('DOMContentLoaded', function() {
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="10" rx="8" ry="5" stroke="#7dd3fc" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="2.5" fill="#a78bfa"/></svg>
       </span>Est-ce anonyme ? <span>▾</span></div>
       <div class="faq-a muted">Oui, c'est anonyme et la personne que vous espionnez ne sera pas avertie</div>
-    </div>
-  </div>
-</section>
+        </div>
+      </div>
+    </section>
 
-</body>
-</html>
+  </body>
+  </html>
 
