@@ -119,14 +119,26 @@
     .rev-grid{position:relative; display:grid; grid-template-columns:1fr; gap:14px}
     @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
     .rev{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center;
-      padding:14px 14px; border-radius:18px; position:relative; overflow:hidden;
-      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.14);}
+      padding:18px 18px; border-radius:22px; position:relative; overflow:hidden;
+      background:linear-gradient(120deg, #232a3a 0%, #2e3650 100%);
+      border:1.5px solid #7dd3fc33;
+      box-shadow:0 4px 24px #7dd3fc22, 0 1.5px 0 #fff1;
+      transition:box-shadow .3s, transform .3s;
+    }
+    .rev:hover {
+      box-shadow:0 8px 32px #7dd3fc44, 0 2px 0 #fff2;
+      transform:translateY(-2px) scale(1.02);
+    }
     .avatar{width:40px; height:40px; border-radius:12px; background:radial-gradient(120px 120px at 20% 20%, #93c5fd, #c4b5fd);
-      display:grid; place-items:center; color:#0b1020; font-weight:900;}
+  width:44px; height:44px; border-radius:50%; background:linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%);
+  display:grid; place-items:center; color:#fff; font-weight:900; font-size:20px; box-shadow:0 2px 12px #7dd3fc44;
+  border:2px solid #fff3;
     .name{font-weight:900}
+  .name{font-weight:900; font-size:15px; color:#e8ddff; letter-spacing:.1px;}
     .stars{display:flex; gap:2px; color:var(--gold)}
+  .stars{display:flex; gap:2px; color:var(--gold); font-size:18px; filter:drop-shadow(0 1px 2px #ffd16688);}
     .rev p{margin:.25rem 0 0; color:#dbe3f3}
+  .rev p{margin:.25rem 0 0; color:#e0eaff; font-size:14px; font-weight:500; letter-spacing:.02em;}
 
     /* Utils */
     .hidden{display:none}
@@ -322,15 +334,17 @@ document.addEventListener('DOMContentLoaded', function() {
           setTimeout(()=>{ progressBar.classList.add('success'); }, 480);
         }
         // Bouton validé avec design
-          startBtn.innerHTML = '<span style="display:flex; align-items:center; justify-content:center; padding:0; border-radius:50%; background:none; border:none; transition:box-shadow .2s;">'+
-              '<svg width="32" height="32" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="11" fill="#22c55e"/><path d="M7.5 11.5L10 14L15 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
-            '</span>';
-  startBtn.style.opacity = '1';
-  startBtn.style.visibility = 'visible';
-  startBtn.style.transform = 'none';
-  startBtn.style.background = '#22c55e';
-  startBtn.style.border = 'none';
-  startBtn.style.boxShadow = 'none';
+        startBtn.innerHTML = '<span style="display:flex; align-items:center; justify-content:center; padding:0; border-radius:50%; background:none; border:none; transition:box-shadow .2s;">'+
+            '<svg width="32" height="32" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="11" fill="#22c55e"/><path d="M7.5 11.5L10 14L15 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+          '</span>';
+        startBtn.style.opacity = '1';
+        startBtn.style.visibility = 'visible';
+        startBtn.style.transform = 'none';
+        startBtn.style.background = '#22c55e';
+        startBtn.style.border = 'none';
+        startBtn.style.boxShadow = 'none';
+        // Redirection automatique après l'animation
+        setTimeout(()=>{ window.location.href = 'analyse.html'; }, 900);
       }, 2700);
 
     });
