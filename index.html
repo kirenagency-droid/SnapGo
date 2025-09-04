@@ -1,3 +1,19 @@
+<style id="header-spacing-fix">
+  header h1 {
+    margin-top: -36px !important;
+    margin-bottom: 32px !important; /* ajuste la valeur (20–40px) selon ton goût */
+  }
+</style>
+<style id="layout-fix">
+  /* Pousse toute la page vers le bas de façon responsive */
+  body{ padding-top: clamp(90px, 12vh, 180px) !important; }
+
+  /* Laisse de l’air entre le header et le 1er panneau */
+  header{ margin-bottom: clamp(16px, 5vh, 48px) !important; }
+
+  /* Évite qu’un margin-top existant du panneau repousse trop */
+  .panel{ margin-top: 0 !important; }
+</style>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,358 +23,204 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
   <style>
-    /* Modal avis */
-    #modalAvisBg {
-      position: fixed; inset: 0; background: rgba(18,22,34,0.62); z-index: 3000;
-      display: none; align-items: center; justify-content: center;
-    }
-    #modalAvis {
-      background: #181c2a; border-radius: 22px; box-shadow: 0 8px 40px #0008;
-      padding: 32px 24px 24px; min-width: 320px; max-width: 94vw; width: 370px;
-      display: flex; flex-direction: column; align-items: stretch; position: relative;
-      z-index: 3100;
-    }
-    #modalAvis h4 { margin: 0 0 18px 0; color: #a78bfa; font-size: 1.18em; text-align: center; }
-    .modal-field { margin-bottom: 16px; }
-    .modal-field label { color: #e0e7ef; font-size: 0.98em; margin-bottom: 4px; display: block; }
-    .modal-input { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #2a3144; background: #23273a; color: #fff; font-size: 1em; }
-    .modal-row { display: flex; align-items: center; gap: 10px; }
-    .modal-checkbox { accent-color: #a78bfa; }
-    .stars { display: flex; gap: 4px; margin-top: 4px; }
-    .star { font-size: 1.5em; color: #b6c1d9; cursor: pointer; transition: color .18s; }
-    .star.selected, .star:hover, .star.selected ~ .star { color: #ffd166; }
-    #modalAvisClose { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #a78bfa; font-size: 1.7em; cursor: pointer; }
-    #modalAvisBtn { margin-top: 18px; padding: 10px 0; border-radius: 999px; border: none; background: linear-gradient(90deg,#7dd3fc 0%, #a78bfa 100%); color: #181c2a; font-weight: 900; font-size: 1.08em; letter-spacing: .01em; box-shadow: 0 2px 10px #7dd3fc22; cursor: pointer; transition: background .2s; }
-    /* Menu latéral (catalogue) */
-    #sideMenuBg {
-      position: fixed; inset: 0; background: rgba(18,22,34,0.62); z-index: 2000;
-      display: none; transition: opacity .25s;
-    }
-    #sideMenu {
-      position: fixed; top: 0; right: -320px; width: 300px; height: 100vh;
-      background: rgba(22,26,38,0.98); box-shadow: -6px 0 32px #0007;
-      z-index: 2100; display: flex; flex-direction: column; padding: 38px 24px 24px;
-      transition: right .32s cubic-bezier(.7,0,.3,1);
-    }
-    #sideMenu.open { right: 0; }
-    #sideMenuBg.open { display: block; opacity: 1; }
-    #sideMenuBg { opacity: 0; }
-    #sideMenu h3 { color: #a78bfa; margin: 0 0 18px 0; font-size: 1.18em; letter-spacing: .04em; }
-    .side-link { color: #e0e7ef; text-decoration: none; font-size: 1.08em; padding: 12px 0; display: block; border-bottom: 1px solid #23273a; transition: color .18s; }
-    .side-link:last-child { border-bottom: none; }
-    .side-link:hover { color: #7dd3fc; }
-    #sideMenuClose { position: absolute; top: 18px; right: 18px; background: none; border: none; color: #a78bfa; font-size: 2em; cursor: pointer; }
-    /* ...existing code... (autres styles déjà présents dans le <head>) */
-  </style>
-</head>
-<body>
-  <div id="modalAvisBg">
-    <form id="modalAvis" autocomplete="off">
-      <button id="modalAvisClose" aria-label="Fermer">×</button>
-      <h4>Déposer un avis</h4>
-      <div class="modal-field">
-        <label for="avisPseudo">Pseudo</label>
-        <div class="modal-row">
-          <input id="avisPseudo" class="modal-input" type="text" maxlength="18" placeholder="Votre pseudo..." />
-          <label style="font-size:0.98em; color:#b6c1d9; display:flex; align-items:center; gap:4px; cursor:pointer;">
-            <input id="avisAnon" class="modal-checkbox" type="checkbox" checked /> Anonyme
-          </label>
-        </div>
-      </div>
-      <div class="modal-field">
-        <label for="avisText">Votre avis</label>
-        <textarea id="avisText" class="modal-input" rows="3" maxlength="180" placeholder="Exprimez-vous..." required></textarea>
-      </div>
-      <div class="modal-field">
-        <label>Note</label>
-        <div class="stars" id="avisStars">
-          <span class="star" data-star="1">★</span>
-          <span class="star" data-star="2">★</span>
-          <span class="star" data-star="3">★</span>
-          <span class="star" data-star="4">★</span>
-          <span class="star" data-star="5">★</span>
-        </div>
-      </div>
-      <button id="modalAvisBtn" type="submit">Valider l’avis</button>
-    </form>
-  </div>
-  <div id="sideMenuBg"></div>
-  <nav id="sideMenu" aria-label="Catalogue">
-    <button id="sideMenuClose" aria-label="Fermer le menu">×</button>
-    <h3>Catalogue</h3>
-    <a href="#" class="side-link" id="avisOpenBtn">Déposer un avis</a>
-    <a href="#" class="side-link">Contact</a>
-    <a href="#" class="side-link">À propos</a>
-    <a href="#" class="side-link">Mentions légales</a>
-  </nav>
-  <!-- ...existing code... (tout le reste du HTML du site) ... -->
-  <style>
+    /* ===== Variables & base ===== */
     :root{
-      --bg:#0d0f14;                 /* fond noir clair */
-      --text:#f4f7ff;               /* texte principal */
-      --sub:#b6c1d9;                /* texte secondaire */
-      --glass:rgba(255,255,255,.06);
-      --glass-2:rgba(255,255,255,.10);
-      --stroke:rgba(255,255,255,.14);
-      --ring:#7dd3fc88;             /* auréole input */
-      --accent:#7dd3fc;             /* cyan doux */
-      --accent2:#a78bfa;            /* violet doux */
-      --gold:#ffd166;               /* étoiles */
-      --radius-xl:28px;             /* gros arrondis */
-      --radius:18px;                /* arrondis standard */
-      --blur:blur(18px) saturate(160%);
+    --bg:#000; --text:#f4f7ff; --sub:#b6c1d9;
+      --glass:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.14);
+      --ring:#7dd3fc88; --accent:#7dd3fc; --accent2:#a78bfa; --gold:#ffd166;
+      --radius-xl:28px; --radius:18px; --blur:blur(18px) saturate(160%);
       --shadow:0 10px 40px rgba(0,0,0,.40);
     }
     *{box-sizing:border-box}
-    html,body{height:100%; min-height:100vh; background:var(--bg)}
-    body{
-      margin:0; font-family:'SF Pro Display','SF Pro Text','San Francisco','-apple-system',BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
-      color:var(--text);
-      display:flex; flex-direction:column; align-items:center;
-      padding:24px 14px 80px; overflow-x:hidden;
-    }
+    html,body{height:100%; min-height:100vh; background:#000 !important;}
+    body{margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,Arial,sans-serif; color:var(--text);
+         display:flex; flex-direction:column; align-items:center; padding:24px 14px 80px; overflow-x:hidden;}
 
-    /* halo décoratif subtil */
+    /* halos décoratifs */
     .orb{position:fixed; width:540px; height:540px; border-radius:50%; filter:blur(70px); pointer-events:none; opacity:.35; mix-blend:screen}
     .o1{left:-180px; top:-180px; background:radial-gradient(circle at 40% 40%, #7dd3fc, transparent 60%)}
     .o2{right:-160px; top:80px;  background:radial-gradient(circle at 60% 50%, #a78bfa, transparent 60%)}
     .o3{left:50%; bottom:-260px; transform:translateX(-50%); background:radial-gradient(circle at 50% 50%, #94a3b8, transparent 65%)}
 
+    /* ===== Header ===== */
     header{width:min(980px,100%); text-align:center; margin:6px 0 10px 0}
-    h1{
-      margin:0;
-      font-weight:900;
-      font-size:clamp(34px,7vw,54px);
-      letter-spacing:.6px;
-      background:linear-gradient(90deg,#9be7ff 0%,#a78bfa 100%);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 2px 28px rgba(125,211,252,.35);
-      margin-top:38px;
-      margin-bottom:10px;
-      display:inline-block;
-      vertical-align:middle;
-    }
-  .subtitle{color:var(--text); opacity:.9; font-weight:700; font-size:clamp(16px,3.6vw,22px); margin:38px 0 18px}
+    h1{margin:0; font-weight:900; font-size:clamp(34px,7vw,54px); letter-spacing:.6px;
+       background:linear-gradient(90deg,#9be7ff 0%,#a78bfa 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+       text-shadow:0 2px 28px rgba(125,211,252,.35); margin-top:38px; margin-bottom:10px; display:inline-block;}
+    .subtitle{color:var(--text); opacity:.9; font-weight:700; font-size:clamp(16px,3.6vw,22px); margin:38px 0 18px}
 
-    /* barre d’options défilantes (pills) */
-    .scrolling-bar{width:100vw; max-width:100%; overflow:hidden; position:relative; margin:8px 0 18px}
-    .scrolling-track{display:flex; gap:14px; width:max-content; padding:10px 16px; animation:marq 42s linear infinite}
-    @keyframes marq{from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px;
-      color:#ecf6ff; font-weight:800; letter-spacing:.25px; font-size:14px;
-      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.14); backdrop-filter:var(--blur); box-shadow:var(--shadow)}
-    .pill i{width:8px; height:8px; border-radius:50%; background:linear-gradient(90deg,var(--accent),var(--accent2)); box-shadow:0 0 0 3px rgba(125,211,252,.12)}
-
-    /* panneau principal (input) */
+    /* ===== Panneau principal ===== */
     .panel{width:min(880px,100%); background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl);
-      padding:22px 18px 18px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
+      padding:16px 14px 12px; backdrop-filter:var(--blur); box-shadow:var(--shadow); margin-bottom:10px;}
 
-    .stepper{display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:16px; color:#cbd5e1; font-weight:700}
+    .stepper{display:flex; align-items:center; gap:10px; justify-content:flex-start; margin-bottom:16px; color:#cbd5e1; font-weight:700}
     .steps{display:flex; gap:8px}
-    .dot{width:10px; height:10px; border-radius:50%; background:#243042; border:1px solid #3b4b63; position:relative}
+    .dot{width:10px; height:10px; border-radius:50%; background:#243042; border:1px solid #3b4b63}
     .dot.active{background:linear-gradient(90deg,var(--accent),var(--accent2)); box-shadow:0 0 0 4px rgba(125,211,252,.18)}
-    .progress{height:6px; border-radius:999px; background:#111827; border:1px solid #243042; overflow:hidden; margin:8px auto 0; width:72%}
-  .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .5s ease}
 
-.input-error {
-  border-color: #f87171 !important;
-  box-shadow: 0 0 0 2px #f8717144 !important;
-}
-  .bar.filling { width: 85%; background: linear-gradient(90deg,var(--accent),var(--accent2)); }
-  .bar.success { width: 100%; background: linear-gradient(90deg,#22c55e 0%, #4ade80 100%) !important; }
+    /* Progress bar (compacte en haut à droite) */
+    .progress{height:6px; border-radius:999px; background:#111827; border:1px solid #243042; overflow:hidden}
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .6s ease}
+    .bar.filling{}
+    .bar.success{ background:linear-gradient(90deg,#22c55e 0%, #4ade80 100%) !important; }
+    .mini-progress{ width:120px; height:6px; margin:0 }
+    @media (max-width:480px){ .mini-progress{ width:92px; height:5px } }
 
-    .field{
-      position:relative; display:flex; align-items:center; gap:10px; margin:8px auto 10px; width:min(720px,100%);
+    .field{position:relative; display:flex; align-items:center; gap:10px; margin:8px auto 10px; width:min(720px,100%);
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border:1px solid var(--stroke); border-radius:20px; padding:8px 10px; backdrop-filter:var(--blur); box-shadow:inset 0 1px 0 rgba(255,255,255,.06)
-    }
-    .input{flex:1 1 auto; height:52px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(10,14,22,.6);
+      border:1px solid var(--stroke); border-radius:20px; padding:8px 10px; backdrop-filter:var(--blur); box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    .input{flex:1; height:52px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(10,14,22,.6);
       color:var(--text); font-size:16px; padding:0 46px 0 16px; outline:none; transition:box-shadow .2s,border-color .2s}
     .input:focus{box-shadow:0 0 0 4px var(--ring); border-color:#2a7cff}
     .search-icon{position:absolute; right:16px; width:22px; height:22px; display:grid; place-items:center; opacity:.9}
-
-    .hints{color:var(--sub); text-align:center; font-size:14px; margin-top:4px}
 
     .quality{display:flex; gap:8px; justify-content:center; margin-top:10px; flex-wrap:wrap}
     .q-pill{display:flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-weight:800; font-size:12px;
       border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.06); color:#e6f2ff}
 
-    .cta{display:block; margin:20px auto 0; padding:14px 34px; border-radius:999px; border:1px solid rgba(255,255,255,.2);
-      font-weight:900; font-size:18px; color:#0f172a; cursor:pointer; transition:transform .12s;
-      background:linear-gradient(90deg,var(--accent) 0%, var(--accent2) 100%); box-shadow:0 10px 30px rgba(125,211,252,.25)}
-    .cta:hover{transform:translateY(-2px)}
+    .cta{ display:block; margin:8px auto 0 !important; padding:12px 30px; border-radius:999px; border:1px solid rgba(255,255,255,.2);
+      font-weight:900; font-size:18px; color:#0f172a; cursor:pointer; background:linear-gradient(90deg,var(--accent) 0%, var(--accent2) 100%); box-shadow:0 10px 30px rgba(125,211,252,.25); }
 
-    /* aperçu flouté */
-    .preview{width:min(980px,100%); margin:18px auto 0; padding:18px; background:var(--glass); border:1px solid var(--stroke);
-      border-radius:var(--radius-xl); box-shadow:var(--shadow); backdrop-filter:var(--blur)}
+    /* ===== Conteneur de vérification ===== */
+    .preview{
+      width:min(1400px,100%); margin:0 auto 0 !important; padding:18px; padding-bottom:70px; background:var(--glass); border:1px solid var(--stroke);
+      border-radius:var(--radius-xl); box-shadow:0 8px 28px rgba(0,0,0,.32); backdrop-filter:var(--blur);
+      opacity:0; transform:translateY(-8px); max-height:0; overflow:hidden; margin-bottom:0;
+      transition:
+        opacity .6s cubic-bezier(.4,0,.2,1),
+        transform .6s cubic-bezier(.4,0,.2,1),
+        max-height .7s cubic-bezier(.4,0,.2,1),
+        margin .7s cubic-bezier(.4,0,.2,1),
+        box-shadow .3s ease;
+    }
+    .preview.visible{
+      opacity:1; transform:translateY(0); max-height:900px; margin-bottom:18px; box-shadow:0 12px 36px rgba(0,0,0,.38);
+    }
     .preview h2{margin:0 0 8px; font-size:18px; color:#dbeafe}
-    .scan{position:relative; height:8px; border-radius:999px; background:#0f172a; border:1px solid #223147; overflow:hidden}
-    .scan::after{content:""; position:absolute; inset:0; width:30%; background:linear-gradient(90deg,transparent,#7dd3fcaa,transparent); animation:scan 1.2s linear infinite}
-    @keyframes scan{from{transform:translateX(-100%)} to{transform:translateX(400%)}}
     .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
     @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:520px){.grid{grid-template-columns:1fr}}
     .blur-card{position:relative; height:140px; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.14);
-  background:rgba(10,14,22,0.92); /* fond noir confidentiel */}
-  /* Suppression de l'overlay blanc flouté */
-  .blur-card::after{display:none}
+      background:rgba(10,14,22,0.92);}
 
-    /* Avis */
-  .reviews{width:min(1100px,100%); margin-top:18px}
-    .section{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl); padding:18px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
-    .section h3{margin:0 0 12px; font-size:18px; color:#e8ddff}
-  .rev-grid{display:grid; grid-template-columns:1fr; gap:12px; position:relative; min-height:140px; overflow:hidden;}
-  @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
-    .rev{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:start; padding:14px; border-radius:18px;
-      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); border:1px solid rgba(255,255,255,.14);
-      opacity:1; position:absolute; left:0; right:0; top:0;
-      transition:transform .45s cubic-bezier(.4,0,.2,1), opacity .45s cubic-bezier(.4,0,.2,1);}
-    .rev-grid { position:relative; min-height:140px; }
-    .rev.rev-leave-left { transform:translateX(-100%); opacity:0; pointer-events:none; z-index:0; }
-    .rev.rev-leave-right { transform:translateX(100%); opacity:0; pointer-events:none; z-index:0; }
-    .rev.rev-enter-left { transform:translateX(100%); opacity:0; z-index:1; }
-    .rev.rev-enter-right { transform:translateX(-100%); opacity:0; z-index:1; }
-    .rev.rev-active { transform:translateX(0); opacity:1; z-index:2; }
-    .avatar{width:36px; height:36px; border-radius:50%; background:linear-gradient(120deg,#93c5fd,#c4b5fd); display:grid; place-items:center; color:#0b1020; font-weight:900}
+    /* ===== Avis ===== */
+  .reviews{ width:min(1100px,100%); margin-top:0 !important; margin-bottom:0 !important; transition: margin-top .55s cubic-bezier(.4,0,.2,1); }
+  .reviews h3 { margin-top: 0 !important; }
+    .section{
+      background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl);
+  padding:10px 14px 10px; padding-top:10px !important; margin-top:0 !important;
+      backdrop-filter:var(--blur); box-shadow:var(--shadow)
+    }
+    .reviews { margin-top: 0 !important; }
+    .reviews h3 { margin-top: 0 !important; }
+    .reviews { margin-top: 0 !important; }
+    .reviews h3 { margin-top: 0 !important; }
+    .section h3{margin:0 0 8px; font-size:18px; color:#e8ddff}
+    .rev-grid{position:relative; display:grid; grid-template-columns:1fr; gap:14px}
+    @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
+    .rev{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center;
+      padding:14px 14px; border-radius:18px; position:relative; overflow:hidden;
+      background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.14);}
+    .avatar{width:40px; height:40px; border-radius:12px; background:radial-gradient(120px 120px at 20% 20%, #93c5fd, #c4b5fd);
+      display:grid; place-items:center; color:#0b1020; font-weight:900;}
     .name{font-weight:900}
-    .stars{color:var(--gold)}
+    .stars{display:flex; gap:2px; color:var(--gold)}
+    .rev p{margin:.25rem 0 0; color:#dbe3f3}
 
-    /* FAQ */
-    .faq{width:min(980px,100%); margin-top:18px}
-    .faq-item{border-radius:18px; border:1px solid rgba(255,255,255,.14); background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); padding:14px; cursor:pointer}
-    .faq-q{display:flex; justify-content:space-between; align-items:center; font-weight:800}
-    .faq-a{max-height:0; opacity:0; overflow:hidden; transition:max-height .5s ease, opacity .35s ease, padding .35s ease}
-    .faq-item.open .faq-a{max-height:260px; opacity:1; padding-top:10px}
-
-    /* utils */
+    /* Utils */
     .hidden{display:none}
     .muted{color:var(--sub)}
-.scan.paused::after { animation-play-state: paused !important; }
+    .input-error{ border-color:#f87171 !important; box-shadow:0 0 0 2px #f8717144 !important; }
 
-.input-error {
-border-color: #f87171 !important;
-box-shadow: 0 0 0 2px #f8717144 !important;
-}
-.input-error {
-  border-color: #f87171 !important;
-  box-shadow: 0 0 0 2px #f8717144 !important;
-}
+    /* Les avis descendent quand la preview s'ouvre */
+    .reviews { margin-top: 0 !important; transition: margin-top .55s cubic-bezier(.4,0,.2,1); }
+    .preview.visible + .reviews { margin-top:48px !important; }
+    @media (max-width: 640px){
+      .preview.visible + .reviews{ margin-top:36px !important; }
+    }
+  /* Animated dots loader */
+  .dot-loader {
+    display: inline-flex;
+    gap: 6px;
+    height: 14px;
+    align-items: flex-end;
+  }
+  .dot-loader span {
+    display: block;
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: dotBlink 1.2s infinite both;
+  }
+  .dot-loader.small span {
+    width: 7px;
+    height: 7px;
+  }
+  .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
+  .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotBlink {
+    0%, 80%, 100% { opacity: 0.7; transform: scale(1); }
+    40% { opacity: 1; transform: scale(1.35); }
+  }
+  #start-btn { margin-bottom: 32px !important; }
+  .header-container {
+  width: fit-content;
+  min-width: 0;
+  max-width: none;
+  margin: 18px 0 28px 0 !important;
+  align-self: flex-start;
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(125,211,252,.08);
+  padding: 6px 16px 0px 16px !important;
+  backdrop-filter: var(--blur);
+  display: block;
+  }
   </style>
 </head>
-  <body>
+<body>
   <!-- halos -->
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div id="notif-container" style="position:fixed; bottom:54px; right:18px; z-index:999; display:flex; flex-direction:column; gap:8px; align-items:flex-end;"></div>
 
-  <header style="position:relative; width:100%; min-height:90px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;">
-  <button id="menuBtn" aria-label="Ouvrir le catalogue" style="position:absolute; top:14px; right:18px; background:rgba(18,22,34,0.82); border:none; border-radius:12px; padding:10px 12px; box-shadow:0 2px 12px #0005; display:flex; flex-direction:column; gap:5px; cursor:pointer; transition:background .18s; z-index:2200;">
-  <script>
-    // Menu latéral (catalogue)
-    const menuBtn = document.getElementById('menuBtn');
-    const sideMenu = document.getElementById('sideMenu');
-    const sideMenuBg = document.getElementById('sideMenuBg');
-    const sideMenuClose = document.getElementById('sideMenuClose');
-    function openMenu() {
-      sideMenu.classList.add('open');
-      sideMenuBg.classList.add('open');
-      sideMenuBg.style.display = 'block';
-      setTimeout(()=>{ sideMenuBg.style.opacity = 1; }, 10);
-      menuBtn.style.display = 'none';
-    }
-    function closeMenu() {
-      sideMenu.classList.remove('open');
-      sideMenuBg.style.opacity = 0;
-      setTimeout(()=>{
-        sideMenuBg.classList.remove('open');
-        sideMenuBg.style.display = 'none';
-        menuBtn.style.display = 'flex';
-      }, 250);
-    }
-    menuBtn.addEventListener('click', openMenu);
-    sideMenuBg.addEventListener('click', closeMenu);
-    sideMenuClose.addEventListener('click', closeMenu);
-  </script>
-      <span style="display:block;width:28px;height:3.5px;background:#e0e7ef;border-radius:2px;"></span>
-      <span style="display:block;width:28px;height:3.5px;background:#e0e7ef;border-radius:2px;"></span>
-      <span style="display:block;width:28px;height:3.5px;background:#e0e7ef;border-radius:2px;"></span>
-    </button>
-  <h1 style="margin:0; margin-top:28px; margin-bottom:6px; font-size:clamp(36px,7vw,56px); text-align:center;">SNAP<span style="color:#a78bfa">VIEW</span></h1>
-    <div style="width:100%; display:flex; justify-content:center;">
-  <span style="color:#fff; font-size:13px; opacity:.82; text-align:center; margin-bottom:4px; display:block;">découvrez la vérité sur vos proches</span>
-    </div>
-    <div style="width:100%; display:flex; justify-content:center;">
-
-    </div>
+  <header style="position:relative; width:100%; min-height:0; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start;">
+  <h1 style="margin:0; margin-top:0; margin-bottom:2px; font-size:clamp(36px,7vw,56px); text-align:left;">SNAP<span style="color:#a78bfa">VIEW</span></h1>
+  <span style="color:#fff; font-size:13px; opacity:.82; text-align:left; margin-top:-34px; margin-bottom:0; display:block;">découvrez la vérité sur vos proches</span>
   </header>
 
-  <!-- pills défilantes -->
-  <div class="scrolling-bar">
-    <div class="scrolling-track">
-      <span class="pill"><i></i>memories snap</span>
-      <span class="pill"><i></i>my eyes only</span>
-      <span class="pill"><i></i>localisation</span>
-      <span class="pill"><i></i>discussion privé</span>
-      <span class="pill"><i></i>message supprimé</span>
-      <!-- duplication pour loop -->
-      <span class="pill"><i></i>memories snap</span>
-      <span class="pill"><i></i>my eyes only</span>
-      <span class="pill"><i></i>localisation</span>
-      <span class="pill"><i></i>discussion privé</span>
-      <span class="pill"><i></i>liste d'amis</span>
-    </div>
-  </div>
-
   <section class="panel" aria-label="Recherche">
-    <div class="stepper">
-      <span>Étapes</span>
-      <div class="steps" aria-hidden="true">
-        <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div class="stepper">
+        <span>Étapes</span>
+        <div class="steps" aria-hidden="true">
+          <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
       </div>
+      <div class="progress mini-progress" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
     </div>
-    <div class="progress" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
 
     <div class="field">
       <input id="username" class="input" type="text" placeholder="@username" autocomplete="off" aria-label="Pseudo à analyser" />
-      <span class="search-icon" id="search-btn" role="button" aria-label="Rechercher">
-  <!-- icône supprimée comme demandé -->
-      </span>
+      <span class="search-icon" id="search-btn" role="button" aria-label="Rechercher"></span>
+      <span id="usernameError" style="display:none; color:#f87171; font-size:14px; margin-left:8px;">Pseudo invalide. Format attendu : nom.prenom</span>
     </div>
-
-    <p class="hints muted">Ex. @célia_m11 · @mathislou.22</p>
 
     <div class="quality" aria-hidden="true">
-  <div class="q-pill"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="vertical-align:middle; margin-right:6px;"><circle cx="10" cy="10" r="9" stroke="#7dd3fc" stroke-width="2" fill="none"/><path d="M6 10.5l2.5 2.5 5-5" stroke="#7dd3fc" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Sécurisé</div>
-  <div class="q-pill"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="vertical-align:middle; margin-right:6px;"><rect x="3" y="9" width="14" height="2" rx="1" fill="#a78bfa"/><rect x="7" y="5" width="6" height="2" rx="1" fill="#a78bfa"/><rect x="7" y="13" width="6" height="2" rx="1" fill="#a78bfa"/></svg>Rapide</div>
-  <div class="q-pill"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="vertical-align:middle; margin-right:6px;"><circle cx="10" cy="10" r="8" stroke="#b6c1d9" stroke-width="2" fill="none"/><ellipse cx="10" cy="13.5" rx="3.5" ry="2.5" fill="#b6c1d9" fill-opacity="0.18"/><circle cx="10" cy="9" r="2.5" fill="#b6c1d9" fill-opacity="0.18"/></svg>Anonyme</div>
-    </div>
-
-    <button id="start-btn" class="cta">Commencer</button>
-  </section>
-
-  <section id="preview" class="preview hidden" aria-live="polite">
-  <h2 id="verifTitle" style="display:inline-block;">Vérification du nom d’utilisateur<span id="dotsAnim">...</span></h2>
-  <!-- Barre de scan supprimée comme demandé -->
-    <div id="previewGrid" class="grid hidden">
-      <div class="blur-card" id="blurCardAnim" style="background:rgba(10,14,22,0.92); box-shadow:0 4px 32px #0008; display:flex; align-items:center; justify-content:center; min-height:120px; position:relative;">
-        <div id="loaderAnim" style="display:flex; align-items:center; justify-content:center; width:100%; height:100%;">
-          <svg width="54" height="54" viewBox="0 0 54 54" fill="none" style="display:block;" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="27" cy="27" r="22" stroke="#7dd3fc33" stroke-width="6"/>
-            <circle cx="27" cy="27" r="22" stroke="#7dd3fc" stroke-width="6" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="80">
-              <animateTransform attributeName="transform" type="rotate" from="0 27 27" to="360 27 27" dur="1s" repeatCount="indefinite"/>
-            </circle>
-          </svg>
-        </div>
-        <div id="checkAnim" style="display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%;">
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="28" stroke="#7dd3fc" stroke-width="4" fill="#0d0f14"/>
-            <path id="checkmark" d="M20 34L30 44L46 26" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/>
-          </svg>
-          <button id="nextStepBtn" style="display:none; opacity:0; margin-top:18px; padding:7px 18px; border-radius:999px; border:none; background:linear-gradient(90deg,#7dd3fc 0%, #a78bfa 100%); color:#181c2a; font-weight:700; font-size:0.98em; letter-spacing:.01em; box-shadow:0 2px 10px #7dd3fc22; cursor:pointer; transition:opacity .5s, background .2s;">Étapes suivantes</button>
-        </div>
-      </div>
+      <div class="q-pill">Sécurisé</div>
+      <div class="q-pill">Rapide</div>
+      <div class="q-pill">Anonyme</div>
     </div>
   </section>
 
+  <button id="start-btn" class="cta" style="margin:28px auto 32px auto; transition:opacity .6s, visibility .6s, transform .6s cubic-bezier(.4,0,.2,1);">Commencer</button>
+
+
+
+  <!-- Avis -->
   <section class="reviews">
     <div class="section">
       <h3>Avis récents</h3>
@@ -371,7 +233,7 @@ box-shadow: 0 0 0 2px #f8717144 !important;
           </div>
           <div class="stars">★★★★★</div>
         </div>
-        <div class="rev" style="display:none">
+        <div class="rev">
           <div class="avatar">A</div>
           <div>
             <div class="name">Anonyme <span class="muted">· 25/08/2025</span></div>
@@ -379,7 +241,7 @@ box-shadow: 0 0 0 2px #f8717144 !important;
           </div>
           <div class="stars">★★★★★</div>
         </div>
-        <div class="rev" style="display:none">
+        <div class="rev">
           <div class="avatar">A</div>
           <div>
             <div class="name">Anonyme <span class="muted">· 20/08/2025</span></div>
@@ -388,486 +250,101 @@ box-shadow: 0 0 0 2px #f8717144 !important;
           <div class="stars">★★★☆☆</div>
         </div>
       </div>
-      <!-- Navigation manuelle supprimée, le carrousel est automatique -->
     </div>
   </section>
 
-
 <script>
-// Action Contact dans le catalogue
 document.addEventListener('DOMContentLoaded', function() {
-  // Contact
-  const contactLink = document.querySelector('.side-link:nth-of-type(2)');
-  if(contactLink) {
-    contactLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      alert('Pour nous contacter, écrivez à : snapview@pro.com');
-    });
+  // --- Notification popups ---
+  const notifContainer = document.getElementById('notif-container');
+  const names = ["Celia", "Lucas", "Emma", "Noah", "Lina", "Hugo", "Jade", "Louis", "Maya", "Tom", "Léo", "Anna", "Sacha", "Nina", "Eden", "Léna", "Axel", "Mila", "Paul", "Zoé"];
+  function showNotif() {
+    const name = names[Math.floor(Math.random()*names.length)];
+    const notif = document.createElement('div');
+    notif.textContent = `${name} a reçu son rapport par mail`;
+    notif.style.cssText = `background:#22c55e; color:#fff; font-size:13px; font-weight:600; border-radius:12px; box-shadow:0 2px 16px #22c55e44; padding:8px 18px; margin:0; opacity:0; transform:translateY(20px); transition:opacity .5s,transform .5s; pointer-events:auto;`;
+    notifContainer.appendChild(notif);
+    setTimeout(()=>{ notif.style.opacity = '1'; notif.style.transform = 'translateY(0)'; }, 50);
+    setTimeout(()=>{ notif.style.opacity = '0'; notif.style.transform = 'translateY(20px)'; }, 3400);
+    setTimeout(()=>{ notif.remove(); }, 4000);
   }
-
-  // FAQ interactive
-  document.querySelectorAll('.faq-item .faq-q').forEach(q => {
-    q.addEventListener('click', () => {
-      q.parentElement.classList.toggle('open');
-    });
-  });
-
-  // Carrousel avis
-  const avis = Array.from(document.querySelectorAll('#revCarousel .rev'));
-  // Suppression des boutons de navigation manuelle
-  let idx = 0;
-  function showAvis(i, direction = 1) {
-    avis.forEach((el, j) => {
-      el.classList.remove('rev-leave-left','rev-leave-right','rev-enter-left','rev-enter-right','rev-active');
-      if(j === i) {
-        el.style.display = '';
-        el.classList.add('rev-active');
-        setTimeout(()=>{
-          el.classList.remove('rev-enter-left','rev-enter-right');
-        }, 500);
-      } else {
-        el.style.display = '';
-        if(direction === 1) {
-          el.classList.add('rev-leave-left');
-        } else {
-          el.classList.add('rev-leave-right');
-        }
-        setTimeout(()=>{
-          el.style.display = 'none';
-          el.classList.remove('rev-leave-left','rev-leave-right','rev-active');
-        }, 500);
-      }
-    });
-    // Ajoute la classe d'entrée au nouvel avis
-    if(avis[i]) {
-      if(direction === 1) {
-        avis[i].classList.add('rev-enter-right');
-      } else {
-        avis[i].classList.add('rev-enter-left');
-      }
-      setTimeout(()=>{
-        avis[i].classList.remove('rev-enter-left','rev-enter-right');
-      },10);
-    }
+  function notifLoop() {
+    showNotif();
+    const next = Math.floor(Math.random()*2000)+5000; // 5000–7000ms
+    setTimeout(notifLoop, next);
   }
-  function nextAvis() {
-    idx = (idx + 1) % avis.length;
-    showAvis(idx, 1);
-  }
-  if(avis.length > 0) {
-    showAvis(idx, 1);
-    setInterval(nextAvis, 5000);
-  }
-
-  // Bouton Commencer : validation pseudo + chargement
-  const startBtn = document.getElementById('start-btn');
+  notifLoop();
+  const startBtn      = document.getElementById('start-btn');
   const usernameInput = document.getElementById('username');
   const usernameError = document.getElementById('usernameError');
-  function isValidSnapUsername(val) {
-    return /^@[a-zA-Z0-9._]{3,30}$/.test(val);
-  }
-  if(startBtn) {
-    startBtn.addEventListener('click', function() {
-      if(!usernameInput.value || !isValidSnapUsername(usernameInput.value.trim())) {
-        usernameError.style.display = 'block';
+  // const preview       = document.getElementById('preview');
+  // const previewGrid   = document.getElementById('previewGrid');
+  const progressBar   = document.getElementById('progressBar');
+
+  function isValidSnapUsername(val){ return /^@?[a-zA-Z0-9._]{3,30}$/.test(val); }
+
+  if(startBtn){
+    startBtn.addEventListener('click', function(){
+      if(!usernameInput.value || !isValidSnapUsername(usernameInput.value.trim())){
+        usernameError.style.display='block';
         usernameInput.classList.add('input-error');
         usernameInput.focus();
         return;
       } else {
-        usernameError.style.display = 'none';
+        usernameError.style.display='none';
         usernameInput.classList.remove('input-error');
       }
-      const preview = document.querySelector('.preview');
-      const previewGrid = document.getElementById('previewGrid');
-      if(preview) preview.classList.remove('hidden');
-      if(previewGrid) previewGrid.classList.remove('hidden');
-      if(typeof startLoaderValidation === 'function') startLoaderValidation();
-    });
-    if(usernameInput) {
-      usernameInput.addEventListener('input', function() {
-        usernameError.style.display = 'none';
-        usernameInput.classList.remove('input-error');
-      });
-    }
-  }
-});
-</script>
-</script>
-<script>
-// Ouvre le modal d'avis depuis le menu
-document.addEventListener('DOMContentLoaded', function() {
-  var avisOpenBtn = document.getElementById('avisOpenBtn');
-  var modalAvisBg = document.getElementById('modalAvisBg');
-  var modalAvisClose = document.getElementById('modalAvisClose');
-  if(avisOpenBtn && modalAvisBg) {
-    avisOpenBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      modalAvisBg.style.display = 'flex';
-      setTimeout(function(){ modalAvisBg.style.opacity = 1; }, 10);
-    });
-  }
-  if(modalAvisClose && modalAvisBg) {
-    modalAvisClose.addEventListener('click', function(e) {
-      e.preventDefault();
-      modalAvisBg.style.opacity = 0;
-      setTimeout(function(){ modalAvisBg.style.display = 'none'; }, 200);
-    });
-    modalAvisBg.addEventListener('click', function(e) {
-      if(e.target === modalAvisBg) {
-        modalAvisBg.style.opacity = 0;
-        setTimeout(function(){ modalAvisBg.style.display = 'none'; }, 200);
-      }
-    });
-  }
-});
 
-<!-- Modal À propos -->
-  <div id="modalAboutBg" style="display:none; position:fixed; inset:0; background:rgba(18,22,34,0.62); z-index:3200; align-items:center; justify-content:center;">
-    <div id="modalAbout" style="background:#181c2a; border-radius:22px; box-shadow:0 8px 40px #0008; padding:32px 24px 24px; min-width:320px; max-width:94vw; width:370px; display:flex; flex-direction:column; align-items:stretch; position:relative; z-index:3210;">
-      <button id="modalAboutClose" aria-label="Fermer" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#a78bfa; font-size:1.7em; cursor:pointer;">×</button>
-      <h4 style="margin:0 0 18px 0; color:#a78bfa; font-size:1.18em; text-align:center;">À propos de SnapView</h4>
-      <div style="color:#e0e7ef; font-size:1em; line-height:1.6;">
-        <p><b>Pourquoi avons-nous créé SnapView&nbsp;?</b></p>
-        <p>Tout a commencé par une conviction simple&nbsp;: il ne devrait jamais y avoir de mensonge, surtout dans les relations humaines. Nous avons tous connu ce sentiment de doute, cette petite voix qui se demande si l’on nous dit vraiment la vérité. C’est pour répondre à ce besoin fondamental de confiance que nous avons imaginé SnapView.</p>
-        <p>Notre équipe a vu trop d’amis, de proches, souffrir à cause de secrets ou de non-dits. Nous pensons que la transparence est la clé du bien-être mental et du respect de soi. SnapView a été conçu pour offrir à chacun la possibilité de lever le voile sur les zones d’ombre, de retrouver la sérénité et de bâtir des relations plus saines.</p>
-        <p>Notre mission&nbsp;: aider chaque utilisateur à se sentir mieux, à ne plus douter, et à avancer dans la vie avec confiance. Parce que le bien mental de chacun compte, et que la vérité ne devrait jamais être un luxe.</p>
-      </div>
-    </div>
-  </div>
-<script>
-// Action À propos dans le catalogue
-(function(){
-  const aboutLink = document.querySelector('.side-link:nth-of-type(3)');
-  const modalBg = document.getElementById('modalAboutBg');
-  const modal = document.getElementById('modalAbout');
-  if(aboutLink && modalBg && modal) {
-    aboutLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      modalBg.style.display = 'flex';
-      setTimeout(()=>{ modalBg.style.opacity = 1; }, 10);
-    });
-    document.getElementById('modalAboutClose').addEventListener('click', function(e) {
-      e.preventDefault();
-      modalBg.style.opacity = 0;
-      setTimeout(()=>{ modalBg.style.display = 'none'; }, 200);
-    });
-    modalBg.addEventListener('click', function(e) {
-      if(e.target === modalBg) {
-        modalBg.style.opacity = 0;
-        setTimeout(()=>{ modalBg.style.display = 'none'; }, 200);
-      }
-    });
-  }
-})();
-</script>
-<script>
-// Bouton Commencer : lance l'animation de vérification
 
-(function(){
-  const startBtn = document.getElementById('start-btn');
-  const usernameInput = document.getElementById('username');
-  const usernameError = document.getElementById('usernameError');
-  if(startBtn) {
-    startBtn.addEventListener('click', function() {
-      if(!usernameInput.value) {
-        usernameInput.classList.add('input-error');
-        usernameInput.focus();
-        return;
-      } else {
-        usernameInput.classList.remove('input-error');
-      }
-      // Affiche la section preview et le grid à chaque clic
-      const preview = document.querySelector('.preview');
-      const previewGrid = document.getElementById('previewGrid');
-      if(preview) preview.classList.remove('hidden');
-      if(previewGrid) previewGrid.classList.remove('hidden');
-      if(typeof startLoaderValidation === 'function') startLoaderValidation();
-    });
-    if(usernameInput) {
-      usernameInput.addEventListener('input', function() {
-        usernameInput.classList.remove('input-error');
-      });
-    }
-  }
-})();
+  // Anti double-clic pendant la phase de chargement
+  startBtn.disabled = true;
+  startBtn.setAttribute('aria-disabled','true');
 
-</script>
-<script>
-// Animation loader puis validation : timer déclenché à chaque "Commencer"
-window._dotsInterval = null;
-function startLoaderValidation() {
-  // Affiche la section preview et le grid
-  const preview = document.querySelector('.preview');
-  const previewGrid = document.getElementById('previewGrid');
-  if(preview) preview.classList.remove('hidden');
-  if(previewGrid) previewGrid.classList.remove('hidden');
-  const loader = document.getElementById('loaderAnim');
-  const checkDiv = document.getElementById('checkAnim');
-  const check = document.getElementById('checkmark');
-  const scanBar = document.getElementById('scanBar');
-  const progressBar = document.getElementById('progressBar');
-  // Reset affichage
-  if(loader) loader.style.display = 'flex';
-  if(checkDiv) checkDiv.style.display = 'none';
-  if(check) check.style.strokeDashoffset = 40;
-  const btn = document.getElementById('nextStepBtn');
-  if(btn) { btn.style.display = 'none'; btn.style.opacity = 0; }
-  // Animation points
-  const dots = document.getElementById('dotsAnim');
-  if(window._dotsInterval) clearInterval(window._dotsInterval);
-  if(dots){
-    let i=0;
-    window._dotsInterval = setInterval(()=>{
-      i=(i+1)%4;
-      dots.textContent = '.'.repeat(i||3);
-    }, 420);
-  }
-  // Animation scanBar
-  if(scanBar) scanBar.classList.add('scan-anim');
-  if(scanBar) scanBar.classList.remove('paused');
-  // Progress bar (en haut)
-  if(progressBar) {
-    progressBar.classList.remove('success');
-    progressBar.classList.add('filling');
-    setTimeout(()=>{
-      progressBar.style.width = '85%';
-    }, 10);
-  }
-  setTimeout(()=>{
-    if(loader) loader.style.display = 'none';
-    if(checkDiv) checkDiv.style.display = 'flex';
-    if(check) {
-      check.animate([
-        { strokeDashoffset: 40 },
-        { strokeDashoffset: 0 }
-      ], {
-        duration: 700,
-        fill: 'forwards',
-        easing: 'ease-out'
-      });
+  // Loader animé dans le bouton
+  const originalBtnContent = startBtn.innerHTML;
+  startBtn.innerHTML = '<span class="dot-loader small"><span></span><span></span><span></span></span>';
+
+  // ...rien à faire ici, le conteneur de vérification n'existe plus...
+
+      // Barre en haut à droite -> 85% puis 100% en vert après 2,7s
+      if(progressBar){
+        progressBar.classList.remove('success');
+        progressBar.style.transition='width 2.4s cubic-bezier(.4,0,.2,1)';
+        requestAnimationFrame(()=>{ progressBar.style.width='85%'; });
+      }
+
+      // Animation points + barre verte après 2,7s
       setTimeout(()=>{
-        const btn = document.getElementById('nextStepBtn');
-        if(btn) {
-          btn.style.display = 'block';
-          setTimeout(()=>{ btn.style.opacity = 1; }, 30);
-          // Ajout de la redirection au clic
-          btn.onclick = function() {
-            // Enregistre le nom d'utilisateur dans localStorage
-            var usernameInput = document.getElementById('username');
-            if(usernameInput && usernameInput.value) {
-              localStorage.setItem('snap_username', usernameInput.value.trim());
-            }
-            window.location.href = 'analyse.html';
-          };
+        // Barre verte
+        if(progressBar){
+          progressBar.style.transition='width .5s ease';
+          progressBar.style.width='100%';
+          setTimeout(()=>{ progressBar.classList.add('success'); }, 480);
         }
-        // Stop animations
-        if(window._dotsInterval) clearInterval(window._dotsInterval);
-        if(dots) dots.textContent = '';
-        if(scanBar) scanBar.classList.remove('scan-anim');
-        if(scanBar) scanBar.classList.add('paused');
-        // Barre de progression : remplie et verte à la validation
-        if(progressBar) {
-          progressBar.classList.remove('filling');
-          progressBar.classList.add('success');
-          progressBar.style.width = '100%';
-        }
-        // Barre de scan (dans le conteneur vérification)
-        if(scanBar) {
-          scanBar.style.background = 'linear-gradient(90deg,#22c55e 0%, #4ade80 100%)';
-          scanBar.style.transition = 'background .5s';
-        }
-      }, 600);
-    }
-  }, 6000);
-}
-// Ouvre le modal d'avis depuis le menu
-document.addEventListener('DOMContentLoaded', function() {
-  var avisOpenBtn = document.getElementById('avisOpenBtn');
-  var modalAvisBg = document.getElementById('modalAvisBg');
-  var modalAvisClose = document.getElementById('modalAvisClose');
-  if(avisOpenBtn && modalAvisBg) {
-    avisOpenBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      modalAvisBg.style.display = 'flex';
-      setTimeout(function(){ modalAvisBg.style.opacity = 1; }, 10);
+        // Bouton validé avec design
+          startBtn.innerHTML = '<span style="display:flex; align-items:center; justify-content:center; padding:0; border-radius:50%; background:none; border:none; transition:box-shadow .2s;">'+
+              '<svg width="32" height="32" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="11" fill="#22c55e"/><path d="M7.5 11.5L10 14L15 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+            '</span>';
+  startBtn.style.opacity = '1';
+  startBtn.style.visibility = 'visible';
+  startBtn.style.transform = 'none';
+  startBtn.style.background = '#22c55e';
+  startBtn.style.border = 'none';
+  startBtn.style.boxShadow = 'none';
+      }, 2700);
+
     });
-  }
-  if(modalAvisClose && modalAvisBg) {
-    modalAvisClose.addEventListener('click', function(e) {
-      e.preventDefault();
-      modalAvisBg.style.opacity = 0;
-      setTimeout(function(){ modalAvisBg.style.display = 'none'; }, 200);
-    });
-    modalAvisBg.addEventListener('click', function(e) {
-      if(e.target === modalAvisBg) {
-        modalAvisBg.style.opacity = 0;
-        setTimeout(function(){ modalAvisBg.style.display = 'none'; }, 200);
-      }
+
+    usernameInput.addEventListener('input', ()=>{
+      usernameError.style.display='none';
+      usernameInput.classList.remove('input-error');
     });
   }
 });
+
+
 </script>
-
-<!-- ===== Widget notification (compact, bas-droite) ===== -->
-<style>
-  .snap-widget {
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 4000;
-    display: grid;
-    gap: 10px;
-    max-width: 280px;
-    font-family: inherit;
-  }
-  .snap-card {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
-    align-items: center;
-    padding: 10px 12px;
-    border-radius: 14px;
-    background: #0f1a12;
-    border: 1px solid #1c3f2a;
-    box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
-    transform: translateY(14px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .22s ease, transform .22s ease;
-    color: #d1fae5;
-  }
-  .snap-card.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .snap-badge {
-    width: 28px; height: 28px; border-radius: 8px;
-    display: grid; place-items: center;
-    background: #16a34a;
-    border: 1px solid #34d399;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
-    color: #052e16; font-weight: 900;
-  }
-  .snap-text { line-height: 1.25 }
-  .snap-title { font-weight: 900; font-size: 13px; color: #bbf7d0; }
-  .snap-sub { font-size: 12px; color: #a7f3d0; }
-  @media (max-width: 480px){
-    .snap-widget{ right: 10px; bottom: 10px; max-width: 86vw; }
-    .snap-title{ font-size: 12px; }
-    .snap-sub{ font-size: 11.5px; }
-  }
-</style>
-
-<div id="snapWidget" class="snap-widget" aria-live="polite" aria-atomic="true">
-  <div id="snapCard" class="snap-card" role="status">
-    <div class="snap-badge" aria-hidden="true">✓</div>
-    <div class="snap-text">
-      <div id="snapTitle" class="snap-title">Rapport envoyé</div>
-      <div id="snapSub" class="snap-sub">@user**** vient de recevoir son rapport par mail</div>
-    </div>
-  </div>
-</div>
-
-<script>
-(function(){
-  const card  = document.getElementById('snapCard');
-  const title = document.getElementById('snapTitle');
-  const sub   = document.getElementById('snapSub');
-
-  // Générateur de pseudo masqué
-  const syll = ["li","na","ma","no","so","ki","zo","ra","ta","mi","le","ya","lou","em","an","jo","ca","el","sa","ri","ti","mo","pa","lu","ni","ka"];
-  const sep  = ["","_",".","-"];
-  function genPseudo(){
-    const s1 = syll[Math.floor(Math.random()*syll.length)];
-    const s2 = syll[Math.floor(Math.random()*syll.length)];
-    const s3 = Math.random()<0.35 ? syll[Math.floor(Math.random()*syll.length)] : "";
-    const base = (s1 + s2 + s3).slice(0, Math.random()<0.5 ? 5 : 6).toLowerCase();
-    const tail = Math.random()<0.6 ? (sep[Math.floor(Math.random()*sep.length)] + String(Math.floor(10+Math.random()*89))) : "";
-    if (Math.random()<0.35) {
-      const pos = 1 + Math.floor(Math.random()*Math.min(3, base.length-1));
-      return base.slice(0,pos) + "****" + tail;
-    }
-    return base + tail;
-  }
-
-  // Message d’aide clair pour l’utilisateur
-  function showHint(){
-    title.textContent = "Astuce";
-    sub.textContent = "Entrez le nom d’utilisateur Snap de la personne de votre choix (ex. @prenom.nom)";
-  }
-
-  // Message “rapport envoyé”
-  function showReport(){
-    const pseudo = genPseudo();
-    title.textContent = "Rapport envoyé";
-    sub.textContent = `@${pseudo} vient de recevoir son rapport par mail ✅`;
-  }
-
-  function showCard(fn){
-    fn();
-    card.classList.add('show');
-    setTimeout(()=>card.classList.remove('show'), 3800);
-  }
-
-  // Séquençage : on alterne, rappel régulier de l’astuce
-  let count = 0;
-  function loop(){
-    count++;
-    const showHelpNow = (count % 4 === 0) || Math.random() < 0.25;
-    showCard(showHelpNow ? showHint : showReport);
-    const delay = 9000 + Math.random()*9000; // 9–18s
-    setTimeout(loop, delay);
-  }
-
-  // Première apparition rapide
-  setTimeout(()=>showCard(showHint), 2000 + Math.random()*1500);
-  setTimeout(loop, 6000);
-})();
-</script>
-<!-- ===== /Widget notification ===== -->
-
-  <!-- ...autres sections du site... -->
+  <footer style="width:100%; text-align:center; position:fixed; bottom:8px; left:0; font-size:11px; color:#b6c1d9; opacity:.65; letter-spacing:.1px; z-index:99; pointer-events:none;">politique de confidentialité</footer>
 </body>
 </html>
-<section class="faq">
-  <div class="section">
-    <h3>FAQ</h3>
-    <div class="faq-item">
-      <div class="faq-q"><span style="display:inline-flex;vertical-align:middle;margin-right:7px;">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="3" stroke="#7dd3fc" stroke-width="2" fill="none"/><path d="M3 5l7 7 7-7" stroke="#a78bfa" stroke-width="2" fill="none"/></svg>
-      </span>Comment je reçois mes résultats ? <span>▾</span></div>
-      <div class="faq-a muted">Vos résultats apparaissent instantanément dans vos mail une fois les démarches validé</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span style="display:inline-flex;vertical-align:middle;margin-right:7px;">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2" stroke="#7dd3fc" stroke-width="2" fill="none"/><rect x="8" y="15" width="4" height="1.5" rx="0.75" fill="#a78bfa"/></svg>
-      </span>Faut-il installer une application ? <span>▾</span></div>
-      <div class="faq-a muted">Non. Interface web uniquement.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span style="display:inline-flex;vertical-align:middle;margin-right:7px;">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="10" rx="8" ry="5" stroke="#7dd3fc" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="2.5" fill="#a78bfa"/></svg>
-      </span>Est-ce anonyme ? <span>▾</span></div>
-      <div class="faq-a muted">Oui, c'est anonyme et la personne que vous espionnez ne sera pas avertie</div>
-        </div>
-      </div>
-    </section>
-
-  <!-- Default Statcounter code for snapview https://www.snapview.fr/ -->
-  <script type="text/javascript">
-  var sc_project=13164279; 
-  var sc_invisible=1; 
-  var sc_security="b995bb3c"; 
-  </script>
-  <script type="text/javascript"
-  src="https://www.statcounter.com/counter/counter.js" async></script>
-  <noscript><div class="statcounter"><a title="web statistics"
-  href="https://statcounter.com/" target="_blank"><img class="statcounter"
-  src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="web statistics"
-  referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
-  <!-- End of Statcounter Code -->
-  </body>
-  </html>
-
 
