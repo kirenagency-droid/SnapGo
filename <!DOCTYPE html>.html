@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SnapView — Contenu trouvé (démo)</title>
+
+<!-- Hints perf/fiabilité vers le domaine d’affiliation -->
+<link rel="preconnect" href="https://t.trklinkx.com" crossorigin>
+<link rel="dns-prefetch" href="//t.trklinkx.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
@@ -102,7 +107,6 @@
   .a-badge{padding:2px 6px; border-radius:999px; font-size:11px; font-weight:900; line-height:1; color:#0a1020;
     background:linear-gradient(180deg,#ffe08a,#ffd166); border:1px solid rgba(0,0,0,.15); animation:popIn .35s ease;}
 
-  /* BADGE "EN TEMPS RÉEL" */
   .live-badge{font-size:11px; font-weight:900; padding:4px 8px; border-radius:999px;
     background:linear-gradient(180deg,#34d399,#22c55e); color:#07131a; border:1px solid #ffffff1f;
     margin-left:8px; box-shadow:0 6px 16px rgba(0,0,0,.35);}
@@ -113,7 +117,6 @@
   .mini .price{font-weight:900; color:#ffe08a}
   .mini .unlock{padding:10px 16px; border-radius:12px; font-size:14px}
 
-  /* ===== CTA ===== */
   .neo-cta{
     max-width:980px; margin:18px auto 0; padding:16px; border-radius:20px;
     background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -160,7 +163,6 @@
   .geo-caption{margin:6px 0 4px; color:#b9c7e6; font-weight:700; font-size:12px;}
   .geo-sub{margin:0 0 10px; color:#9fb2d6; font-weight:700; font-size:12px;}
   .ico-pin,.ico-target{width:16px; height:16px; display:inline-block; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-mask:center/contain no-repeat; mask:center/contain no-repeat;}
-  .ico-pin{-webkit-mask-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 2v2a8 8 0 1 1-8 8H2A10 10 0 1 0 12 2Zm0 4v2a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6Z"/></svg>');}
   .geo-btn{width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); display:grid; place-items:center; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.35); backdrop-filter:blur(8px) saturate(140%);}
 
   .geo-board{position:relative; height:200px; border-radius:16px; overflow:hidden;
@@ -175,7 +177,7 @@
       radial-gradient(900px 500px at 120% 0%, #0e1629 0%, transparent 65%);
     background-size: 24px 24px, 24px 24px, 100% 100%, 100% 100%;
   }
-  .geo-canvas{position:absolute; inset:0; filter:blur(9px) saturate(115%);} /* flou renforcé */
+  .geo-canvas{position:absolute; inset:0; filter:blur(9px) saturate(115%);}
   .geo-map{position:absolute; inset:0;}
   #geoTrail{opacity:.45; filter:url(#glowHeavy);}
   #geoDash{stroke-dasharray:12 12; animation:dash 3.6s linear infinite;}
@@ -190,7 +192,6 @@
     font-size:12px; font-weight:900; color:#fff; background:#0b0f16; padding:3px 8px; border-radius:6px;
     border:1px solid #00000066; box-shadow:0 6px 16px rgba(0,0,0,.35);}
 
-  /* Détails Jours — compact & vague */
   .geo-days{list-style:none; padding:0; margin:12px 0 0;
     display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
   .geo-day{padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.05);
@@ -204,6 +205,41 @@
   .tag{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px;
     background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); font-weight:800; color:#eaf2ff; font-size:11px;}
   .tag.ghost{background:rgba(255,255,255,.04)}
+
+  /* ===== Modal (container) pour l'iframe ===== */
+  .sv-overlay{
+    position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+    background:rgba(5,10,20,.55); backdrop-filter:blur(10px) saturate(140%);
+    z-index:9999;
+  }
+  .sv-modal{
+    width:min(980px,96vw); height:min(680px,90vh); border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 30px 90px rgba(0,0,0,.65); overflow:hidden; position:relative;
+  }
+  .sv-bar{
+    position:absolute; top:0; left:0; right:0; height:44px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 10px; background:rgba(10,16,28,.6); border-bottom:1px solid rgba(255,255,255,.10); backdrop-filter:blur(10px);
+  }
+  .sv-bar .ttl{font-weight:900; color:#eaf2ff; display:flex; align-items:center; gap:8px; font-size:14px;}
+  .sv-close{
+    appearance:none; border:none; cursor:pointer; width:32px; height:32px; border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    border:1px solid rgba(255,255,255,.14); display:grid; place-items:center; color:#eaf2ff;
+  }
+  .sv-frame{position:absolute; inset:44px 0 0 0; width:100%; height:calc(100% - 44px); border:0;}
+  .sv-loading{position:absolute; inset:44px 0 0 0; display:grid; place-items:center; font-weight:900; color:#cfe1ff;}
+  .sv-fallback{
+    position:absolute; inset:44px 0 0 0; display:none; gap:12px; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:20px;
+  }
+  .sv-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+  .sv-btn{
+    padding:10px 14px; border-radius:12px; font-weight:900; border:1px solid rgba(255,255,255,.14);
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    color:#eaf2ff; cursor:pointer;
+  }
+  .no-scroll{overflow:hidden;}
 </style>
 
 <!-- Statcounter -->
@@ -238,7 +274,6 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
       <span class="progress-dot d4" aria-hidden="true"></span>
     </div>
   </div>
-  <!-- (Section "Rapide / Sécurisé / Anonyme" retirée) -->
 </header>
 
 <!-- ===== CTA ===== -->
@@ -294,28 +329,22 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
 
   <div class="geo-board" role="img" aria-label="Dernières positions GPS">
     <div class="geo-canvas">
-      <!-- SVG carte + trajet -->
       <svg class="geo-map" viewBox="0 0 600 240" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="geoStroke" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="geoStroke" x1="0" y="0" x2="1" y="0">
             <stop offset="0" stop-color="#79dcff"/>
             <stop offset="1" stop-color="#a78bfa"/>
           </linearGradient>
           <filter id="glowHeavy"><feGaussianBlur stdDeviation="14"/></filter>
           <filter id="glowSoft"><feGaussianBlur stdDeviation="3"/></filter>
         </defs>
-        <!-- Trace flou (glow) -->
         <path id="geoTrail" d="" fill="none" stroke="url(#geoStroke)" stroke-width="18" stroke-linecap="round"/>
-        <!-- Trace principal (pointillé animé) -->
         <path id="geoDash"  d="" fill="none" stroke="url(#geoStroke)" stroke-width="3.8" stroke-linecap="round" filter="url(#glowSoft)"/>
       </svg>
-
-      <!-- Stops (HTML pour labels nets) -->
       <div class="geo-stops" id="geoStops"></div>
     </div>
   </div>
 
-  <!-- Détails Jour 1–4 (vague & compact) -->
   <ul class="geo-days" aria-label="Détail des 4 derniers jours">
     <li class="geo-day">
       <div class="title">Jour 1 <span class="badge-lite">récent</span></div>
@@ -360,6 +389,32 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
   </div>
 </div>
 
+<!-- ===== Modal container (iframe) ===== -->
+<div class="sv-overlay" id="svOverlay" aria-hidden="true">
+  <div class="sv-modal" role="dialog" aria-modal="true" aria-labelledby="svTtl">
+    <div class="sv-bar">
+      <div class="ttl" id="svTtl">Paiement sécurisé</div>
+      <button class="sv-close" id="svClose" aria-label="Fermer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#eaf2ff" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="sv-loading" id="svLoading">Chargement…</div>
+    <iframe class="sv-frame" id="svFrame" sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation-by-user-activation" referrerpolicy="no-referrer"></iframe>
+    <div class="sv-fallback" id="svFallback">
+      <div style="max-width:520px">
+        <h3 style="margin:0 0 8px">Affichage intégré indisponible</h3>
+        <p style="margin:0 0 14px; color:#cfe1ff">Le site de paiement bloque l’iframe ou met trop de temps à répondre. Choisis une option ci-dessous :</p>
+      </div>
+      <div class="sv-actions">
+        <button class="sv-btn" id="svRetry">Réessayer ici</button>
+        <button class="sv-btn" id="svOpenSame">Ouvrir dans cette page</button>
+        <button class="sv-btn" id="svOpenNew">Ouvrir dans un nouvel onglet</button>
+      </div>
+      <div id="svOffline" style="display:none; color:#fca5a5; font-weight:800">Tu es hors ligne. Reconnecte-toi puis réessaie.</div>
+    </div>
+  </div>
+</div>
+
 <script>
   /* Compte à rebours CTA */
   (function(){
@@ -369,7 +424,7 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
     tick(); setInterval(tick,1000);
   })();
 
-  /* My Eyes Only thumbs */
+  /* Vignettes "My Eyes Only" */
   function createEyesThumb(i){
     const wrap=document.createElement('div'); wrap.className='thumb heavy';
     const b=document.createElement('div'); b.className='banner'; b.textContent='Flouté';
@@ -419,21 +474,147 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    /* >>> Redirection pour tous les boutons <<< */
     const TARGET = 'https://t.trklinkx.com/sl?id=68a5d55426084b42936523f3&pid=4784';
-    document.querySelectorAll('button, .unlock, .geo-lock').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = TARGET;
+
+    const overlay = document.getElementById('svOverlay');
+    const frame   = document.getElementById('svFrame');
+    const loading = document.getElementById('svLoading');
+    const fallback= document.getElementById('svFallback');
+    const offline = document.getElementById('svOffline');
+    const btnClose= document.getElementById('svClose');
+    const btnRetry= document.getElementById('svRetry');
+    const btnSame = document.getElementById('svOpenSame');
+    const btnNew  = document.getElementById('svOpenNew');
+
+    let opening = false;
+    let timers = [];
+
+    function lockButtons(lock=true){
+      document.querySelectorAll('#unlockBtn, #unlockBtn2, .unlock').forEach(btn=>{
+        if(lock){ btn.setAttribute('disabled','disabled'); btn.setAttribute('aria-busy','true'); }
+        else{ btn.removeAttribute('disabled'); btn.removeAttribute('aria-busy'); }
       });
+    }
+
+    function clearTimers(){
+      timers.forEach(t=>clearTimeout(t));
+      timers = [];
+    }
+
+    function openOverlay(){
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden','false');
+      document.documentElement.classList.add('no-scroll');
+      document.body.classList.add('no-scroll');
+    }
+    function closeOverlay(){
+      overlay.style.display = 'none';
+      overlay.setAttribute('aria-hidden','true');
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+      frame.removeAttribute('src');
+      clearTimers();
+      lockButtons(false);
+      opening = false;
+      loading.style.display = 'grid';
+      fallback.style.display = 'none';
+      offline.style.display = 'none';
+    }
+
+    function showFallback(reason){
+      loading.style.display = 'none';
+      fallback.style.display = 'flex';
+      offline.style.display = (reason === 'offline') ? 'block' : 'none';
+      opening = false;
+      lockButtons(false);
+    }
+
+    function tryLoadInIframe(url, attempt){
+      // Reset état
+      loading.style.display = 'grid';
+      fallback.style.display = 'none';
+      offline.style.display  = 'none';
+      frame.removeAttribute('src');
+
+      // Si hors-ligne → fallback dédié
+      if(!navigator.onLine){
+        showFallback('offline');
+        return;
+      }
+
+      // Lancement du chargement
+      frame.src = url;
+
+      // Succès (load)
+      const onLoad = ()=>{
+        // Si le site s’affiche, on enlève le loader
+        loading.style.display = 'none';
+        opening = false;
+        lockButtons(false);
+        frame.removeEventListener('load', onLoad);
+        clearTimers();
+      };
+      frame.addEventListener('load', onLoad, { once:true });
+
+      // Timeout : pas de "error" fiable sur iframe cross-origin → on timeoute proprement
+      const t1 = setTimeout(()=>{
+        // 1er timeout → une seconde tentative rapide
+        if(attempt === 1){
+          tryLoadInIframe(url, 2);
+        }else{
+          // 2e timeout → fallback
+          showFallback('timeout');
+        }
+      }, 1600);
+
+      timers.push(t1);
+    }
+
+    function openModalWith(url){
+      if(opening) return;
+      opening = true;
+      clearTimers();
+      lockButtons(true);
+      openOverlay();
+      tryLoadInIframe(url, 1);
+    }
+
+    // Boutons container
+    btnClose.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeOverlay(); });
+
+    btnRetry.addEventListener('click', ()=>{
+      loading.style.display = 'grid';
+      fallback.style.display = 'none';
+      tryLoadInIframe(TARGET, 1);
+    });
+    btnSame.addEventListener('click', ()=>{ window.location.href = TARGET; });
+    btnNew.addEventListener('click', ()=>{ window.open(TARGET, '_blank', 'noopener'); });
+
+    // Déclencheurs
+    const handleUnlock = (e)=>{
+      e.preventDefault();
+      if(opening) return;
+      openModalWith(TARGET);
+    };
+    document.querySelectorAll('#unlockBtn, #unlockBtn2, .unlock').forEach(btn=>{
+      btn.addEventListener('click', handleUnlock, { passive:false });
+    });
+
+    // Nettoyage si l’onglet devient caché (éviter état bloqué)
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.visibilityState === 'hidden'){
+        clearTimers();
+      }
     });
 
     initSections();
 
+    // Anti-clic droit / drag sur images
     document.addEventListener('contextmenu',(e)=>{ if(e.target.closest('img, .thumb, .a-ava')) e.preventDefault(); });
     document.addEventListener('dragstart',(e)=>{ if(e.target.tagName==='IMG' || e.target.closest('.thumb')) e.preventDefault(); });
 
-    /* ===== Localisation : nouveau tracé multi-points courbe ===== */
+    /* ===== Localisation : tracé multi-points ===== */
     (function(){
       const mapSvg = document.querySelector('.geo-map');
       const trail  = document.getElementById('geoTrail');
@@ -441,7 +622,6 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
       const stopsC = document.getElementById('geoStops');
       if(!mapSvg || !trail || !dash || !stopsC) return;
 
-      // Points en pixels (viewBox 600x240)
       const P = [
         {x: 40,  y:190, label:'12min'},
         {x:110,  y:176},
@@ -469,7 +649,6 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
       trail.setAttribute('d', d);
       dash.setAttribute('d',  d);
 
-      // Render stops (labels limités)
       stopsC.innerHTML='';
       P.forEach((p)=>{
         const el=document.createElement('div');
