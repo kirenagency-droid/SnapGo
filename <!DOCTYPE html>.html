@@ -38,7 +38,7 @@
     box-shadow:0 10px 34px rgba(0,0,0,.45);
     backdrop-filter:var(--glass);
   }
-  .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.1px; font-size:18px;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:900; font-size:18px;}
   .brand-name .snap{color:#eaf4ff}
   .brand-name .view{background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .menu-btn{width:36px; height:36px; border-radius:10px; border:1px solid rgba(255,255,255,.14);
@@ -61,11 +61,6 @@
     background:linear-gradient(90deg, var(--accent), #80e5ff, var(--accent2));}
   .progress-dot{position:absolute; top:50%; transform:translate(-50%,-50%); width:8px; height:8px; border-radius:50%; background:#fff;}
   .progress-bar .d1{left:25%} .progress-bar .d2{left:50%} .progress-bar .d3{left:75%} .progress-bar .d4{left:100%}
-
-  .keywords{display:flex; gap:8px; align-items:center; margin:8px 0 0;}
-  .keywords .pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px;
-    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); font-weight:900; font-size:12px; color:#e7f0ff;}
-  .keywords .pill i{width:10px; height:10px; border-radius:50%; background:linear-gradient(90deg,var(--accent),var(--accent2));}
 
   .block{max-width:980px; margin:22px auto; padding:22px 20px; border-radius:var(--radius-xl);
          background:var(--panel); border:1px solid var(--stroke); box-shadow:var(--shadow);
@@ -167,12 +162,33 @@
   .ico-pin,.ico-target{width:16px; height:16px; display:inline-block; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-mask:center/contain no-repeat; mask:center/contain no-repeat;}
   .ico-pin{-webkit-mask-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 2v2a8 8 0 1 1-8 8H2A10 10 0 1 0 12 2Zm0 4v2a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6Z"/></svg>');}
   .geo-btn{width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); display:grid; place-items:center; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.35); backdrop-filter:blur(8px) saturate(140%);}
-  .geo-board{position:relative; height:200px; border-radius:16px; overflow:hidden; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(10px) saturate(160%); box-shadow:inset 0 1px 0 rgba(255,255,255,.06); --grid-c:#ffffff12; background-image: linear-gradient(0deg, var(--grid-c) 1px, transparent 1px), linear-gradient(90deg, var(--grid-c) 1px, transparent 1px), radial-gradient(1200px 600px at -20% -40%, #101a2c 0%, transparent 60%), radial-gradient(900px 500px at 120% 0%, #0e1629 0%, transparent 65%); background-size: 24px 24px, 24px 24px, 100% 100%, 100% 100%;}
-  .geo-canvas{position:absolute; inset:0; filter:blur(6px) saturate(112%);}
-  .geo-line{ position:absolute; inset:0; }
-  .geo-point{position:absolute; left:var(--x); top:var(--y); transform:translate(-50%,-50%); width:18px; height:18px; border-radius:50%; background: radial-gradient(closest-side, #ffffff, #ffffff00 70%), radial-gradient(18px 18px at 50% 50%, #79dcff, #a78bfa); box-shadow:0 0 0 6px rgba(125,211,252,.10), 0 8px 24px rgba(0,0,0,.45), 0 0 18px rgba(167,139,250,.35);}
-  .geo-point::after{content:""; position:absolute; inset:-8px; border-radius:50%; box-shadow:0 0 22px 6px rgba(139,92,246,.25);}
-  .geo-label{position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-size:12px; font-weight:900; color:#fff; background:#0b0f16; padding:3px 8px; border-radius:6px; border:1px solid #00000066; box-shadow:0 6px 16px rgba(0,0,0,.35); letter-spacing:.1px;}
+
+  .geo-board{position:relative; height:200px; border-radius:16px; overflow:hidden;
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(10px) saturate(160%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    --grid-c:#ffffff12;
+    background-image:
+      linear-gradient(0deg, var(--grid-c) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-c) 1px, transparent 1px),
+      radial-gradient(1200px 600px at -20% -40%, #101a2c 0%, transparent 60%),
+      radial-gradient(900px 500px at 120% 0%, #0e1629 0%, transparent 65%);
+    background-size: 24px 24px, 24px 24px, 100% 100%, 100% 100%;
+  }
+  .geo-canvas{position:absolute; inset:0; filter:blur(9px) saturate(115%);} /* flou renforcé */
+  .geo-map{position:absolute; inset:0;}
+  #geoTrail{opacity:.45; filter:url(#glowHeavy);}
+  #geoDash{stroke-dasharray:12 12; animation:dash 3.6s linear infinite;}
+  @keyframes dash{to{stroke-dashoffset:-48;}}
+
+  .geo-stops{position:absolute; inset:0; pointer-events:none;}
+  .geo-stop{position:absolute; transform:translate(-50%,-50%);}
+  .geo-stop .dot{width:18px; height:18px; border-radius:50%;
+    background:radial-gradient(closest-side,#fff, #ffffff00 68%), radial-gradient(18px 18px at 50% 50%, #79dcff, #a78bfa);
+    box-shadow:0 0 0 6px rgba(125,211,252,.10), 0 8px 24px rgba(0,0,0,.45), 0 0 18px rgba(167,139,250,.35);}
+  .geo-stop .label{margin-top:4px; transform:translateX(-50%); position:absolute; left:50%;
+    font-size:12px; font-weight:900; color:#fff; background:#0b0f16; padding:3px 8px; border-radius:6px;
+    border:1px solid #00000066; box-shadow:0 6px 16px rgba(0,0,0,.35);}
 
   /* Détails Jours — compact & vague */
   .geo-days{list-style:none; padding:0; margin:12px 0 0;
@@ -222,12 +238,7 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
       <span class="progress-dot d4" aria-hidden="true"></span>
     </div>
   </div>
-
-  <div class="keywords" aria-hidden="true">
-    <span class="pill"><i></i> Rapide</span>
-    <span class="pill"><i></i> Sécurisé</span>
-    <span class="pill"><i></i> Anonyme</span>
-  </div>
+  <!-- (Section "Rapide / Sécurisé / Anonyme" retirée) -->
 </header>
 
 <!-- ===== CTA ===== -->
@@ -283,20 +294,24 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
 
   <div class="geo-board" role="img" aria-label="Dernières positions GPS">
     <div class="geo-canvas">
-      <svg class="geo-line" viewBox="0 0 100 36" preserveAspectRatio="none">
+      <!-- SVG carte + trajet -->
+      <svg class="geo-map" viewBox="0 0 600 240" preserveAspectRatio="none">
         <defs>
           <linearGradient id="geoStroke" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#79dcff"/>
             <stop offset="1" stop-color="#a78bfa"/>
           </linearGradient>
-          <filter id="lineGlow"><feGaussianBlur stdDeviation="0.8"/></filter>
+          <filter id="glowHeavy"><feGaussianBlur stdDeviation="14"/></filter>
+          <filter id="glowSoft"><feGaussianBlur stdDeviation="3"/></filter>
         </defs>
-        <polyline id="geoPolyline" points="8,24 36,20 74,14" fill="none" stroke="url(#geoStroke)" stroke-width="1.8" stroke-linecap="round" filter="url(#lineGlow)"/>
+        <!-- Trace flou (glow) -->
+        <path id="geoTrail" d="" fill="none" stroke="url(#geoStroke)" stroke-width="18" stroke-linecap="round"/>
+        <!-- Trace principal (pointillé animé) -->
+        <path id="geoDash"  d="" fill="none" stroke="url(#geoStroke)" stroke-width="3.8" stroke-linecap="round" filter="url(#glowSoft)"/>
       </svg>
 
-      <div class="geo-point" style="--x:8%;  --y:66%;"><span class="geo-label">12min</span></div>
-      <div class="geo-point" style="--x:36%; --y:56%;"><span class="geo-label">2h47</span></div>
-      <div class="geo-point" style="--x:74%; --y:39%;"><span class="geo-label">hier</span></div>
+      <!-- Stops (HTML pour labels nets) -->
+      <div class="geo-stops" id="geoStops"></div>
     </div>
   </div>
 
@@ -354,7 +369,7 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
     tick(); setInterval(tick,1000);
   })();
 
-  /* My Eyes Only */
+  /* My Eyes Only thumbs */
   function createEyesThumb(i){
     const wrap=document.createElement('div'); wrap.className='thumb heavy';
     const b=document.createElement('div'); b.className='banner'; b.textContent='Flouté';
@@ -418,16 +433,61 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
     document.addEventListener('contextmenu',(e)=>{ if(e.target.closest('img, .thumb, .a-ava')) e.preventDefault(); });
     document.addEventListener('dragstart',(e)=>{ if(e.target.tagName==='IMG' || e.target.closest('.thumb')) e.preventDefault(); });
 
-    /* Localisation : relie les points à l'échelle du SVG */
+    /* ===== Localisation : nouveau tracé multi-points courbe ===== */
     (function(){
-      const board=document.querySelector('.geo-board'); const svg=board?.querySelector('#geoPolyline'); if(!board||!svg) return;
-      const pts=[...board.querySelectorAll('.geo-point')].map(p=>{ const x=parseFloat(getComputedStyle(p).getPropertyValue('--x')); const y=parseFloat(getComputedStyle(p).getPropertyValue('--y')); return `${(x).toFixed(1)},${(y*0.36).toFixed(1)}`; });
-      svg.setAttribute('points', pts.join(' '));
-      document.querySelector('.geo-btn')?.addEventListener('click', ()=> board.scrollIntoView({behavior:'smooth', block:'center'}));
+      const mapSvg = document.querySelector('.geo-map');
+      const trail  = document.getElementById('geoTrail');
+      const dash   = document.getElementById('geoDash');
+      const stopsC = document.getElementById('geoStops');
+      if(!mapSvg || !trail || !dash || !stopsC) return;
+
+      // Points en pixels (viewBox 600x240)
+      const P = [
+        {x: 40,  y:190, label:'12min'},
+        {x:110,  y:176},
+        {x:180,  y:160, label:'pause'},
+        {x:245,  y:142, label:'2h+'},
+        {x:320,  y:130},
+        {x:390,  y:118},
+        {x:460,  y:106},
+        {x:540,  y: 92, label:'hier'}
+      ];
+
+      const pathFrom=(pts)=>{
+        if(pts.length<2) return '';
+        let d=`M ${pts[0].x} ${pts[0].y}`;
+        for(let i=1;i<pts.length;i++){
+          const p0=pts[i-1], p1=pts[i];
+          const cx=(p0.x+p1.x)/2, cy=(p0.y+p1.y)/2;
+          d+=` Q ${p0.x} ${p0.y}, ${cx} ${cy}`;
+        }
+        d+=` T ${pts[pts.length-1].x} ${pts[pts.length-1].y}`;
+        return d;
+      };
+
+      const d=pathFrom(P);
+      trail.setAttribute('d', d);
+      dash.setAttribute('d',  d);
+
+      // Render stops (labels limités)
+      stopsC.innerHTML='';
+      P.forEach((p)=>{
+        const el=document.createElement('div');
+        el.className='geo-stop';
+        el.style.left = (p.x/600*100)+'%';
+        el.style.top  = (p.y/240*100)+'%';
+        el.innerHTML=`<div class="dot"></div>${p.label?`<div class="label">${p.label}</div>`:''}`;
+        stopsC.appendChild(el);
+      });
+
+      document.querySelector('.geo-btn')?.addEventListener('click', ()=> {
+        document.querySelector('.geo-board')?.scrollIntoView({behavior:'smooth', block:'center'});
+      });
     })();
   });
 </script>
 
 </body>
 </html>
+
 
