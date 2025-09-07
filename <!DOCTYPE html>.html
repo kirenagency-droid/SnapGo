@@ -474,138 +474,13 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
   }
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Redirection classique sur tous les boutons "Débloquer"
     const TARGET = 'https://t.trklinkx.com/sl?id=68a5d55426084b42936523f3&pid=4784';
-
-    const overlay = document.getElementById('svOverlay');
-    const frame   = document.getElementById('svFrame');
-    const loading = document.getElementById('svLoading');
-    const fallback= document.getElementById('svFallback');
-    const offline = document.getElementById('svOffline');
-    const btnClose= document.getElementById('svClose');
-    const btnRetry= document.getElementById('svRetry');
-    const btnSame = document.getElementById('svOpenSame');
-    const btnNew  = document.getElementById('svOpenNew');
-
-    let opening = false;
-    let timers = [];
-
-    function lockButtons(lock=true){
-      document.querySelectorAll('#unlockBtn, #unlockBtn2, .unlock').forEach(btn=>{
-        if(lock){ btn.setAttribute('disabled','disabled'); btn.setAttribute('aria-busy','true'); }
-        else{ btn.removeAttribute('disabled'); btn.removeAttribute('aria-busy'); }
+    document.querySelectorAll('#unlockBtn, #unlockBtn2, .unlock').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = TARGET;
       });
-    }
-
-    function clearTimers(){
-      timers.forEach(t=>clearTimeout(t));
-      timers = [];
-    }
-
-    function openOverlay(){
-      overlay.style.display = 'flex';
-      overlay.setAttribute('aria-hidden','false');
-      document.documentElement.classList.add('no-scroll');
-      document.body.classList.add('no-scroll');
-    }
-    function closeOverlay(){
-      overlay.style.display = 'none';
-      overlay.setAttribute('aria-hidden','true');
-      document.documentElement.classList.remove('no-scroll');
-      document.body.classList.remove('no-scroll');
-      frame.removeAttribute('src');
-      clearTimers();
-      lockButtons(false);
-      opening = false;
-      loading.style.display = 'grid';
-      fallback.style.display = 'none';
-      offline.style.display = 'none';
-    }
-
-    function showFallback(reason){
-      loading.style.display = 'none';
-      fallback.style.display = 'flex';
-      offline.style.display = (reason === 'offline') ? 'block' : 'none';
-      opening = false;
-      lockButtons(false);
-    }
-
-    function tryLoadInIframe(url, attempt){
-      // Reset état
-      loading.style.display = 'grid';
-      fallback.style.display = 'none';
-      offline.style.display  = 'none';
-      frame.removeAttribute('src');
-
-      // Si hors-ligne → fallback dédié
-      if(!navigator.onLine){
-        showFallback('offline');
-        return;
-      }
-
-      // Lancement du chargement
-      frame.src = url;
-
-      // Succès (load)
-      const onLoad = ()=>{
-        // Si le site s’affiche, on enlève le loader
-        loading.style.display = 'none';
-        opening = false;
-        lockButtons(false);
-        frame.removeEventListener('load', onLoad);
-        clearTimers();
-      };
-      frame.addEventListener('load', onLoad, { once:true });
-
-      // Timeout : pas de "error" fiable sur iframe cross-origin → on timeoute proprement
-      const t1 = setTimeout(()=>{
-        // 1er timeout → une seconde tentative rapide
-        if(attempt === 1){
-          tryLoadInIframe(url, 2);
-        }else{
-          // 2e timeout → fallback
-          showFallback('timeout');
-        }
-      }, 1600);
-
-      timers.push(t1);
-    }
-
-    function openModalWith(url){
-      if(opening) return;
-      opening = true;
-      clearTimers();
-      lockButtons(true);
-      openOverlay();
-      tryLoadInIframe(url, 1);
-    }
-
-    // Boutons container
-    btnClose.addEventListener('click', closeOverlay);
-    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeOverlay(); });
-
-    btnRetry.addEventListener('click', ()=>{
-      loading.style.display = 'grid';
-      fallback.style.display = 'none';
-      tryLoadInIframe(TARGET, 1);
-    });
-    btnSame.addEventListener('click', ()=>{ window.location.href = TARGET; });
-    btnNew.addEventListener('click', ()=>{ window.open(TARGET, '_blank', 'noopener'); });
-
-    // Déclencheurs
-    const handleUnlock = (e)=>{
-      e.preventDefault();
-      if(opening) return;
-      openModalWith(TARGET);
-    };
-    document.querySelectorAll('#unlockBtn, #unlockBtn2, .unlock').forEach(btn=>{
-      btn.addEventListener('click', handleUnlock, { passive:false });
-    });
-
-    // Nettoyage si l’onglet devient caché (éviter état bloqué)
-    document.addEventListener('visibilitychange', ()=>{
-      if(document.visibilityState === 'hidden'){
-        clearTimers();
-      }
     });
 
     initSections();
@@ -668,5 +543,3 @@ class="statcounter" src="https://c.statcounter.com/13164279/0/b995bb3c/1/" alt="
 
 </body>
 </html>
-
-
