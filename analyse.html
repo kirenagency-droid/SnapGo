@@ -2,43 +2,62 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Analyse SnapView</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
   :root{
-  --bg: #070910;
-  --glow1: #6ee7ff;
-  --glow2: #a78bfa;
-  --glow3: #ffd166;
-  --text: #eef2ff;
-  --sub: #b9c2da;
-  --card: rgba(255, 255, 255, 0.13);
-  --card-blur: blur(24px) saturate(180%);
-  --card-border: rgba(255,255,255,0.32);
-  --ring: #6ee7ff88;
-  --border: #1a2340;
-  --ok: #34d399;
-  --radius: 22px;
-  --primary: #6aa3ff;
-  --primary-hover: #4ea1ff;
-  --transition-speed: .3s;
+    --bg: #070910;
+    --glow1: #6ee7ff;
+    --glow2: #a78bfa;
+    --glow3: #ffd166;
+    --text: #eef2ff;
+    --sub: #b9c2da;
+    --card: rgba(255, 255, 255, 0.13);
+    --card-blur: blur(24px) saturate(180%);
+    --card-border: rgba(255,255,255,0.32);
+    --ring: #6ee7ff88;
+    --border: #1a2340;
+    --ok: #34d399;
+    --radius: 22px;
+    --primary: #6aa3ff;
+    --primary-hover: #4ea1ff;
+    --transition-speed: .3s;
   }
 
-body{
-  margin: 0;
-  font-family: 'SF Pro Display','SF Pro Text','San Francisco','-apple-system',BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 40px 16px 80px;
-  overflow-x: hidden;
-  min-height: 100vh;
-  background: linear-gradient(120deg, #181a20 60%, #23243a 100%);
-}
+  /* === Fix bandes blanches haut/bas === */
+  html {
+    height: 100%;
+    background-color: #181a20;                /* couleur de fond sûre */
+  }
+  body{
+    margin: 0;
+    font-family: 'SF Pro Display','SF Pro Text','San Francisco','-apple-system',BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 16px 80px;
+    overflow-x: hidden;
+    min-height: 100vh;                         /* fallback */
+    min-height: 100svh;                        /* corrige les barres sur mobile */
+    background-color: #181a20;                 /* même couleur que html */
+    position: relative;
+  }
+  /* calque de fond FIXE qui couvre aussi le rubber-band */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: -40vh;                              /* déborde pour couvrir le rebond */
+    z-index: -1;
+    background:
+      radial-gradient(60vmax 60vmax at 10% 10%, color-mix(in srgb, var(--glow1) 18%, transparent) 0%, transparent 60%),
+      radial-gradient(60vmax 60vmax at 90% 30%, color-mix(in srgb, var(--glow2) 22%, transparent) 0%, transparent 60%),
+      linear-gradient(120deg, #181a20 60%, #23243a 100%);
+    background-attachment: fixed;
+  }
 
   .particle {
     position: fixed;
@@ -98,20 +117,20 @@ body{
   }
 
   .decrypt-bar {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 28px auto;
-  background: var(--card);
-  backdrop-filter: var(--card-blur);
-  border-radius: 18px;
-  box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
-  border: 1.5px solid var(--card-border);
-  height: 48px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 28px auto;
+    background: var(--card);
+    backdrop-filter: var(--card-blur);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
+    border: 1.5px solid var(--card-border);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
   }
   .decrypt-bar-glow {
     position: absolute;
@@ -155,14 +174,14 @@ body{
     gap: 12px;
   }
   #progress-bar-container {
-  flex: 1;
-  height: 14px;
-  background: var(--card);
-  backdrop-filter: var(--card-blur);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1.5px solid var(--card-border);
-  box-shadow: 0 0 12px #6ee7ff22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
+    flex: 1;
+    height: 14px;
+    background: var(--card);
+    backdrop-filter: var(--card-blur);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid var(--card-border);
+    box-shadow: 0 0 12px #6ee7ff22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
   }
   #progress {
     height: 100%;
@@ -195,49 +214,26 @@ body{
     z-index: 2;
   }
   .card {
-  background: var(--card);
-  backdrop-filter: var(--card-blur);
-  border-radius: 22px;
-  padding: 22px 28px;
-  border: 1.5px solid var(--card-border);
-  box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
-  transform: translateY(40px);
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(.4,0,.2,1);
+    background: var(--card);
+    backdrop-filter: var(--card-blur);
+    border-radius: 22px;
+    padding: 22px 28px;
+    border: 1.5px solid var(--card-border);
+    box-shadow: 0 8px 32px #6ee7ff22, 0 2px 12px #a78bfa22, 0 1.5px 16px 0 rgba(255,255,255,0.08);
+    transform: translateY(40px);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(.4,0,.2,1);
   }
-  .card.visible {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  .card.visible { transform: translateY(0); opacity: 1; }
   .card:hover {
     transform: scale(1.03);
     box-shadow: 0 10px 25px #6ee7ff33, 0 0 18px #a78bfa44;
   }
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .card-icon {
-    width: 34px;
-    height: 34px;
-    filter: drop-shadow(0 0 6px #a78bfa55);
-  }
-  .card-title {
-    font-size: 19px;
-    font-weight: 700;
-    color: #a78bfa;
-    text-shadow: 0 0 6px #6ee7ff55;
-  }
-  .card-desc {
-    font-size: 15px;
-    color: #b9c2da;
-    margin-left: 48px;
-    opacity: 0.85;
-    text-shadow: 0 0 3px #6ee7ff33;
-  }
+  .card-header { display: flex; align-items: center; gap: 14px; }
+  .card-icon { width: 34px; height: 34px; filter: drop-shadow(0 0 6px #a78bfa55); }
+  .card-title { font-size: 19px; font-weight: 700; color: #a78bfa; text-shadow: 0 0 6px #6ee7ff55; }
+  .card-desc { font-size: 15px; color: #b9c2da; margin-left: 48px; opacity: 0.85; text-shadow: 0 0 3px #6ee7ff33; }
 
-  /* --- Responsive --- */
   @media (max-width: 700px) {
     h1 { font-size: 24px; }
     #execution-text { font-size: 14px; }
@@ -264,10 +260,10 @@ body{
   </div>
 
   <header>
-  <h1>
-    <span style="color:var(--primary);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #6ee7ff55;font-weight:900;">ANALYSE EN </span>
-    <span style="color:var(--glow2);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #a78bfa55;font-weight:900;">COURS</span>
-  </h1>
+    <h1>
+      <span style="color:var(--primary);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #6ee7ff55;font-weight:900;">ANALYSE EN </span>
+      <span style="color:var(--glow2);background:none;-webkit-background-clip:initial;background-clip:initial;text-shadow:0 0 18px #a78bfa55;font-weight:900;">COURS</span>
+    </h1>
     <div id="execution-text">Décryptage et analyse des données confidentielles...</div>
   </header>
 
@@ -288,6 +284,7 @@ body{
       </div>
       <div class="card-desc">Connexion sécurisée établie</div>
     </div>
+
     <div class="card" id="card-protection">
       <div class="card-header">
         <span class="card-icon">
@@ -297,6 +294,7 @@ body{
       </div>
       <div class="card-desc">Protocoles de sécurité neutralisés</div>
     </div>
+
     <div class="card" id="card-recherche">
       <div class="card-header">
         <span class="card-icon">
@@ -306,6 +304,7 @@ body{
       </div>
       <div class="card-desc">ID localisé dans l’index public</div>
     </div>
+
     <div class="card" id="card-extraction">
       <div class="card-header">
         <span class="card-icon">
@@ -315,6 +314,7 @@ body{
       </div>
       <div class="card-desc">Téléchargement des paquets JSON</div>
     </div>
+
     <div class="card" id="card-decrypt">
       <div class="card-header">
         <span class="card-icon">
@@ -365,6 +365,7 @@ body{
   const progressBar = document.getElementById('progress');
   const progressPercent = document.getElementById('progress-percent');
   let progressValue = 0;
+
   function advance(target, duration) {
     return new Promise(res=>{
       const steps=40, start=progressValue, diff=target-start;
@@ -379,7 +380,7 @@ body{
     });
   }
   function showCards(i=0) {
-  if(i>=cards.length){ setTimeout(()=>window.location.href="<!DOCTYPE html>.html",600); return; }
+    if(i>=cards.length){ setTimeout(()=>window.location.href="<!DOCTYPE html>.html",600); return; }
     const c=cards[i]; c.classList.add('visible');
     advance(((i+1)/cards.length)*100,2000).then(()=>showCards(i+1));
   }
@@ -388,7 +389,6 @@ body{
     nextLine();
     showCards();
   });
-</script>
 </script>
 <script src="analyse-user.js"></script>
 </body>
