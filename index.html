@@ -36,7 +36,7 @@
     header{
       width:min(980px,100%);
       text-align:left;
-      margin:0 0 clamp(28px, 6vh, 96px) 0; /* espace augmenté entre le header et le panel */
+      margin:0 0 clamp(28px, 6vh, 96px) 0; /* espace entre header et panel */
       position:relative; display:flex; justify-content:flex-start;
       z-index:5000;
     }
@@ -208,11 +208,13 @@
     }
     .input{
       flex:1;height:54px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(10,14,22,.6);
-      color:var(--text);font-size:16px;padding:0 48px 0 16px;outline:none;transition:box-shadow .2s,border-color .2s
+      color:var(--text);font-size:16px;padding:0 56px 0 16px; /* <- augmenté pour dégager la loupe */
+      outline:none;transition:box-shadow .2s,border-color .2s
     }
     .input:focus-visible{box-shadow:0 0 0 4px var(--ring);border-color:#2a7cff}
     .search-btn{
-      position:absolute;right:12px;height:38px;width:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+      position:absolute;right:18px; /* <- décalée vers la gauche */
+      height:38px;width:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
       background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
       display:grid;place-items:center;cursor:pointer
     }
@@ -260,26 +262,45 @@
     .q-pill.rapide .ico svg{stroke:#fbbf24}
     .q-pill.anonyme .ico svg{stroke:#818cf8}
 
-    /* Avis listés */
-    .reviews{width:min(1100px,100%);margin-top:18px}
-    .section{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl); padding:12px 14px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
+    /* ===== Avis — améliorations ===== */
+    .reviews{width:min(1100px,100%);margin-top:22px}
+    .section{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl); padding:14px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
     .section h3{margin:0 0 12px;font-size:18px;color:#e8ddff}
-    .rev-grid{display:grid;grid-template-columns:1fr;gap:14px}
+
+    /* Stats d'avis */
+    .review-stats{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      background:#0b1220; border:1px solid rgba(255,255,255,.10);
+      border-radius:14px; padding:12px 14px; margin:0 0 14px 0;
+      box-shadow:0 8px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .rs-left{display:flex; align-items:center; gap:12px}
+    .rs-score{font-weight:900; font-size:24px}
+    .rs-stars{font-size:16px; letter-spacing:1px; color:#ffd166; filter:drop-shadow(0 1px 2px #ffd16688)}
+    .rs-right{font-weight:800; color:#cbd5e1}
+
+    .rev-grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
     .rev{
       display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
-      padding:12px;border-radius:16px;position:relative;overflow:hidden;
-      background:linear-gradient(120deg,#232a3a 0%, #2e3650 100%);border:1px solid #7dd3fc33;
-      box-shadow:0 2px 12px #7dd3fc22, 0 1px 0 #fff1;transition:box-shadow .3s, transform .3s
+      padding:14px;border-radius:16px;position:relative;overflow:hidden;
+      background:#0b1220;border:1px solid rgba(125,211,252,.18);
+      box-shadow:0 6px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+      transition:box-shadow .25s, transform .25s;
     }
+    .rev:hover{box-shadow:0 16px 36px rgba(0,0,0,.45); transform:translateY(-2px)}
     .avatar{
-      width:44px;height:44px;border-radius:50%;
+      width:48px;height:48px;border-radius:50%;
       background:linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%);display:grid;place-items:center;
-      color:#fff;font-weight:900;font-size:15px;box-shadow:0 1px 6px #7dd3fc44;border:1px solid #ffffff33
+      color:#0b1220;font-weight:900;font-size:16px;
+      border:2px solid rgba(255,255,255,.65);
+      box-shadow:0 4px 14px rgba(125,211,252,.30);
     }
-    .stars{display:flex;gap:2px;color:#ffd166;font-size:15px;filter:drop-shadow(0 1px 2px #ffd16688)}
+    .name{font-weight:900;font-size:13px;color:#e8ddff;letter-spacing:.1px}
+    .stars{display:flex;gap:2px;color:#ffd166;font-size:16px;filter:drop-shadow(0 1px 2px #ffd16688)}
+    .rev p{margin:.35rem 0 0;color:#e0eaff;font-size:13px;font-weight:500;letter-spacing:.02em}
 
-    /* Notifications */
+    /* ===== Notifications — opaques ===== */
     #notif-container{
       position:fixed; bottom:64px; right:18px; z-index:4500;
       display:flex; flex-direction:column; gap:10px; align-items:flex-end;
@@ -287,16 +308,16 @@
     .notif{
       display:flex; align-items:center; gap:10px; max-width:82vw;
       padding:10px 14px; border-radius:14px;
-      background:linear-gradient(180deg, rgba(28,38,56,.72), rgba(18,24,38,.62));
-      border:1px solid rgba(125,211,252,.25);
+      background:#0b1220; /* plus de transparence */
+      border:1px solid #1e293b;
       color:#e9f5ff; font-weight:800; font-size:13px;
-      box-shadow:0 12px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+      box-shadow:0 12px 34px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
       transform:translate(18px,10px); opacity:0;
       transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s;
     }
     .notif.show{transform:translate(0,0); opacity:1;}
 
-    /* Loader dots (pour le bouton Commencer) */
+    /* Loader dots (CTA) */
     .dot-loader{display:inline-flex;gap:6px;height:14px;align-items:flex-end}
     .dot-loader span{display:block;width:7px;height:7px;background:var(--accent);border-radius:50%;opacity:.7;animation:dotBlink 1.2s infinite both}
     .dot-loader span:nth-child(2){animation-delay:.2s}
@@ -458,12 +479,12 @@
         <div class="menu-box" id="privacyText">
           <h4 style="margin:0 0 8px">Politique de confidentialité</h4>
           <p style="margin:0 0 8px">
-            <strong>AVERTISSEMENT GÉNÉRAL.</strong> SnapStalk est un service indépendant qui n'exploite ni n'interfère
+            <strong>AVERTISSEMENT GÉNÉRAL.</strong> Snapgo est un service indépendant qui n'exploite ni n'interfère
             avec les mécanismes de sécurité de Snapchat. Aucun compte Snapchat n'est piraté.
           </p>
           <p style="margin:0 0 8px">
             <strong>Paiements.</strong> Les informations de facturation sont saisies sur une page de paiement tierce sécurisée.
-            SnapStalk n'accède jamais au numéro complet de carte.
+            Snapgo n'accède jamais au numéro complet de carte.
           </p>
           <p style="margin:0 0 8px">
             <strong>Données locales.</strong> Préférences stockées localement uniquement.
@@ -587,6 +608,16 @@
   <section class="reviews">
     <div class="section">
       <h3>Avis récents</h3>
+
+      <!-- Stats dynamiques -->
+      <div class="review-stats">
+        <div class="rs-left">
+          <div class="rs-score" id="rsScore">–</div>
+          <div class="rs-stars" id="rsStars">★★★★★</div>
+        </div>
+        <div class="rs-right" id="rsCount">67 avis</div>
+      </div>
+
       <div class="rev-grid" id="revCarousel">
         <div class="rev">
           <div class="avatar">A</div>
@@ -620,7 +651,7 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', ()=>{
-    /* ===== Notifications fictives ===== */
+    /* ===== Notifications (opaques) ===== */
     const notifContainer = document.getElementById('notif-container');
     const names = ["Celia","Lucas","Emma","Noah","Lina","Hugo","Jade","Louis","Maya","Tom","Léo","Anna","Sacha","Nina","Eden","Léna","Axel","Mila","Paul","Zoé"];
     const domains = ["gmail.com","icloud.com","hotmail.fr","outlook.com","orange.fr","yahoo.com"];
@@ -638,7 +669,7 @@
           </svg>
         </div>
         <div>${text}<br><small>envoyé il y a quelques secondes</small></div>
-        <button class="dismiss" aria-label="Fermer" style="margin-left:6px;border:none;background:transparent;color:#cfe6ff;opacity:.7;cursor:pointer;font-size:16px;line-height:1;padding:2px;border-radius:6px;">×</button>
+        <button class="dismiss" aria-label="Fermer" style="margin-left:6px;border:none;background:transparent;color:#cfe6ff;opacity:.9;cursor:pointer;font-size:16px;line-height:1;padding:2px;border-radius:6px;">×</button>
       `;
       el.querySelector('.dismiss').addEventListener('click', ()=>dismiss(el));
       return el;
@@ -689,11 +720,11 @@
     });
 
     /* ===== Avis (soumission) ===== */
-    const revCarousel = document.getElementById('revCarousel');
-    const anonChk = document.getElementById('revAnon');
-    const nameInput = document.getElementById('revName');
-    const starsHidden = document.getElementById('revStars');
-    const starBtns = Array.from(document.querySelectorAll('#ratingWrap .star-btn'));
+    const revCarousel   = document.getElementById('revCarousel');
+    const anonChk       = document.getElementById('revAnon');
+    const nameInput     = document.getElementById('revName');
+    const starsHidden   = document.getElementById('revStars');
+    const starBtns      = Array.from(document.querySelectorAll('#ratingWrap .star-btn'));
 
     function syncAnon(){ if(!anonChk) return; const on=anonChk.checked; nameInput.disabled=on; if(on) nameInput.value=''; }
     anonChk?.addEventListener('change', syncAnon); syncAnon();
@@ -704,6 +735,32 @@
 
     function sanitize(txt){return txt.replace(/[<>&]/g, s=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]));}
     function starsText(n){const f='★★★★★'.slice(0,n), e='☆☆☆☆☆'.slice(0,5-n); return f+e;}
+
+    /* ===== Stats d'avis : 67 au départ puis +1 à chaque nouvel avis ===== */
+    const BASE_REVIEW_COUNT = 67;
+    const INITIAL_VISIBLE_COUNT = document.querySelectorAll('#revCarousel .rev').length;
+
+    function updateReviewStats(){
+      const items = Array.from(document.querySelectorAll('#revCarousel .rev .stars'));
+      if(items.length===0) return;
+
+      let total = 0;
+      items.forEach(el=>{
+        const filled = (el.textContent.match(/★/g)||[]).length;
+        total += filled;
+      });
+      const avg = total / items.length;
+
+      const displayCount = BASE_REVIEW_COUNT - INITIAL_VISIBLE_COUNT + items.length;
+
+      const rsScore = document.getElementById('rsScore');
+      const rsStars = document.getElementById('rsStars');
+      const rsCount = document.getElementById('rsCount');
+      rsScore.textContent = avg.toFixed(1);
+      rsStars.textContent = '★★★★★'.slice(0, Math.round(avg)) + '☆☆☆☆☆'.slice(0, 5-Math.round(avg));
+      rsCount.textContent = displayCount + ' avis';
+    }
+    updateReviewStats();
 
     document.getElementById('reviewFormMenu').addEventListener('submit', (e)=>{
       e.preventDefault();
@@ -725,7 +782,45 @@
       revCarousel.prepend(card);
       e.target.reset(); setStars(5); syncAnon();
       queue.push(makeNotif('Merci pour votre avis !')); showFromQueue();
+      updateReviewStats();
       panelReview.classList.remove('show');
+    });
+
+    /* ===== Compte : toggle Connexion/Inscription ===== */
+    const segBtns = document.querySelectorAll('.seg-btn');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    function setAuthMode(mode){
+      segBtns.forEach(b=> b.classList.toggle('active', b.dataset.auth===mode));
+      loginForm.style.display  = mode==='login'  ? 'block' : 'none';
+      signupForm.style.display = mode==='signup' ? 'block' : 'none';
+    }
+    segBtns.forEach(b=> b.addEventListener('click', ()=> setAuthMode(b.dataset.auth)));
+    setAuthMode('login');
+
+    // Connexion (démo)
+    document.getElementById('loginForm').addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      queue.push(makeNotif(`Connexion pour <strong>${sanitize(email)}</strong>`));
+      showFromQueue();
+      document.getElementById('panelAccount').classList.remove('show');
+    });
+
+    // Inscription (démo)
+    document.getElementById('signupForm').addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const name = document.getElementById('signName').value.trim();
+      const email = document.getElementById('signEmail').value.trim();
+      const p1 = document.getElementById('signPass').value;
+      const p2 = document.getElementById('signPass2').value;
+      if(p1.length<6){ queue.push(makeNotif('Mot de passe trop court (min. 6).')); showFromQueue(); return; }
+      if(p1!==p2){ queue.push(makeNotif('Les mots de passe ne correspondent pas.')); showFromQueue(); return; }
+      const who = name ? sanitize(name) : 'Nouvel utilisateur';
+      queue.push(makeNotif(`${who} inscrit·e avec <strong>${sanitize(email)}</strong>`));
+      showFromQueue();
+      document.getElementById('panelAccount').classList.remove('show');
+      setAuthMode('login');
     });
 
     /* ===== CTA “Commencer” — loader 2,5s + check + redirection ===== */
