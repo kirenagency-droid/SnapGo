@@ -237,7 +237,14 @@
     .cta:active{transform:translateY(1px)}
 
     /* ===== Badges Qualité ===== */
-    .quality{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .quality{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:12px;
+      /* >>> Forcer sur une seule ligne */
+      flex-wrap:nowrap;
+    }
     .q-pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:7px 12px; border-radius:999px;
@@ -246,6 +253,9 @@
       color:#e6f2ff; font-weight:800; font-size:12px; letter-spacing:.02em;
       box-shadow:0 2px 12px #7dd3fc22, 0 1px 0 #fff1;
       transition:transform .16s, box-shadow .16s, background .16s;
+      /* >>> Empêcher le wrap / forcer la ligne */
+      flex:0 0 auto;
+      white-space:nowrap;
     }
     .q-pill:hover{
       transform:translateY(-1px);
@@ -875,5 +885,4 @@
   </script>
 </body>
 </html>
-
 
