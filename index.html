@@ -7,32 +7,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
-  <!-- Helpers conservés mais ajustés -->
-  <style id="header-spacing-fix">
-    header h1{margin-top:0 !important;margin-bottom:22px !important}
-  </style>
-  <style id="layout-fix">
-    /* ↓ Globalement on décale la page vers le bas bien plus qu'avant */
-    body{padding-top:clamp(120px,16vh,240px) !important}
-    header{margin-bottom:clamp(22px,5.5vh,52px) !important}
-    .panel{margin-top:0 !important}
-  </style>
-  <style id="loosen-layout">
-    body{padding:32px 18px 140px !important}
-    header{margin-bottom:30px !important}
-    .panel{margin-bottom:26px !important}
-    .cta{margin-top:18px !important;margin-bottom:10px !important}
-    .reviews{margin-top:26px !important}
-    .section{padding:20px 18px 16px !important}
-    .rev-grid{gap:22px !important}
-    .rev{padding:16px 14px !important}
-    .avatar{width:48px !important;height:48px !important}
-    .rev p{font-size:13px !important}
-  </style>
-
   <style>
     :root{
-      --bg:#000; --text:#f4f7ff; --sub:#b6c1d9;
+      --bg:#000; --text:#f4f7ff; --sub:#cbd5e1;
       --glass:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.14);
       --ring:#7dd3fc88; --accent:#7dd3fc; --accent2:#a78bfa; --gold:#ffd166;
       --radius-xl:28px; --radius:18px; --blur:blur(18px) saturate(160%);
@@ -43,10 +20,11 @@
     body{
       margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,Arial,sans-serif;
       color:var(--text); display:flex; flex-direction:column; align-items:center;
-      padding:24px 14px 100px; overflow-x:hidden
+      padding:32px 18px 120px; overflow-x:hidden
     }
+    body.no-scroll{overflow:hidden}
 
-    /* halos + lueurs */
+    /* halos */
     .orb{position:fixed;width:560px;height:560px;border-radius:50%;filter:blur(80px);
       pointer-events:none;opacity:.32;mix-blend:screen}
     .o1{left:-200px;top:-160px;background:radial-gradient(circle at 40% 40%, #7dd3fc, transparent 60%)}
@@ -54,26 +32,164 @@
     .o3{left:50%;bottom:-280px;transform:translateX(-50%);background:radial-gradient(circle at 50% 50%, #7dd3fc, transparent 65%)}
     @media (prefers-reduced-motion:reduce){.orb{filter:none;opacity:.18}}
 
-    /* Header – plus compact et plus bas */
+    /* ======= HEADER ======= */
     header{
       width:min(980px,100%);
       text-align:left;
-      margin:0 0 12px 0;
-      position:relative;
+      margin:0 0 clamp(28px, 6vh, 96px) 0; /* espace augmenté entre le header et le panel */
+      position:relative; display:flex; justify-content:flex-start;
+      z-index:5000;
     }
-    h1{
-      margin:0 0 8px; font-weight:900; font-size:clamp(32px,6.6vw,50px); letter-spacing:.4px;
-      background:linear-gradient(90deg,#9be7ff 0%,#a78bfa 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 2px 24px rgba(125,211,252,.30)
+    .brand-wrap{
+      width:min(720px,100%);
+      border-radius:20px;
+      padding:10px 12px;
+      display:flex; align-items:center; gap:12px;
+      border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 10px 34px rgba(0,0,0,.55);
+      backdrop-filter:blur(12px) saturate(140%);
     }
-    .subtitle{color:var(--text);opacity:.86;font-weight:700;font-size:clamp(14px,3.2vw,19px);margin:0}
+    /* ◼️ carré dégradé */
+    .brand-ico{
+      width:30px;height:30px;border-radius:9px;flex:0 0 30px;
+      background:linear-gradient(120deg,#9be7ff 0%,#a78bfa 100%);
+      border:1px solid rgba(255,255,255,.32);
+      box-shadow:0 4px 18px rgba(125,211,252,.35), inset 0 1px 0 rgba(255,255,255,.25);
+    }
+    .brand-name{
+      font-weight:900; font-size:clamp(28px,5vw,48px); letter-spacing:.4px; line-height:1.05;
+      background:linear-gradient(90deg,#9be7ff 0%,#a78bfa 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow:0 2px 16px rgba(125,211,252,.25);
+    }
+    .brand-spacer{flex:1}
+    .brand-menu{
+      height:40px;width:40px;border-radius:12px;flex:0 0 40px;
+      display:grid;place-items:center;cursor:pointer;
+      border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .brand-menu svg{opacity:.9}
+
+    /* ===== MENU PLEIN ÉCRAN ===== */
+    #megaMenu{
+      position:fixed; inset:0; z-index:9000;
+      background:rgba(9,13,23,.92);
+      backdrop-filter:blur(12px) saturate(140%);
+      opacity:0; visibility:hidden; transform:translateY(-6px);
+      transition:opacity .22s ease, visibility .22s ease, transform .22s ease;
+      display:flex; flex-direction:column; color:#fff;
+    }
+    #megaMenu.show{opacity:1; visibility:visible; transform:none;}
+    .mm-head{
+      display:flex; align-items:center; gap:12px; padding:18px 18px;
+      background:#0b1220; border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .mm-title{font-weight:900; font-size:22px; color:#fff}
+    .mm-close{
+      margin-left:auto; height:42px; width:42px; border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.06));
+      border-radius:12px; display:grid; place-items:center; cursor:pointer;
+    }
+    .mm-body{flex:1; overflow:auto; padding:20px 18px 28px;}
+    .mm-section-title{margin:8px 6px 14px; font-weight:900; color:#fff; letter-spacing:.2px}
+
+    .card-list{display:grid; gap:14px}
+    .card-row{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:18px; border-radius:18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.16);
+      cursor:pointer; color:#fff;
+      box-shadow:0 10px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .card-left{display:flex; align-items:center; gap:12px}
+    .card-row .ico{
+      width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 32px;
+      background:linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%);
+      box-shadow:0 4px 14px rgba(125,211,252,.25);
+    }
+    .card-row .label{font-weight:900; color:#fff}
+    .mm-foot{padding:14px 18px; border-top:1px solid rgba(255,255,255,.08); color:#cbd5e1; opacity:.8}
+
+    /* Sous-panneaux */
+    .submenu{
+      position:absolute; inset:0; background:rgba(9,13,23,.98);
+      backdrop-filter:blur(10px) saturate(140%);
+      display:flex; flex-direction:column; color:#fff;
+      opacity:0; visibility:hidden; transform:translateY(8px);
+      transition:opacity .2s ease, transform .2s ease, visibility .2s ease;
+    }
+    .submenu.show{opacity:1; visibility:visible; transform:none;}
+    .sub-head{display:flex; align-items:center; gap:12px; padding:16px 18px; border-bottom:1px solid rgba(255,255,255,.08); background:#0b1220}
+    .sub-title{font-weight:900; font-size:18px; color:#fff}
+    .sub-back{
+      height:40px;width:40px;border-radius:12px;border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.06));
+      display:grid;place-items:center;cursor:pointer
+    }
+    .sub-body{flex:1; overflow:auto; padding:18px}
+    .menu-box{
+      background:#0f172a; border:1px solid rgba(255,255,255,.12);
+      border-radius:16px; padding:16px;
+      box-shadow:0 20px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+      color:#fff;
+    }
+    .menu-title{font-weight:900; letter-spacing:.2px; margin:4px 2px 10px}
+
+    /* Inputs form + avis */
+    .form-row{display:flex; gap:10px; align-items:center}
+    .menu-input, .menu-textarea{
+      width:100%; border-radius:12px; border:1px solid rgba(255,255,255,.18);
+      background:#0b1220; color:#fff;
+      padding:10px 12px; font-size:14px; outline:none;
+      transition:box-shadow .2s,border-color .2s, opacity .2s;
+    }
+    .menu-input:focus, .menu-textarea:focus{box-shadow:0 0 0 4px var(--ring); border-color:#2a7cff}
+    .menu-textarea{min-height:96px; resize:vertical}
+    .anon-pill{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.10);
+      padding:8px 12px; border-radius:999px; cursor:pointer; user-select:none;
+      font-weight:700; font-size:12px; color:#fff;
+    }
+    .anon-pill input{appearance:none; width:18px; height:18px; border-radius:6px;
+      border:1px solid rgba(255,255,255,.25); display:inline-block; background:rgba(255,255,255,.08);}
+    .anon-pill input:checked{background:linear-gradient(120deg,#7dd3fc 0%, #a78bfa 100%); border-color:transparent;}
+    .rating{display:flex;gap:6px;align-items:center;margin-top:10px}
+    .star-btn{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.10);
+      padding:6px 8px; border-radius:10px;
+      font-size:16px; line-height:1; cursor:pointer; color:#fff;
+      transition:transform .12s, box-shadow .12s, background .12s;
+    }
+    .star-btn.active{color:#0f172a; background:linear-gradient(120deg,#ffd166,#ffe49b); box-shadow:0 6px 16px rgba(255,209,102,.25)}
+    .menu-submit{
+      margin-top:12px; width:100%;
+      padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,.2);
+      font-weight:900; color:#0f172a; cursor:pointer;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      box-shadow:0 10px 30px rgba(125,211,252,.25);
+    }
+
+    /* Segmented control (Compte) */
+    .seg{display:inline-flex; gap:6px; padding:6px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); margin-bottom:12px}
+    .seg-btn{
+      padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06); color:#fff; font-weight:900; cursor:pointer;
+    }
+    .seg-btn.active{background:linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%); color:#0b1220; border-color:transparent}
 
     /* Panneau principal */
     .panel{
       width:min(880px,100%); background:var(--glass); border:1px solid var(--stroke);
-      border-radius:var(--radius-xl); padding:18px 14px 14px; backdrop-filter:var(--blur); box-shadow:var(--shadow)
+      border-radius:var(--radius-xl); padding:18px 14px 14px; backdrop-filter:var(--blur); box-shadow:var(--shadow);
+      position:relative; z-index:1;
     }
-
     .stepper{display:flex;align-items:center;gap:10px;justify-content:flex-start;margin-bottom:18px;color:#cbd5e1;font-weight:700}
     .steps{display:flex;gap:8px}
     .dot{width:10px;height:10px;border-radius:50%;background:#243042;border:1px solid #3b4b63}
@@ -83,7 +199,6 @@
     .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .6s ease}
     .bar.success{background:linear-gradient(90deg,#22c55e 0%, #4ade80 100%) !important}
     .mini-progress{width:160px;height:6px}
-    @media (max-width:520px){.mini-progress{width:110px;height:5px}}
 
     .field{
       position:relative;display:flex;align-items:center;gap:10px;margin:10px auto 12px;width:min(720px,100%);
@@ -96,30 +211,58 @@
       color:var(--text);font-size:16px;padding:0 48px 0 16px;outline:none;transition:box-shadow .2s,border-color .2s
     }
     .input:focus-visible{box-shadow:0 0 0 4px var(--ring);border-color:#2a7cff}
-    .input-error{border-color:#f87171 !important;box-shadow:0 0 0 3px #f8717166 !important}
     .search-btn{
       position:absolute;right:12px;height:38px;width:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
       background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
       display:grid;place-items:center;cursor:pointer
     }
-    .search-btn svg{opacity:.9}
 
-    .quality{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
-    .q-pill{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-weight:800;font-size:12px;
-      border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#e6f2ff}
-
+    /* === BOUTON COMMENCER (gradient bleu/violet) === */
     .cta{
-      display:block;margin:12px auto 0;padding:14px 32px;border-radius:999px;border:1px solid rgba(255,255,255,.2);
-      font-weight:900;font-size:18px;color:#0f172a;cursor:pointer;
-      background:linear-gradient(90deg,var(--accent) 0%, var(--accent2) 100%); box-shadow:0 10px 30px rgba(125,211,252,.25)
+      display:block;
+      margin:18px auto 0;
+      padding:14px 32px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.2);
+      font-weight:900;
+      font-size:18px;
+      color:#0f172a;
+      cursor:pointer;
+      background:linear-gradient(90deg,var(--accent) 0%, var(--accent2) 100%);
+      box-shadow:0 10px 30px rgba(125,211,252,.25);
+      transition:transform .15s ease;
     }
+    .cta:active{transform:translateY(1px)}
 
-    /* Avis */
-    .reviews{width:min(1100px,100%);margin-top:14px !important;transition:margin-top .55s cubic-bezier(.4,0,.2,1)}
-    .section{
-      background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl);
-      padding:12px 14px; backdrop-filter:var(--blur); box-shadow:var(--shadow)
+    /* ===== Badges Qualité ===== */
+    .quality{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .q-pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 12px; border-radius:999px;
+      border:1px solid rgba(125,211,252,.18);
+      background:rgba(255,255,255,.08);
+      color:#e6f2ff; font-weight:800; font-size:12px; letter-spacing:.02em;
+      box-shadow:0 2px 12px #7dd3fc22, 0 1px 0 #fff1;
+      transition:transform .16s, box-shadow .16s, background .16s;
     }
+    .q-pill:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 28px #7dd3fc33, 0 2px 0 #fff2;
+      background:rgba(125,211,252,.10);
+    }
+    .q-pill .ico{
+      display:inline-grid; place-items:center;
+      width:18px; height:18px; border-radius:50%;
+      background:linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%);
+      box-shadow:0 1px 6px #7dd3fc44;
+    }
+    .q-pill.secure .ico svg{stroke:#22c55e}
+    .q-pill.rapide .ico svg{stroke:#fbbf24}
+    .q-pill.anonyme .ico svg{stroke:#818cf8}
+
+    /* Avis listés */
+    .reviews{width:min(1100px,100%);margin-top:18px}
+    .section{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius-xl); padding:12px 14px; backdrop-filter:var(--blur); box-shadow:var(--shadow)}
     .section h3{margin:0 0 12px;font-size:18px;color:#e8ddff}
     .rev-grid{display:grid;grid-template-columns:1fr;gap:14px}
     @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
@@ -129,19 +272,16 @@
       background:linear-gradient(120deg,#232a3a 0%, #2e3650 100%);border:1px solid #7dd3fc33;
       box-shadow:0 2px 12px #7dd3fc22, 0 1px 0 #fff1;transition:box-shadow .3s, transform .3s
     }
-    .rev:hover{box-shadow:0 8px 32px #7dd3fc44, 0 2px 0 #fff2;transform:translateY(-2px)}
     .avatar{
       width:44px;height:44px;border-radius:50%;
       background:linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%);display:grid;place-items:center;
       color:#fff;font-weight:900;font-size:15px;box-shadow:0 1px 6px #7dd3fc44;border:1px solid #ffffff33
     }
-    .name{font-weight:900;font-size:13px;color:#e8ddff;letter-spacing:.1px}
-    .stars{display:flex;gap:2px;color:var(--gold);font-size:15px;filter:drop-shadow(0 1px 2px #ffd16688)}
-    .rev p{margin:.25rem 0 0;color:#e0eaff;font-size:12px;font-weight:500;letter-spacing:.02em}
+    .stars{display:flex;gap:2px;color:#ffd166;font-size:15px;filter:drop-shadow(0 1px 2px #ffd16688)}
 
-    /* Notifications “rapport” améliorées */
+    /* Notifications */
     #notif-container{
-      position:fixed; bottom:64px; right:18px; z-index:999;
+      position:fixed; bottom:64px; right:18px; z-index:4500;
       display:flex; flex-direction:column; gap:10px; align-items:flex-end;
     }
     .notif{
@@ -149,96 +289,245 @@
       padding:10px 14px; border-radius:14px;
       background:linear-gradient(180deg, rgba(28,38,56,.72), rgba(18,24,38,.62));
       border:1px solid rgba(125,211,252,.25);
-      backdrop-filter:blur(10px) saturate(140%);
       color:#e9f5ff; font-weight:800; font-size:13px;
       box-shadow:0 12px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
       transform:translate(18px,10px); opacity:0;
       transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s;
     }
     .notif.show{transform:translate(0,0); opacity:1;}
-    .notif .ico{
-      width:26px; height:26px; border-radius:8px; flex:0 0 26px;
-      background:linear-gradient(180deg,#22c55e,#4ade80);
-      display:grid; place-items:center; color:#0b1610;
-      box-shadow:0 6px 16px rgba(34,197,94,.35), inset 0 0 0 1px #ffffff77;
-    }
-    .notif small{opacity:.75; font-weight:700}
-    .notif .dismiss{
-      margin-left:6px; border:none; background:transparent; color:#cfe6ff; opacity:.7; cursor:pointer;
-      font-size:16px; line-height:1; padding:2px; border-radius:6px;
-    }
-    .notif .dismiss:hover{opacity:1}
 
-    /* Loader dots */
+    /* Loader dots (pour le bouton Commencer) */
     .dot-loader{display:inline-flex;gap:6px;height:14px;align-items:flex-end}
     .dot-loader span{display:block;width:7px;height:7px;background:var(--accent);border-radius:50%;opacity:.7;animation:dotBlink 1.2s infinite both}
     .dot-loader span:nth-child(2){animation-delay:.2s}
     .dot-loader span:nth-child(3){animation-delay:.4s}
     @keyframes dotBlink{0%,80%,100%{opacity:.7;transform:scale(1)}40%{opacity:1;transform:scale(1.35)}}
 
-    /* Design amélioré pour les q-pill */
-    .q-pill {
-      border: 1px solid rgba(125,211,252,.18);
-      background: rgba(255,255,255,.08);
-      color: #e6f2ff;
-      box-shadow: 0 2px 12px #7dd3fc22, 0 1px 0 #fff1;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: .02em;
-      padding: 6px 10px !important;
-      transition: transform .16s, box-shadow .16s;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border-radius: 999px;
-      line-height: 1.2;
-    }
-    .q-pill:hover {
-      transform: scale(1.06);
-      box-shadow: 0 8px 32px #7dd3fc33, 0 2px 0 #fff2;
-      background: rgba(125,211,252,.10);
-    }
-    .q-pill .ico {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: linear-gradient(120deg,#7dd3fc 0%,#a78bfa 100%);
-      margin-right: 2px;
-      box-shadow: 0 1px 6px #7dd3fc44;
-    }
-    .q-pill.secure .ico svg {
-      stroke: #22c55e;
-    }
-    .q-pill.rapide .ico svg {
-      stroke: #fbbf24;
-    }
-    .q-pill.anonyme .ico svg {
-      stroke: #818cf8;
-    }
-
-    footer{width:100%;text-align:center;position:fixed;bottom:8px;left:0;font-size:11px;color:#b6c1d9;opacity:.65;letter-spacing:.1px;z-index:99;pointer-events:none}
-  </style>
-  <style id="snapgo-spacing">
-    header h1 { margin-top: 20px !important; margin-bottom: 2px !important; }
+    footer{width:100%;text-align:center;position:fixed;bottom:8px;left:0;font-size:11px;color:#b6c1d9;opacity:.65;letter-spacing:.1px;z-index:1;pointer-events:none}
   </style>
 </head>
 <body>
   <!-- halos -->
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
 
-  <!-- notifications flottantes -->
+  <!-- notifications -->
   <div id="notif-container" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Header (plus bas) -->
+  <!-- HEADER -->
   <header>
-    <h1>SNAP<span style="color:#a78bfa">GO</span></h1>
-    <p class="subtitle">découvrez la vérité sur vos proches</p>
+    <div class="brand-wrap" role="banner" aria-label="Snapgo">
+      <div class="brand-ico" aria-hidden="true"></div>
+      <div class="brand-name">Snapgo</div>
+      <div class="brand-spacer"></div>
+      <button class="brand-menu" id="menuBtn" aria-expanded="false" aria-controls="megaMenu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 7h14M5 12h14M5 17h14" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
   </header>
 
-  <!-- Panneau -->
+  <!-- MENU PLEIN ÉCRAN -->
+  <aside id="megaMenu" role="dialog" aria-modal="true" aria-label="Menu principal">
+    <div class="mm-head">
+      <div class="mm-title">Menu</div>
+      <button class="mm-close" id="menuClose" aria-label="Fermer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mm-body">
+      <div class="mm-section-title">Navigation</div>
+      <div class="card-list">
+        <button class="card-row" id="openReview">
+          <div class="card-left">
+            <div class="ico" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" stroke="#0b1220" stroke-width="2"/></svg>
+            </div>
+            <div class="label">Donner un avis</div>
+          </div>
+          <span>›</span>
+        </button>
+
+        <button class="card-row" id="openAbout">
+          <div class="card-left">
+            <div class="ico" aria-hidden="true"></div>
+            <div class="label">À propos</div>
+          </div>
+          <span>›</span>
+        </button>
+
+        <button class="card-row" id="openPrivacy">
+          <div class="card-left">
+            <div class="ico" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 10v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6M8 10V8a4 4 0 1 1 8 0v2" stroke="#0b1220" stroke-width="2"/></svg>
+            </div>
+            <div class="label">Politique de confidentialité</div>
+          </div>
+          <span>›</span>
+        </button>
+
+        <button class="card-row" id="openAccount">
+          <div class="card-left">
+            <div class="ico" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm-8 8a8 8 0 1 1 16 0" stroke="#0b1220" stroke-width="2"/></svg>
+            </div>
+            <div class="label">Compte</div>
+          </div>
+          <span>›</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mm-foot"><span>v0.8.3 · beta</span></div>
+
+    <!-- Sous-panneau : Avis -->
+    <div class="submenu" id="panelReview" aria-label="Donner un avis">
+      <div class="sub-head">
+        <button class="sub-back" data-close="#panelReview" aria-label="Retour">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="sub-title">Donner un avis</div>
+      </div>
+      <div class="sub-body">
+        <div class="menu-box">
+          <div class="menu-title">Laisser un avis</div>
+          <form id="reviewFormMenu">
+            <div class="form-row">
+              <input class="menu-input" type="text" id="revName" placeholder="Votre prénom">
+            </div>
+            <div class="form-row" style="margin-top:8px">
+              <label class="anon-pill" for="revAnon">
+                <input type="checkbox" id="revAnon"> Publier en anonyme
+              </label>
+            </div>
+            <div class="form-row" style="margin-top:8px">
+              <textarea class="menu-textarea" id="revText" placeholder="Votre message (10–280 caractères)" maxlength="280" required></textarea>
+            </div>
+            <div class="rating" id="ratingWrap">
+              <button type="button" class="star-btn" data-rate="1">★</button>
+              <button type="button" class="star-btn" data-rate="2">★</button>
+              <button type="button" class="star-btn" data-rate="3">★</button>
+              <button type="button" class="star-btn" data-rate="4">★</button>
+              <button type="button" class="star-btn" data-rate="5">★</button>
+              <input type="hidden" id="revStars" value="5">
+            </div>
+            <button class="menu-submit" type="submit">Publier l’avis</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sous-panneau : À propos -->
+    <div class="submenu" id="panelAbout" aria-label="À propos">
+      <div class="sub-head">
+        <button class="sub-back" data-close="#panelAbout" aria-label="Retour">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="sub-title">À propos</div>
+      </div>
+      <div class="sub-body">
+        <div class="menu-box">
+          <p style="margin:0 0 10px">
+            <strong>Notre histoire</strong> — Snapgo est né d’un constat simple : trop de proches se brisent sur des
+            non-dits, des mensonges et des tromperies. Un soir, après avoir vu un ami s’effondrer face à une vérité
+            découverte trop tard, nous nous sommes promis de créer quelque chose d’utile.
+          </p>
+          <p style="margin:0 0 10px">
+            <strong>Pourquoi Snapgo ?</strong> Pour aider à <em>éviter la tromperie</em> et <em>rétablir la vérité</em>.
+            Pas pour espionner, mais pour apporter de la clarté, encourager le dialogue et redonner du pouvoir à
+            celles et ceux qui doutent.
+          </p>
+          <p style="margin:0 0 10px"><strong>Nos principes</strong> : transparence, simplicité, respect.</p>
+          <p style="margin:0"><strong>Notre promesse</strong> : rétablir la vérité avec empathie.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sous-panneau : Confidentialité -->
+    <div class="submenu" id="panelPrivacy" aria-label="Politique de confidentialité">
+      <div class="sub-head">
+        <button class="sub-back" data-close="#panelPrivacy" aria-label="Retour">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="sub-title">Politique de confidentialité</div>
+      </div>
+      <div class="sub-body">
+        <div class="menu-box" id="privacyText">
+          <h4 style="margin:0 0 8px">Politique de confidentialité</h4>
+          <p style="margin:0 0 8px">
+            <strong>AVERTISSEMENT GÉNÉRAL.</strong> SnapStalk est un service indépendant qui n'exploite ni n'interfère
+            avec les mécanismes de sécurité de Snapchat. Aucun compte Snapchat n'est piraté.
+          </p>
+          <p style="margin:0 0 8px">
+            <strong>Paiements.</strong> Les informations de facturation sont saisies sur une page de paiement tierce sécurisée.
+            SnapStalk n'accède jamais au numéro complet de carte.
+          </p>
+          <p style="margin:0 0 8px">
+            <strong>Données locales.</strong> Préférences stockées localement uniquement.
+          </p>
+          <ul style="margin:8px 0 0 18px; padding:0">
+            <li>Aucun contournement des protections Snapchat</li>
+            <li>Aucune donnée personnelle envoyée pendant l'aperçu</li>
+            <li>Paiement géré par un PSP tiers sécurisé</li>
+            <li>Préférences locales uniquement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sous-panneau : Compte (Connexion + Inscription) -->
+    <div class="submenu" id="panelAccount" aria-label="Compte">
+      <div class="sub-head">
+        <button class="sub-back" data-close="#panelAccount" aria-label="Retour">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="sub-title">Compte</div>
+      </div>
+      <div class="sub-body">
+        <div class="menu-box">
+          <div class="seg" role="tablist" aria-label="Connexion ou Inscription">
+            <button class="seg-btn active" data-auth="login" role="tab" aria-selected="true">Connexion</button>
+            <button class="seg-btn" data-auth="signup" role="tab" aria-selected="false">Inscription</button>
+          </div>
+
+          <!-- Connexion -->
+          <form id="loginForm" data-mode="login">
+            <div class="menu-title">Se connecter</div>
+            <div class="form-row">
+              <input class="menu-input" type="email" id="loginEmail" placeholder="Email" required>
+            </div>
+            <div class="form-row" style="margin-top:8px">
+              <input class="menu-input" type="password" id="loginPass" placeholder="Mot de passe" minlength="6" required>
+            </div>
+            <button class="menu-submit" type="submit">Connexion</button>
+          </form>
+
+          <!-- Inscription -->
+          <form id="signupForm" data-mode="signup" style="display:none">
+            <div class="menu-title">Créer un compte</div>
+            <div class="form-row">
+              <input class="menu-input" type="text" id="signName" placeholder="Prénom (facultatif)">
+            </div>
+            <div class="form-row" style="margin-top:8px">
+              <input class="menu-input" type="email" id="signEmail" placeholder="Email" required>
+            </div>
+            <div class="form-row" style="margin-top:8px">
+              <input class="menu-input" type="password" id="signPass" placeholder="Mot de passe (min. 6)" minlength="6" required>
+            </div>
+            <div class="form-row" style="margin-top:8px">
+              <input class="menu-input" type="password" id="signPass2" placeholder="Confirmer le mot de passe" minlength="6" required>
+            </div>
+            <button class="menu-submit" type="submit">Créer le compte</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Panneau de recherche -->
   <section class="panel" aria-label="Recherche">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px">
       <div class="stepper" aria-label="Étapes">
@@ -247,10 +536,14 @@
           <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
         </div>
       </div>
-      <div class="progress mini-progress" aria-label="progression 3 sur 4 (75%)">
+      <div class="progress mini-progress" aria-label="progression">
         <div class="bar" id="progressBar"></div>
       </div>
     </div>
+
+    <p class="subtitle" style="margin:0 0 10px 2px;opacity:.86;font-weight:700;font-size:clamp(14px,3.2vw,19px);">
+      découvrez la vérité sur vos proches
+    </p>
 
     <div class="field">
       <input id="username" class="input" type="text" placeholder="@username" autocomplete="off" aria-label="Pseudo à analyser">
@@ -264,14 +557,31 @@
       Pseudo invalide. Utilisez 3–30 caractères (lettres, chiffres, . ou _).
     </p>
 
+    <!-- Badges qualité -->
     <div class="quality" aria-hidden="true">
-      <div class="q-pill secure"><span class="ico" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="3.5" y="7" width="9" height="5" rx="2" stroke-width="1.5" stroke="#22c55e"/><path d="M8 7V5.5A2.5 2.5 0 0 1 13 5.5V7" stroke-width="1.5" stroke="#22c55e"/></svg></span>Sécurisé</div>
-      <div class="q-pill rapide"><span class="ico" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke-width="1.5" stroke="#fbbf24"/></svg></span>Rapide</div>
-      <div class="q-pill anonyme"><span class="ico" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke-width="1.5" stroke="#818cf8"/><circle cx="8" cy="8" r="2" fill="#818cf8"/></svg></span>Anonyme</div>
+      <div class="q-pill secure" title="Données protégées">
+        <span class="ico" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="3.5" y="7" width="9" height="5" rx="2" stroke-width="1.5"/><path d="M8 7V5.5A2.5 2.5 0 0 1 13 5.5V7" stroke-width="1.5"/></svg>
+        </span>
+        Sécurisé
+      </div>
+      <div class="q-pill rapide" title="Parcours rapide">
+        <span class="ico" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke-width="1.5"/></svg>
+        </span>
+        Rapide
+      </div>
+      <div class="q-pill anonyme" title="Restez discret">
+        <span class="ico" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="#fff" opacity=".35"/></svg>
+        </span>
+        Anonyme
+      </div>
     </div>
-  </section>
 
-  <button id="start-btn" class="cta" style="transition:opacity .6s, visibility .6s, transform .6s cubic-bezier(.4,0,.2,1);">Commencer</button>
+    <!-- Bouton centré bleu/violet -->
+    <button id="start-btn" class="cta">Commencer</button>
+  </section>
 
   <!-- Avis -->
   <section class="reviews">
@@ -310,7 +620,7 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', ()=>{
-    /* ===== Notifications améliorées ===== */
+    /* ===== Notifications fictives ===== */
     const notifContainer = document.getElementById('notif-container');
     const names = ["Celia","Lucas","Emma","Noah","Lina","Hugo","Jade","Louis","Maya","Tom","Léo","Anna","Sacha","Nina","Eden","Léna","Axel","Mila","Paul","Zoé"];
     const domains = ["gmail.com","icloud.com","hotmail.fr","outlook.com","orange.fr","yahoo.com"];
@@ -321,23 +631,19 @@
       const el = document.createElement('div');
       el.className = 'notif';
       el.innerHTML = `
-        <div class="ico" aria-hidden="true">
+        <div class="ico" aria-hidden="true" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(180deg,#22c55e,#4ade80);display:grid;place-items:center;color:#0b1610;box-shadow:0 6px 16px rgba(34,197,94,.35), inset 0 0 0 1px #ffffff77;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="9" fill="#fff" opacity=".15"/>
             <path d="M7 12.5l3 3 7-7" stroke="#0b1610" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div>${text}<br><small>envoyé il y a quelques secondes</small></div>
-        <button class="dismiss" aria-label="Fermer">×</button>
+        <button class="dismiss" aria-label="Fermer" style="margin-left:6px;border:none;background:transparent;color:#cfe6ff;opacity:.7;cursor:pointer;font-size:16px;line-height:1;padding:2px;border-radius:6px;">×</button>
       `;
       el.querySelector('.dismiss').addEventListener('click', ()=>dismiss(el));
       return el;
     }
-    function dismiss(el){
-      el.style.opacity='0';
-      el.style.transform='translate(18px,8px)';
-      setTimeout(()=>{ el.remove(); showFromQueue(); }, 220);
-    }
+    function dismiss(el){ el.style.opacity='0'; el.style.transform='translate(18px,8px)'; setTimeout(()=>{ el.remove(); showFromQueue(); }, 220); }
     function showFromQueue(){
       if(queue.length===0) return;
       const visible = notifContainer.querySelectorAll('.notif').length;
@@ -348,19 +654,81 @@
         setTimeout(()=>dismiss(n), 4200 + Math.floor(Math.random()*1200));
       }
     }
-    function pushNotif(){
-      const name = names[Math.floor(Math.random()*names.length)];
-      const hide = name.toLowerCase();
-      const mail = `${hide[0]}•••••@${domains[Math.floor(Math.random()*domains.length)]}`;
-      const n = makeNotif(`${name} a reçu son rapport sur <strong>${mail}</strong>`);
-      queue.push(n); showFromQueue();
-    }
     (function loop(){
-      pushNotif();
+      const name = names[Math.floor(Math.random()*names.length)];
+      const mail = `${name.toLowerCase()[0]}•••••@${domains[Math.floor(Math.random()*domains.length)]}`;
+      queue.push(makeNotif(`${name} a reçu son rapport sur <strong>${mail}</strong>`));
+      showFromQueue();
       setTimeout(loop, 5200 + Math.floor(Math.random()*2300));
     })();
 
-    /* ===== Form + progression ===== */
+    /* ===== Menu plein écran ===== */
+    const menuBtn   = document.getElementById('menuBtn');
+    const megaMenu  = document.getElementById('megaMenu');
+    const menuClose = document.getElementById('menuClose');
+    function openMenu(){ megaMenu.classList.add('show'); document.body.classList.add('no-scroll'); menuBtn.setAttribute('aria-expanded','true'); }
+    function closeMenu(){ megaMenu.classList.remove('show'); document.body.classList.remove('no-scroll'); menuBtn.setAttribute('aria-expanded','false'); [panelReview,panelAbout,panelPrivacy,panelAccount].forEach(p=>p.classList.remove('show')); }
+    menuBtn.addEventListener('click', (e)=>{ e.stopPropagation(); openMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    megaMenu.addEventListener('click', (e)=>{ if(e.target===megaMenu) closeMenu(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
+
+    // Ouvrir sous-panneaux
+    const panelReview   = document.getElementById('panelReview');
+    const panelAbout    = document.getElementById('panelAbout');
+    const panelPrivacy  = document.getElementById('panelPrivacy');
+    const panelAccount  = document.getElementById('panelAccount');
+
+    document.getElementById('openReview').addEventListener('click', ()=> panelReview.classList.add('show'));
+    document.getElementById('openAbout').addEventListener('click',  ()=> panelAbout.classList.add('show'));
+    document.getElementById('openPrivacy').addEventListener('click',()=> panelPrivacy.classList.add('show'));
+    document.getElementById('openAccount').addEventListener('click',()=> panelAccount.classList.add('show'));
+
+    document.querySelectorAll('.sub-back').forEach(btn=>{
+      btn.addEventListener('click', ()=> document.querySelector(btn.getAttribute('data-close'))?.classList.remove('show'));
+    });
+
+    /* ===== Avis (soumission) ===== */
+    const revCarousel = document.getElementById('revCarousel');
+    const anonChk = document.getElementById('revAnon');
+    const nameInput = document.getElementById('revName');
+    const starsHidden = document.getElementById('revStars');
+    const starBtns = Array.from(document.querySelectorAll('#ratingWrap .star-btn'));
+
+    function syncAnon(){ if(!anonChk) return; const on=anonChk.checked; nameInput.disabled=on; if(on) nameInput.value=''; }
+    anonChk?.addEventListener('change', syncAnon); syncAnon();
+
+    function setStars(n){ if(!starsHidden) return; starsHidden.value = String(n); starBtns.forEach(b=> b.classList.toggle('active', Number(b.dataset.rate)<=n)); }
+    starBtns.forEach(b=> b.addEventListener('click', ()=> setStars(Number(b.dataset.rate))));
+    setStars(5);
+
+    function sanitize(txt){return txt.replace(/[<>&]/g, s=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]));}
+    function starsText(n){const f='★★★★★'.slice(0,n), e='☆☆☆☆☆'.slice(0,5-n); return f+e;}
+
+    document.getElementById('reviewFormMenu').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const msgRaw = document.getElementById('revText').value.trim();
+      if(msgRaw.length<10){ queue.push(makeNotif('Le message doit contenir au moins 10 caractères.')); showFromQueue(); return; }
+      const displayName = (anonChk.checked || !nameInput.value.trim()) ? 'Anonyme' : sanitize(nameInput.value.trim());
+      const date = new Date().toLocaleDateString('fr-FR');
+      const card = document.createElement('div');
+      card.className='rev';
+      const initial = displayName==='Anonyme' ? 'A' : displayName.replace(/&.+?;|[^A-Za-zÀ-ÿ]/g,'').charAt(0)||'A';
+      card.innerHTML = `
+        <div class="avatar">${initial}</div>
+        <div>
+          <div class="name">${displayName} <span class="muted">· ${date}</span></div>
+          <p>« ${sanitize(msgRaw)} »</p>
+        </div>
+        <div class="stars">${starsText(Math.max(1,Math.min(5,Number(starsHidden.value)||5)))}</div>
+      `;
+      revCarousel.prepend(card);
+      e.target.reset(); setStars(5); syncAnon();
+      queue.push(makeNotif('Merci pour votre avis !')); showFromQueue();
+      panelReview.classList.remove('show');
+    });
+
+    /* ===== CTA “Commencer” — loader 2,5s + check + redirection ===== */
     const startBtn = document.getElementById('start-btn');
     const usernameInput = document.getElementById('username');
     const usernameError = document.getElementById('usernameError');
@@ -379,17 +747,18 @@
       usernameError.style.display='none';
       usernameInput.classList.remove('input-error');
 
-      // lock + loader
+      // Lock + loader
       startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true');
       startBtn.innerHTML = '<span class="dot-loader"><span></span><span></span><span></span></span>';
 
-      // progress anim
+      // Progress animation to 85%
       if(progressBar){
         progressBar.classList.remove('success');
         progressBar.style.transition='width 2.2s cubic-bezier(.4,0,.2,1)';
         requestAnimationFrame(()=>{ progressBar.style.width='85%'; });
       }
 
+      // After 2.5s, complete + show check then redirect
       setTimeout(()=>{
         if(progressBar){
           progressBar.style.transition='width .5s ease';
@@ -398,6 +767,7 @@
         }
         startBtn.innerHTML = '<svg width="32" height="32" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#22c55e"/><path d="M7.5 11.5L10 14L15 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
         startBtn.style.background='#22c55e'; startBtn.style.border='none'; startBtn.style.boxShadow='none';
+
         setTimeout(()=>{ window.location.href = 'analyse.html'; }, 900);
       }, 2500);
     };
