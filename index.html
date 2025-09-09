@@ -280,7 +280,8 @@
     /* Stats d'avis */
     .review-stats{
       display:flex; align-items:center; justify-content:space-between; gap:14px;
-      background:#0b1220; border:1px solid rgba(255,255,255,.10);
+      background:var(--glass); /* <- uniformisé */
+      border:1px solid var(--stroke); /* <- uniformisé */
       border-radius:14px; padding:12px 14px; margin:0 0 14px 0;
       box-shadow:0 8px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
     }
@@ -294,7 +295,8 @@
     .rev{
       display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
       padding:14px;border-radius:16px;position:relative;overflow:hidden;
-      background:#0b1220;border:1px solid rgba(125,211,252,.18);
+      background:var(--glass); /* <- uniformisé */
+      border:1px solid var(--stroke); /* <- uniformisé */
       box-shadow:0 6px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
       transition:box-shadow .25s, transform .25s;
     }
@@ -571,10 +573,6 @@
         <div class="bar" id="progressBar"></div>
       </div>
     </div>
-
-    <p class="subtitle" style="margin:0 0 10px 2px;opacity:.86;font-weight:700;font-size:clamp(14px,3.2vw,19px);">
-      découvrez la vérité sur vos proches
-    </p>
 
     <div class="field">
       <input id="username" class="input" type="text" placeholder="@username" autocomplete="off" aria-label="Pseudo à analyser">
