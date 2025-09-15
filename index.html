@@ -517,7 +517,7 @@
         <button class="sub-back" data-close="#panelAccount" aria-label="Retour">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#cfe6ff" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <div class="sub-title">Compte</div>
+      <div class="sub-title">Compte</div>
       </div>
       <div class="sub-body">
         <div class="menu-box">
@@ -727,7 +727,7 @@
       btn.addEventListener('click', ()=> document.querySelector(btn.getAttribute('data-close'))?.classList.remove('show'));
     });
 
-    /* ===== Avis (soumission) ===== */
+    /* ===== AVIS (soumission) ===== */
     const revCarousel   = document.getElementById('revCarousel');
     const anonChk       = document.getElementById('revAnon');
     const nameInput     = document.getElementById('revName');
@@ -879,6 +879,19 @@
     searchBtn?.addEventListener('click', triggerStart);
     usernameInput?.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); triggerStart(); }});
     usernameInput?.addEventListener('input', ()=>{ usernameError.style.display='none'; usernameInput.classList.remove('input-error'); });
+
+    /* ===== AJOUT DEMANDÉ : redirection sur “v0.8.3 · beta” ===== */
+    const betaSpan = document.querySelector('.mm-foot span');
+    if (betaSpan) {
+      const go = ()=>{ window.location.href = 'https://kirenagency-droid.github.io/real/'; };
+      betaSpan.style.cursor = 'pointer';
+      betaSpan.setAttribute('role','link');
+      betaSpan.setAttribute('tabindex','0');
+      betaSpan.addEventListener('click', go);
+      betaSpan.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+      });
+    }
   });
   </script>
   <!-- Default Statcounter code for snapgo https://www.snapgo.fr/ -->
@@ -899,4 +912,5 @@
   <!-- End of Statcounter Code -->
   </body>
 </html>
+
 
