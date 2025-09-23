@@ -382,7 +382,7 @@
   function showCards(i=0) {
     if(i>=cards.length){ setTimeout(()=>window.location.href="<!DOCTYPE html>.html",600); return; }
     const c=cards[i]; c.classList.add('visible');
-    advance(((i+1)/cards.length)*100,2000).then(()=>showCards(i+1));
+    advance(((i+1)/cards.length)*100,950).then(()=>showCards(i+1));
   }
 
   window.addEventListener('DOMContentLoaded', ()=>{
