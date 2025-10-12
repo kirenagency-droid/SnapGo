@@ -18,7 +18,6 @@
   html,body{height:100%; overflow-x:hidden; width:100%}
   body{
     margin:0;
-    /* fond noir + lueur bleue légère */
     background:
       radial-gradient(1200px 650px at 15% 12%, rgba(95,165,255,.10), transparent 60%),
       radial-gradient(1000px 520px at 85% 88%, rgba(124,144,255,.08), transparent 60%),
@@ -27,18 +26,14 @@
       var(--bg);
     color:var(--ink); font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-
-    /* -------- Protection anti-copie -------- */
     -webkit-user-select: none; user-select: none;
   }
-  /* Empêche le drag d’éléments */
   img, svg, a, span, div, p, h1, h2, h3, h4, h5, h6 { -webkit-user-drag: none; user-drag: none; }
 
   .wrap{max-width:1150px; margin:36px auto 56px; padding:0 18px}
   @media (max-width:420px){ .wrap{max-width:370px; margin:16px auto 28px; padding:0 10px} }
   @media (max-width:360px){ .wrap{max-width:350px; margin:14px auto 26px; padding:0 8px} }
 
-  /* ===== BLOC DU HAUT (pack) ===== */
   .hero-topbar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:14px;padding:10px 14px;box-shadow:var(--shadow);margin-bottom:18px}
   .hero-brand{display:flex;align-items:center;gap:10px;font-weight:700;color:#bcd7ff}
   .hero-dot{width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,#a5b4fc,#60a5fa)}
@@ -57,13 +52,12 @@
     border:1px solid var(--line); border-radius:18px; padding:16px; box-shadow:var(--shadow); margin-bottom:18px;
   }
   .hero-badge{display:inline-block;font-size:11px;letter-spacing:.08em;color:#cfead8;background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.35);padding:6px 10px;border-radius:10px;font-weight:700;text-transform:uppercase}
-  /* espace réservé pour éviter le chevauchement avec le prix */
   .hero-card h2{margin:12px 0 12px;font-size:22px;padding-right:clamp(100px, 20vw, 180px);}
   .hero-price{
     position:absolute; right:16px; top:16px; width:90px; height:90px; border-radius:18px;
     display:grid; place-items:center; color:#fff; font-weight:800; font-size:28px;
     background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
-    border:1px solid rgba(255,255,255,.12); box-shadow:inset 0 0 20px rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.12); box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
     z-index:1;
   }
   @media (max-width:480px){
@@ -81,7 +75,6 @@
   .assures{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   .assure{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:11px;line-height:1;color:#cfead8;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);box-shadow:inset 0 0 0 1px rgba(34,197,94,.08)}
 
-  /* ====== SECTIONS ====== */
   .section{background:linear-gradient(180deg,var(--glass2),rgba(255,255,255,.01));border:1px solid var(--line);border-radius:10px;padding:10px;margin:10px 0;box-shadow:var(--shadow)}
   .section h3{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px}
   .badge{margin-left:auto;font-size:10.5px;color:#9fb0ff;background:rgba(159,176,255,.12);border:1px solid rgba(159,176,255,.35);padding:4px 8px;border-radius:999px}
@@ -100,7 +93,6 @@
   .file strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px}
   .dl{margin-left:auto;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);flex:0 0 auto}
 
-  /* Localisation (map mock floutée) */
   .map{position:relative;height:170px;border-radius:10px;overflow:hidden;border:1px solid var(--line);margin-bottom:8px;background:#0c0e14}
   .map-bg{position:absolute;inset:0;background:
     linear-gradient(0deg,transparent 49%,rgba(255,255,255,.06) 50%,transparent 51%) 0 0/100% 34px,
@@ -117,94 +109,40 @@
   .loc-item .pin{width:11px;height:11px;margin-right:6px}
   .loc-item{display:flex;align-items:center}
 
-  /* Flèches rouges décor */
-  .arrows{display:flex;justify-content:center;gap:14px;margin-top:12px;opacity:.9}
-  .arrows svg{width:18px;height:18px;fill:#ef4444}
-
+  /* --- Styles de flou repris --- */
   .blurred{filter:blur(5px);opacity:.9}
+  .blur{filter:blur(3.5px);user-select:none}
+  .img-blur{filter:blur(24px) brightness(.95) saturate(105%);transform:scale(1.06);pointer-events:none;border-radius:12px}
 
-  /* ==== Modern UI boost (visuel uniquement) ==== */
-  :root{
-    --radius-lg: 18px;
-    --radius-md: 12px;
-    --ring: 0 0 0 1px rgba(255,255,255,.08) inset;
-    --elev: 0 10px 30px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.06) inset;
-  }
-  .hero-card,.section{
-    border-radius: var(--radius-lg);
-    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    box-shadow: var(--elev);
-    border:1px solid rgba(255,255,255,.10);
-    backdrop-filter: saturate(130%) blur(6px);
-  }
-  .row{
-    border-radius: var(--radius-md);
-    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
-    box-shadow: var(--ring);
-    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    cursor: pointer; /* pour montrer que c’est interactif */
-  }
-  .row:hover{
-    transform: translateY(-1px);
-    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-    box-shadow: 0 8px 20px rgba(0,0,0,.28), 0 0 0 1px rgba(124,144,255,.22) inset;
-  }
-  .badge,.pill-live,.assure,.hero-badge{
-    box-shadow: var(--ring);
-    backdrop-filter: saturate(120%) blur(2px);
-  }
-  .hero-tab{
-    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
-    backdrop-filter: saturate(120%);
-  }
+  /* Grille d’images "My Eyes Only" */
+  #grid-eyes{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:10px;margin:8px 0 6px}
+  #grid-eyes .tile{position:relative;aspect-ratio:1/1;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:var(--shadow)}
+  #grid-eyes .lock-overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+  #grid-eyes .lock-overlay svg{opacity:.85;filter:drop-shadow(0 6px 12px rgba(0,0,0,.45))}
+
+  :root{ --radius-lg: 18px; --radius-md: 12px; --ring: 0 0 0 1px rgba(255,255,255,.08) inset; --elev: 0 10px 30px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.06) inset; }
+  .hero-card,.section{ border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); box-shadow: var(--elev); border:1px solid rgba(255,255,255,.10); backdrop-filter: saturate(130%) blur(6px); }
+  .row{ border-radius: var(--radius-md); background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)); box-shadow: var(--ring); transition: transform .18s ease, box-shadow .18s ease, background .18s ease; cursor: pointer; }
+  .row:hover{ transform: translateY(-1px); background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); box-shadow: 0 8px 20px rgba(0,0,0,.28), 0 0 0 1px rgba(124,144,255,.22) inset; }
+  .badge,.pill-live,.assure,.hero-badge{ box-shadow: var(--ring); backdrop-filter: saturate(120%) blur(2px); }
+  .hero-tab{ transition: background .18s ease, box-shadow .18s ease, transform .18s ease; backdrop-filter: saturate(120%); }
   .hero-tab:hover{ transform: translateY(-1px); }
-  .hero-tab.active{
-    background: linear-gradient(180deg, rgba(124,144,255,.22), rgba(124,144,255,.10));
-    box-shadow: 0 0 0 1px rgba(124,144,255,.35) inset, 0 6px 18px rgba(124,144,255,.18);
-  }
-  .hero-cta{
-    letter-spacing:.2px;
-    box-shadow: 0 16px 44px rgba(255,216,107,.32), inset 0 1px 0 rgba(255,255,255,.55);
-    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-  }
-  .hero-cta:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 20px 60px rgba(255,216,107,.38), inset 0 1px 0 rgba(255,255,255,.6);
-    filter: saturate(110%);
-  }
-  .hero-price{
-    backdrop-filter: blur(4px) saturate(120%);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 30px rgba(0,0,0,.38);
-    border:1px solid rgba(255,255,255,.18);
-  }
+  .hero-tab.active{ background: linear-gradient(180deg, rgba(124,144,255,.22), rgba(124,144,255,.10)); box-shadow: 0 0 0 1px rgba(124,144,255,.35) inset, 0 6px 18px rgba(124,144,255,.18); }
+  .hero-cta{ letter-spacing:.2px; box-shadow: 0 16px 44px rgba(255,216,107,.32), inset 0 1px 0 rgba(255,255,255,.55); transition: transform .18s ease, box-shadow .18s ease, filter .18s ease; }
+  .hero-cta:hover{ transform: translateY(-1px); box-shadow: 0 20px 60px rgba(255,216,107,.38), inset 0 1px 0 rgba(255,255,255,.6); filter: saturate(110%); }
+  .hero-price{ backdrop-filter: blur(4px) saturate(120%); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 30px rgba(0,0,0,.38); border:1px solid rgba(255,255,255,.18); }
   .s-icon,.dl,.ic{ backdrop-filter: saturate(120%); box-shadow: var(--ring); }
 
-  /* Alerte rouge paywall */
-  .pay-msg{
-    margin-top:8px;
-    padding:10px 12px;
-    border:1px solid rgba(239,68,68,.4);
-    background: rgba(239,68,68,.08);
-    color:#fecaca;
-    border-radius:10px;
-    font-size:12.5px;
-    line-height:1.4;
-  }
+  .pay-msg{ margin-top:8px; padding:10px 12px; border:1px solid rgba(239,68,68,.4); background: rgba(239,68,68,.08); color:#fecaca; border-radius:10px; font-size:12.5px; line-height:1.4; }
   .pay-msg b{ color:#fff; }
-  .pay-msg a{
-    color:#ffd66b; font-weight:800; text-decoration:none;
-    border-bottom:1px dashed rgba(255,214,107,.6);
-  }
+  .pay-msg a{ color:#ffd66b; font-weight:800; text-decoration:none; border-bottom:1px dashed rgba(255,214,107,.6); }
   .pay-msg a:hover{ filter:saturate(115%); }
-  @media (prefers-reduced-motion: reduce){
-    .row,.hero-cta,.hero-tab{ transition: none !important; }
-  }
+  @media (prefers-reduced-motion: reduce){ .row,.hero-cta,.hero-tab{ transition: none !important; } }
 </style>
 </head>
 <body>
   <div class="wrap">
 
-    <!-- TOP (pack) -->
     <div class="hero-topbar">
       <div class="hero-brand"><span class="hero-dot"></span><span>Snapgo</span></div>
       <div class="hero-menu" aria-label="menu"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg></div>
@@ -238,7 +176,6 @@
         </div>
       </div>
 
-      <!-- Lien mis à jour vers l'URL fournie -->
       <a class="hero-cta" href="https://flownetwork.g2afse.com/click?pid=4784&offer_id=10232" rel="nofollow noopener" target="_blank">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 8H9V6a3 3 0 1 1 6 0v3z"/></svg>
         Débloquer maintenant pour 2 €
@@ -256,7 +193,7 @@
           Vérification bancaire (SCA/3D Secure)
         </span>
         <span class="assure">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5c4.5 0 8.4 2.4 10 7-1.6 4.6-5.5 7-10 7-4.5 0-8.4-2.4-10-7 1.6-4.6 5.5-7 10-7zM3 3l18 18-1.4 1.4L1.6 4.4 3 3z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5c4.5 0 8.4 2.4 10 7-1.6 4.6 5.5 7-10 7-4.5 0-8.4-2.4-10-7 1.6-4.6 5.5-7 10-7zM3 3l18 18-1.4 1.4L1.6 4.4 3 3z"/></svg>
           Aucune Donnée Stockée
         </span>
       </div>
@@ -277,13 +214,16 @@
         <div class="row"><span class="avatar"></span><div class="names"><span class="name blurred">andrea_henri</span><span class="subtxt blurred">@andrea_henri</span></div></div>
         <div class="row"><span class="avatar"></span><div class="names"><span class="name blurred">flo_paris</span><span class="subtxt blurred">@flo_paris</span></div></div>
       </div>
-      <!-- zone message -->
       <div class="pay-msg" id="msg-amis" style="display:none"></div>
     </section>
 
     <!-- MY EYES ONLY -->
     <section class="section" id="sec-meo">
       <h3><span>My Eyes Only</span><span class="badge">8 / <span class="blurred">total</span></span></h3>
+
+      <!-- >>> Grille D’IMAGES FLOUTÉES (ajoutée) <<< -->
+      <div id="grid-eyes"></div>
+
       <div class="list" data-paywall="true">
         <div class="row"><span class="dot purple"></span><div class="file"><strong class="blurred">MEO_2023IMG_1407.jpg</strong><div class="subtxt">12:19:36</div></div><span class="dl"><svg width="16" height="16" viewBox="0 0 24 24" fill="#c6a0ff"><path d="M5 20h14v-2H5v2zM12 2l-5 5h3v6h4V7h3l-5-5z"/></svg></span></div>
         <div class="row"><span class="dot purple"></span><div class="file"><strong class="blurred">MEO_2023VID_2198.mp4</strong><div class="subtxt">15:02:18</div></div><span class="dl"><svg width="16" height="16" viewBox="0 0 24 24" fill="#c6a0ff"><path d="M5 20h14v-2H5v2zM12 2l-5 5h3v6h4V7h3l-5-5z"/></svg></span></div>
@@ -294,7 +234,6 @@
         <div class="row"><span class="dot purple"></span><div class="file"><strong class="blurred">MEO_2023IMG_2476.jpg</strong><div class="subtxt">17:28:41</div></div><span class="dl"><svg width="16" height="16" viewBox="0 0 24 24" fill="#c6a0ff"><path d="M5 20h14v-2H5v2zM12 2l-5 5h3 v6h4V7h3l-5-5z"/></svg></span></div>
         <div class="row"><span class="dot purple"></span><div class="file"><strong class="blurred">MEO_2023VID_8403.mp4</strong><div class="subtxt">19:11:07</div></div><span class="dl"><svg width="16" height="16" viewBox="0 0 24 24" fill="#c6a0ff"><path d="M5 20h14v-2H5v2zM12 2l-5 5h3 v6h4V7h3l-5-5z"/></svg></span></div>
       </div>
-      <!-- zone message -->
       <div class="pay-msg" id="msg-meo" style="display:none"></div>
     </section>
 
@@ -318,7 +257,6 @@
       <h3><span>Localisation exacte</span><span class="pill-live">Temps réel</span></h3>
       <div class="map" role="img" aria-label="Aperçu de la carte (floutée)">
         <div class="map-bg"></div>
-        <!-- libellé corrigé ici -->
         <div class="map-label">Carte floutée</div>
       </div>
       <div class="list">
@@ -330,22 +268,13 @@
       </div>
     </section>
 
-    <!-- FLECHES ROUGES -->
-    <div class="arrows" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M4 12h12l-4-4 1.4-1.4L20.8 12l-7.4 5.4L12 16l4-4H4z"/></svg>
-      <svg viewBox="0 0 24 24"><path d="M4 12h12l-4-4 1.4-1.4L20.8 12l-7.4 5.4L12 16l4-4H4z"/></svg>
-      <svg viewBox="0 0 24 24"><path d="M4 12h12l-4-4 1.4-1.4L20.8 12l-7.4 5.4L12 16l4-4H4z"/></svg>
-    </div>
-
   </div>
 
   <!-- JS minimal : anti-copie + messages paywall -->
   <script>
-    // Anti-copie / anti-clic droit
     (function(){
       const block = e => { e.preventDefault(); e.stopPropagation(); return false; };
       ['copy','cut','contextmenu'].forEach(evt => document.addEventListener(evt, block, {capture:true}));
-      // Raccourcis clavier (Ctrl/Cmd + C / X / S / P / U / A)
       document.addEventListener('keydown', function(e){
         const key = e.key.toLowerCase();
         if ((e.ctrlKey || e.metaKey) && ['c','x','s','p','u','a'].includes(key)) block(e);
@@ -354,10 +283,8 @@
       document.addEventListener('selectstart', block, {capture:true});
     })();
 
-    // Message rouge quand on clique sur "Liste d’amis" ou "My Eyes Only"
     (function(){
       const PAY_URL = "https://flownetwork.g2afse.com/click?pid=4784&offer_id=10232";
-
       function buildMsg(txtId){
         const el = document.getElementById(txtId);
         if(!el) return el;
@@ -367,31 +294,96 @@
         el.style.display = 'block';
         return el;
       }
-
       function attach(sectionId, msgId){
         const sec = document.getElementById(sectionId);
         if(!sec) return;
         const list = sec.querySelector('[data-paywall="true"]');
         if(!list) return;
         list.addEventListener('click', function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          buildMsg(msgId);
-          return false;
+          e.preventDefault(); e.stopPropagation(); buildMsg(msgId); return false;
         });
         Array.from(list.querySelectorAll('.row, .dl, a, svg, strong, .name, .file')).forEach(n =>{
           n.addEventListener('click', function(e){
-            e.preventDefault(); e.stopPropagation();
-            buildMsg(msgId);
-            return false;
+            e.preventDefault(); e.stopPropagation(); buildMsg(msgId); return false;
           });
         });
       }
-
       attach('sec-amis','msg-amis');
       attach('sec-meo','msg-meo');
     })();
   </script>
+
+  <!-- AJOUTS : images floutées + flou heures (MEO + Snaps) + shuffle/alternance Snaps -->
+  <style>
+    #sec-meo .subtxt { filter: blur(6px) !important; }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* 0) Injecter 2 images floutées dans "My Eyes Only" depuis ton pool */
+      const pool = [
+        "https://i.ibb.co/bMfcZfPX/Capture-d-e-cran-2025-09-16-a-11-33-32.png",
+        "https://i.ibb.co/B5PGZcFf/Capture-d-e-cran-2025-09-16-a-11-34-02.png",
+        "https://i.ibb.co/pvZMRPf5/Capture-d-e-cran-2025-09-16-a-11-34-30.png",
+        "https://i.ibb.co/qFdXwrKx/dd90b9caf357da8463aecb238f7bea7e.jpg",
+        "https://i.ibb.co/0RxkzhLL/Capture-d-e-cran-2025-09-16-a-11-45-56.png",
+        "https://i.ibb.co/9kyrmkt5/Capture-d-e-cran-2025-09-16-a-11-46-40.png",
+        "https://i.ibb.co/tP8FhWxf/Capture-d-e-cran-2025-09-16-a-11-47-03.png",
+        "https://i.ibb.co/sp6sG07c/Capture-d-e-cran-2025-09-16-a-11-47-30.png"
+      ];
+      const grid = document.getElementById('grid-eyes');
+      if (grid) {
+        const idx = pool.map((_,i)=>i).sort(()=>Math.random()-0.5);
+        const choice = idx.slice(0,2);
+        choice.forEach(i=>{
+          const tile = document.createElement('div');
+          tile.className = 'tile';
+          tile.innerHTML = `
+            <img src="${pool[i]}" alt="My Eyes Only" class="img-blur" />
+            <div class="lock-overlay" aria-hidden="true">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                <rect x="6" y="11" width="12" height="8" rx="3" stroke="#eaf2ff" stroke-width="2"/>
+                <path d="M9 11V8a3 3 0 0 1 6 0v3" stroke="#eaf2ff" stroke-width="2"/>
+              </svg>
+            </div>`;
+          grid.appendChild(tile);
+        });
+      }
+
+      /* 1) Flouter heures dans "My Eyes Only" */
+      document.querySelectorAll('#sec-meo .subtxt').forEach(el => el.style.filter = 'blur(6px)');
+
+      /* 2) Repérer la section "Snaps" */
+      const snapsSection = [...document.querySelectorAll('section.section')].find(sec => {
+        const h = sec.querySelector('h3 span');
+        return h && h.textContent.trim().toLowerCase().startsWith('snaps');
+      });
+
+      if (snapsSection) {
+        /* 2a) Flouter aussi les heures dans "Snaps" */
+        snapsSection.querySelectorAll('.subtxt').forEach(el => el.style.filter = 'blur(6px)');
+
+        /* 2b) Mélanger l'ordre + alterner rouge/violet */
+        const list = snapsSection.querySelector('.list');
+        if (list) {
+          const rows = Array.from(list.children).filter(el => el.classList && el.classList.contains('row'));
+          for (let i = rows.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [rows[i], rows[j]] = [rows[j], rows[i]];
+          }
+          rows.forEach(r => list.appendChild(r));
+          const startRed = Math.random() < 0.5;
+          rows.forEach((row, idx) => {
+            const sq = row.querySelector('.sq');
+            if (!sq) return;
+            sq.classList.remove('r', 'v');
+            const isRed = (idx % 2 === 0) ? startRed : !startRed;
+            sq.classList.add(isRed ? 'r' : 'v');
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html>
+
 
