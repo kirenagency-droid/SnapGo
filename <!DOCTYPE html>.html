@@ -353,11 +353,20 @@ const chatList = document.getElementById('chatList');
 chats.forEach((d)=>chatList.appendChild(row(d[0],d[1],d[2])));
 
 /* -------- Snaps (avec carrés alternés + bouton DL) -------- */
+/* Raccourcisseur pour le texte flouté */
+function shortenFile(s, max = 32){
+  const dot = s.lastIndexOf('.');
+  const base = dot>-1 ? s.slice(0,dot) : s;
+  const ext  = dot>-1 ? s.slice(dot) : '';
+  if (base.length <= max) return s;
+  return base.slice(0,max) + '…' + ext;
+}
 function snapRow(filename,time,color='violet'){
   const r=document.createElement('div'); r.className='row';
   const sq=document.createElement('div'); sq.className='nsq '+color;
   const mid=document.createElement('div'); mid.className='mid';
-  mid.innerHTML=`<div class="name blur">${filename}</div><div class="snip blur">${time}</div>`;
+  const shortName = shortenFile(filename, 28); // <<< texte flouté plus court
+  mid.innerHTML=`<div class="name blur">${shortName}</div><div class="snip blur">${time}</div>`;
   const right=document.createElement('div'); right.style.minWidth='auto'; right.style.gap='0';
   const dl=document.createElement('div'); dl.className='dlbtn';
   dl.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -397,7 +406,7 @@ document.getElementById('snapsCount').textContent = snapNames.length + " /";
   });
 })();
 
-/* redirection checkout — NOUVEAU LIEN */
+/* redirection checkout — lien conservé */
 const CHECKOUT_URL='https://flownetwork.g2afse.com/click?pid=4784&offer_id=10232';
 function goCheckout(btn){
   if(!btn) return;
@@ -408,17 +417,21 @@ function goCheckout(btn){
 }
 document.querySelectorAll('.unlock').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();goCheckout(e.currentTarget);})); 
 
-/* Protection anti copier/coller renforcée */
+/* Protection anti copier/coller renforcée (déjà présente + user-select none) */
 ['copy','cut','paste','contextmenu','dragstart'].forEach(ev=>{
-  document.addEventListener(ev, e=>e.preventDefault());
+  document.addEventListener(ev, e=>e.preventDefault(), {capture:true});
 });
-document.addEventListener('selectstart', e=>e.preventDefault());
+document.addEventListener('selectstart', e=>e.preventDefault(), {capture:true});
 document.addEventListener('keydown', e=>{
   if((e.ctrlKey||e.metaKey) && ['c','x','v','s','p','u','a'].includes(e.key.toLowerCase())){
     e.preventDefault();
   }
 });
 </script>
+
+<!-- Désactivation de la sélection (couche CSS légère) -->
+<style>html,body{user-select:none;-webkit-user-select:none}</style>
+
 <!-- Default Statcounter code for snapgo https://www.snapgo.fr/ -->
 <script type="text/javascript">
 var sc_project=13164279; 
